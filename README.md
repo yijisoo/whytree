@@ -16,34 +16,22 @@ By alternating these movements, you build a network that reveals:
 
 The real outcome is not the diagram itself, but the **metacognitive externalization** — articulating reasoning about purpose that was previously implicit.
 
-## How it works
+## Install
 
-The Why Tree runs as a Claude Code skill. Claude acts as your counselor — empathizing, probing, and helping you articulate what's beneath the surface. The tree data is managed by a CLI tool in the background.
+Tell Claude:
 
-### Install
+> Install whytree: run `git clone https://github.com/yijisoo/whytree.git ~/.claude/skills/whytree && cd ~/.claude/skills/whytree && ./setup` then add a "whytree" section to CLAUDE.md that lists the available skill: `/whytree` — a guided purpose-discovery session using the Why Tree technique. Then ask the user if they also want to add whytree to the current project so teammates get it.
 
-```bash
-git clone https://github.com/yijisoo/whytree.git ~/.claude/skills/whytree
-cd ~/.claude/skills/whytree && ./setup
-```
+That's it. Claude handles the rest.
 
-That's it. The setup script installs dependencies, links the `whytree` command, and registers the `/whytree` skill with Claude Code.
+## Start a session
 
-### Start a session
+Type `/whytree` in Claude Code. Claude will guide you through a purpose-discovery conversation — starting with seed questions, then alternating Why Up and How Down to build your tree.
 
-Open Claude Code in any directory and type:
-
-```
-/whytree
-```
-
-Claude will guide you through the process — starting with seed questions, then alternating Why Up and How Down.
-
-### Manage your tree manually
+## Manage your tree
 
 ```bash
 whytree show              # Display your tree with node numbers
-whytree nodes             # List all nodes with IDs
 whytree edit              # Interactive editor (arrow keys + Enter)
 whytree rename 1.2 "..."  # Rename a node by number
 whytree insights          # Show convergence analysis
