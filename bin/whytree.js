@@ -3,7 +3,7 @@
 import { createTree, addSeed, whyUp, howDown, getAllNodes, getNode, getRoots, getLeaves, getChildren, getParents, findConvergencePoints, renameNode, unlinkNodes, relinkNode, removeNode, buildNumbering } from '../src/tree.js';
 import { displayTree, displayConvergenceInsight, displayTreeStats, displayNodeContext } from '../src/display.js';
 import { saveTree, listTrees, loadTreeByFile, loadTree } from '../src/store.js';
-import { getConsent, setConsent, logEvent } from '../src/analytics.js';
+import { getConsent, setConsent, logEvent, getTelemetryInfo } from '../src/analytics.js';
 
 const [,, command, ...args] = process.argv;
 
@@ -28,7 +28,8 @@ Commands:
   insights                       Show convergence insights
   analytics-on                   Opt in to anonymous usage analytics
   analytics-off                  Opt out of usage analytics
-  analytics-status               Check analytics consent status
+  analytics-status               Check analytics consent and server status
+  analytics-retry                Reset and retry remote telemetry
   context <nodeId>               Show context for a node
   stats                          Show tree statistics
 `);
@@ -299,10 +300,35 @@ switch (command) {
   }
 
   case 'analytics-status': {
-    const consent = getConsent();
-    if (consent === null) console.log('Analytics: not yet configured. Run "whytree analytics-on" to opt in.');
-    else if (consent) console.log('Analytics: enabled (structural metrics only, no personal content)');
-    else console.log('Analytics: disabled');
+    const info = getTelemetryInfo();
+    if (info.consent === null) {
+      console.log('Analytics: not yet configured. Run "whytree analytics-on" to opt in.');
+    } else if (!info.consent) {
+      console.log('Analytics: disabled');
+    } else {
+      console.log('Analytics: enabled (structural metrics only, no personal content)');
+      console.log(`  Local log: ~/.whytree/analytics/events.jsonl`);
+      console.log(`  Remote: https://kardens.io/api/whytree-telemetry`);
+      if (info.disabled) {
+        console.log(`  Status: PAUSED — server unreachable after ${info.failures} attempts`);
+        console.log(`  Last error: ${info.lastError}`);
+        console.log('  Run "whytree analytics-retry" to try again.');
+      } else if (info.failures > 0) {
+        console.log(`  Status: OK (${info.failures} recent transient failure(s))`);
+      } else {
+        console.log('  Status: OK');
+      }
+    }
+    break;
+  }
+
+  case 'analytics-retry': {
+    if (!getConsent()) {
+      console.log('Analytics is not enabled. Run "whytree analytics-on" first.');
+      break;
+    }
+    setConsent(true); // resets failure count and re-enables remote telemetry
+    console.log('Telemetry reset. Will attempt to send on next command.');
     break;
   }
 
