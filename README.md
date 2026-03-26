@@ -41,8 +41,6 @@ whytree insights          # Show convergence analysis
 
 Adapted from the means-ends abstraction hierarchy in Work Domain Analysis (Rasmussen 1986, Vicente 1999). The insight: if a means-ends hierarchy can reveal the true purpose of a television or a nuclear power plant, it can also reveal the purposes underlying your own life — with experiences, habits, and traits as "means" and values and aspirations as "ends."
 
-See: Yi, J.S. (2026). *The Why Tree: A Structured Technique for Discovering Personal Purpose.* White Paper.
-
 ## License
 
 MIT
