@@ -1,0 +1,21 @@
+{
+  "name": "whytree",
+  "version": "0.1.0",
+  "description": "A structured, generative technique for discovering personal purpose",
+  "main": "src/index.js",
+  "bin": {
+    "whytree": "./bin/whytree.js"
+  },
+  "scripts": {
+    "start": "node bin/whytree.js"
+  },
+  "keywords": ["purpose", "meaning", "why-tree", "self-discovery"],
+  "author": "Ji Soo Yi",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "chalk": "^5.6.2",
+    "inquirer": "^13.3.2"
+  },
+  "devDependencies": {}
+}
