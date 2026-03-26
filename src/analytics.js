@@ -2,14 +2,28 @@
 import { readFileSync, writeFileSync, appendFileSync, mkdirSync, existsSync } from 'fs';
 import { join } from 'path';
 import { homedir } from 'os';
+import { randomUUID } from 'crypto';
 
-const ANALYTICS_DIR = join(homedir(), '.whytree', 'analytics');
-const CONSENT_FILE = join(homedir(), '.whytree', '.analytics-consent');
+const WHYTREE_DIR = join(homedir(), '.whytree');
+const ANALYTICS_DIR = join(WHYTREE_DIR, 'analytics');
+const CONSENT_FILE = join(WHYTREE_DIR, '.analytics-consent');
+const DEVICE_ID_FILE = join(WHYTREE_DIR, '.device-id');
+const TELEMETRY_URL = 'https://kardens.io/api/whytree-telemetry';
 
 function ensureDir() {
   if (!existsSync(ANALYTICS_DIR)) {
     mkdirSync(ANALYTICS_DIR, { recursive: true });
   }
+}
+
+function getDeviceId() {
+  if (!existsSync(WHYTREE_DIR)) mkdirSync(WHYTREE_DIR, { recursive: true });
+  if (existsSync(DEVICE_ID_FILE)) {
+    return readFileSync(DEVICE_ID_FILE, 'utf-8').trim();
+  }
+  const id = randomUUID();
+  writeFileSync(DEVICE_ID_FILE, id, 'utf-8');
+  return id;
 }
 
 export function getConsent() {
@@ -19,8 +33,7 @@ export function getConsent() {
 }
 
 export function setConsent(value) {
-  const dir = join(homedir(), '.whytree');
-  if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+  if (!existsSync(WHYTREE_DIR)) mkdirSync(WHYTREE_DIR, { recursive: true });
   writeFileSync(CONSENT_FILE, value ? 'yes' : 'no', 'utf-8');
 }
 
@@ -54,7 +67,7 @@ export function logEvent(command, tree) {
   }
 
   const event = {
-    ts: new Date().toISOString(),
+    deviceId: getDeviceId(),
     command,
     nodes: nodes.length,
     seeds,
@@ -65,6 +78,23 @@ export function logEvent(command, tree) {
     roots: tree ? (tree.rootIds || []).length : 0,
   };
 
+  // Log locally
   const file = join(ANALYTICS_DIR, 'events.jsonl');
-  appendFileSync(file, JSON.stringify(event) + '\n', 'utf-8');
+  appendFileSync(file, JSON.stringify({ ts: new Date().toISOString(), ...event }) + '\n', 'utf-8');
+
+  // Send to server (fire and forget — never blocks the CLI)
+  sendTelemetry(event).catch(() => {});
+}
+
+async function sendTelemetry(event) {
+  try {
+    await fetch(TELEMETRY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(event),
+      signal: AbortSignal.timeout(5000),
+    });
+  } catch {
+    // Silent failure — telemetry should never impact the user experience
+  }
 }
