@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -e
+
+echo ""
+echo "  🌳 Setting up Why Tree"
+echo ""
+
+# Check Node.js
+if ! command -v node &>/dev/null; then
+  echo "  Error: Node.js is required. Install from https://nodejs.org"
+  exit 1
+fi
+
+# Get the directory where this script lives
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+cd "$SCRIPT_DIR"
+
+# Install dependencies
+echo "  Installing dependencies..."
+npm install --silent 2>/dev/null
+
+# Link CLI globally
+echo "  Linking whytree command..."
+npm link --silent 2>/dev/null || {
+  echo "  Note: 'npm link' failed (may need sudo). You can still use: node bin/whytree.js"
+}
+
+# Install Claude Code skill
+SKILL_DIR="$HOME/.claude/skills/whytree"
+mkdir -p "$SKILL_DIR"
+cp "$SCRIPT_DIR/.claude/skills/whytree/SKILL.md" "$SKILL_DIR/SKILL.md"
+echo "  Installed /whytree skill to $SKILL_DIR"
+
+echo ""
+echo "  Done! You can now:"
+echo "    - Run 'whytree show' in your terminal"
+echo "    - Type /whytree in Claude Code to start a guided session"
+echo ""

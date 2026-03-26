@@ -23,16 +23,11 @@ The Why Tree runs as a Claude Code skill. Claude acts as your counselor — empa
 ### Install
 
 ```bash
-# Clone the repo
-git clone <repo-url> whytree
-cd whytree
-npm install
-npm link
-
-# The skill is at .claude/skills/whytree/SKILL.md
-# Copy to your global skills directory:
-cp -r .claude/skills/whytree ~/.claude/skills/whytree
+git clone https://github.com/yijisoo/whytree.git ~/.claude/skills/whytree
+cd ~/.claude/skills/whytree && ./setup
 ```
+
+That's it. The setup script installs dependencies, links the `whytree` command, and registers the `/whytree` skill with Claude Code.
 
 ### Start a session
 
