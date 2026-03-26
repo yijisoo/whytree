@@ -3,6 +3,7 @@
 import { createTree, addSeed, whyUp, howDown, getAllNodes, getNode, getRoots, getLeaves, getChildren, getParents, findConvergencePoints, renameNode, unlinkNodes, relinkNode, removeNode, buildNumbering } from '../src/tree.js';
 import { displayTree, displayConvergenceInsight, displayTreeStats, displayNodeContext } from '../src/display.js';
 import { saveTree, listTrees, loadTreeByFile, loadTree } from '../src/store.js';
+import { getConsent, setConsent, logEvent } from '../src/analytics.js';
 
 const [,, command, ...args] = process.argv;
 
@@ -25,6 +26,9 @@ Commands:
   remove <nodeId>                Remove a node (children become roots)
   edit                           Interactive editor (arrow keys + Enter)
   insights                       Show convergence insights
+  analytics-on                   Opt in to anonymous usage analytics
+  analytics-off                  Opt out of usage analytics
+  analytics-status               Check analytics consent status
   context <nodeId>               Show context for a node
   stats                          Show tree statistics
 `);
@@ -80,6 +84,7 @@ switch (command) {
     const tree = createTree(name);
     saveTree(tree);
     setCurrentTree(name);
+    logEvent('init', tree);
     console.log(`Created tree: "${name}"`);
     break;
   }
@@ -115,6 +120,7 @@ switch (command) {
     if (!label) { console.error('Usage: whytree seed <label>'); process.exit(1); }
     const node = addSeed(tree, label);
     saveTree(tree);
+    logEvent('seed', tree);
     console.log(`Added seed: "${node.label}" [${node.id.slice(0,8)}]`);
     displayTree(tree, node.id);
     break;
@@ -129,6 +135,7 @@ switch (command) {
     if (!fullId) { console.error(`Node "${nodeId}" not found.`); process.exit(1); }
     const parent = whyUp(tree, fullId, purpose);
     saveTree(tree);
+    logEvent('why-up', tree);
     const wasConvergence = parent.childIds.length > 1;
     console.log(`Why Up: "${getNode(tree, fullId).label}" -> "${parent.label}" [${parent.id.slice(0,8)}]`);
     if (wasConvergence) {
@@ -151,6 +158,7 @@ switch (command) {
     if (!fullId) { console.error(`Node "${nodeId}" not found.`); process.exit(1); }
     const child = howDown(tree, fullId, means);
     saveTree(tree);
+    logEvent('how-down', tree);
     console.log(`How Down: "${getNode(tree, fullId).label}" -> "${child.label}" [${child.id.slice(0,8)}]`);
     displayTree(tree, child.id);
     break;
@@ -275,6 +283,26 @@ switch (command) {
     const tree = requireTree();
     const { interactiveEdit } = await import('../src/interactive.js');
     await interactiveEdit(tree);
+    break;
+  }
+
+  case 'analytics-on': {
+    setConsent(true);
+    console.log('Analytics enabled. Only structural metrics (node counts, depth, convergence) are collected. Never personal content.');
+    break;
+  }
+
+  case 'analytics-off': {
+    setConsent(false);
+    console.log('Analytics disabled.');
+    break;
+  }
+
+  case 'analytics-status': {
+    const consent = getConsent();
+    if (consent === null) console.log('Analytics: not yet configured. Run "whytree analytics-on" to opt in.');
+    else if (consent) console.log('Analytics: enabled (structural metrics only, no personal content)');
+    else console.log('Analytics: disabled');
     break;
   }
 

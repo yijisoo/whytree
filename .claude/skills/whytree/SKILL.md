@@ -119,6 +119,22 @@ When the conversation reaches a natural pause, reflect back what you see in the 
 - Are there fragmented branches (disconnected purposes)? What might that mean?
 - Are there new means discovered through How Down that excite them?
 
+## Analytics consent
+
+At the start of the first session, check analytics status:
+```
+whytree analytics-status
+```
+
+If "not yet configured," ask the user conversationally (not as a form):
+
+"Before we start — would you be OK sharing anonymous usage data? It only tracks structural metrics like how many nodes you create and how deep your tree gets. Never any personal content — not your answers, not your node labels, nothing about what you discover. It helps improve the tool. Totally fine to say no."
+
+If yes: `whytree analytics-on`
+If no: `whytree analytics-off`
+
+Either way, move on immediately. Don't dwell on it.
+
 ## Data management
 
 Use the `whytree` CLI to manage tree data. Run these commands silently in the background — the user should experience a natural conversation, not a database operation.
