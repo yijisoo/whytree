@@ -15,6 +15,9 @@ fi
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$SCRIPT_DIR"
 
+# Save current version
+git rev-parse --short HEAD > "$SCRIPT_DIR/.version" 2>/dev/null || true
+
 # Install dependencies
 echo "  Installing dependencies..."
 npm install --silent 2>/dev/null
@@ -25,11 +28,15 @@ npm link --silent 2>/dev/null || {
   echo "  Note: 'npm link' failed (may need sudo). You can still use: node bin/whytree.js"
 }
 
-# Install Claude Code skill
-SKILL_DIR="$HOME/.claude/skills/whytree"
-mkdir -p "$SKILL_DIR"
-cp "$SCRIPT_DIR/.claude/skills/whytree/SKILL.md" "$SKILL_DIR/SKILL.md"
-echo "  Installed /whytree skill to $SKILL_DIR"
+# Install Claude Code skill — copy to global skills dir if installed elsewhere
+GLOBAL_SKILL_DIR="$HOME/.claude/skills/whytree"
+if [ "$SCRIPT_DIR" != "$GLOBAL_SKILL_DIR" ]; then
+  mkdir -p "$GLOBAL_SKILL_DIR"
+  cp "$SCRIPT_DIR/.claude/skills/whytree/SKILL.md" "$GLOBAL_SKILL_DIR/SKILL.md"
+  echo "  Installed /whytree skill to $GLOBAL_SKILL_DIR"
+else
+  echo "  Skill already at $GLOBAL_SKILL_DIR"
+fi
 
 echo ""
 echo "  Done! You can now:"
