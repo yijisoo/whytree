@@ -90,7 +90,10 @@ async function sendTelemetry(event) {
   try {
     await fetch(TELEMETRY_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Whytree-Key': 'whytree-v1-public-telemetry',
+      },
       body: JSON.stringify(event),
       signal: AbortSignal.timeout(5000),
     });
