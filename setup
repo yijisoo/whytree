@@ -38,6 +38,18 @@ else
   echo "  Skill already at $GLOBAL_SKILL_DIR"
 fi
 
+# Install /whytree-feedback skill
+FEEDBACK_SKILL_DIR="$HOME/.claude/skills/whytree-feedback"
+if [ -d "$SCRIPT_DIR/.claude/skills/whytree-feedback" ]; then
+  mkdir -p "$FEEDBACK_SKILL_DIR"
+  cp "$SCRIPT_DIR/.claude/skills/whytree-feedback/SKILL.md" "$FEEDBACK_SKILL_DIR/SKILL.md"
+  echo "  Installed /whytree-feedback skill to $FEEDBACK_SKILL_DIR"
+fi
+
+# No permission setup needed — the skill invokes whytree via
+# `node ~/.claude/skills/whytree/bin/whytree.js` which is covered
+# by the standard Bash(node:*) permission most users already have.
+
 echo ""
 echo "  Done! You can now:"
 echo "    - Run 'whytree show' in your terminal"

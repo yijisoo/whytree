@@ -8,9 +8,12 @@ user_invocable: true
 
 ```bash
 WHYTREE_DIR="$HOME/.claude/skills/whytree"
+W="node $WHYTREE_DIR/bin/whytree.js"
 _UPD=$("$WHYTREE_DIR/bin/whytree-update-check.sh" 2>/dev/null || true)
 [ -n "$_UPD" ] && echo "$_UPD" || echo "UP_TO_DATE"
 ```
+
+`$W` is the whytree CLI. Use `$W <command>` for all whytree operations throughout this session.
 
 If the output contains `UPDATE_AVAILABLE <local> <remote> <behind>`:
 
@@ -70,7 +73,7 @@ Available seed questions (use 1-2, not all five):
 
 After each answer, reflect back what you heard and add it as a seed using:
 ```
-whytree seed "<label>"
+$W seed "<label>"
 ```
 
 **The real metacognitive training is the Why Up / How Down process itself.** Don't treat seeding as a gate — get to the core process quickly.
@@ -105,7 +108,7 @@ Instead of asking another question, reflect what you heard at a slightly deeper 
 
 When they answer, confirm the label in their own words, then add:
 ```
-whytree why-up <ref> "<purpose>"
+$W why-up <ref> "<purpose>"
 ```
 
 **Signs of genuine depth:** Emotional shift, increased specificity, less rehearsed language, pausing before answering, contradictions with earlier statements.
@@ -116,7 +119,7 @@ Once you've reached a meaningful high-level purpose (not too abstract), switch d
 
 Add each means:
 ```
-whytree how-down <nodeId> "<means>"
+$W how-down <nodeId> "<means>"
 ```
 
 This is where surprising insights emerge — career paths, activities, life changes they hadn't considered.
@@ -125,12 +128,12 @@ This is where surprising insights emerge — career paths, activities, life chan
 
 Go back up from new means. Switch between phases freely. Follow the energy of the conversation. Show the tree periodically:
 ```
-whytree show
+$W show
 ```
 
 Point out convergence and patterns:
 ```
-whytree insights
+$W insights
 ```
 
 ### Phase 5: Reflection
@@ -145,15 +148,15 @@ When the conversation reaches a natural pause, reflect back what you see in the 
 
 At the start of the first session, check analytics status:
 ```
-whytree analytics-status
+$W analytics-status
 ```
 
 If "not yet configured," ask the user conversationally (not as a form):
 
 "Before we start — would you be OK sharing anonymous usage data? It only tracks structural metrics like how many nodes you create and how deep your tree gets. Never any personal content — not your answers, not your node labels, nothing about what you discover. It helps improve the tool. Totally fine to say no."
 
-If yes: `whytree analytics-on`
-If no: `whytree analytics-off`
+If yes: `$W analytics-on`
+If no: `$W analytics-off`
 
 Either way, move on immediately. Don't dwell on it.
 
@@ -161,19 +164,19 @@ Either way, move on immediately. Don't dwell on it.
 
 Use the `whytree` CLI to manage tree data. Run these commands silently in the background — the user should experience a natural conversation, not a database operation.
 
-- `whytree init "<name>"` — create a new tree
-- `whytree seed "<label>"` — add a seed
-- `whytree why-up <ref> "<purpose>"` — add purpose above a node
-- `whytree how-down <ref> "<means>"` — add means below a node
-- `whytree rename <ref> "<new label>"` — rename a node
-- `whytree relink <ref> <parentRef>` — add a parent link to a node
-- `whytree unlink <childRef> <parentRef>` — break a link between nodes
-- `whytree remove <ref>` — remove a node
-- `whytree show` — display the tree with hierarchical node numbers
-- `whytree nodes` — list all nodes with numbers and IDs
-- `whytree insights` — show convergence analysis
+- `$W init "<name>"` — create a new tree
+- `$W seed "<label>"` — add a seed
+- `$W why-up <ref> "<purpose>"` — add purpose above a node
+- `$W how-down <ref> "<means>"` — add means below a node
+- `$W rename <ref> "<new label>"` — rename a node
+- `$W relink <ref> <parentRef>` — add a parent link to a node
+- `$W unlink <childRef> <parentRef>` — break a link between nodes
+- `$W remove <ref>` — remove a node
+- `$W show` — display the tree with hierarchical node numbers
+- `$W nodes` — list all nodes with numbers and IDs
+- `$W insights` — show convergence analysis
 
-Node references (`<ref>`) can be hierarchical numbers (e.g., `1.2.1`) or partial UUIDs (first 8 chars). Hierarchical numbers are shown in `whytree show` and `whytree nodes` output. Prefer numbers — they're easier for the user to reference (e.g., "rename 1.2 to ...").
+Node references (`<ref>`) can be hierarchical numbers (e.g., `1.2.1`) or partial UUIDs (first 8 chars). Hierarchical numbers are shown in `$W show` and `$W nodes` output. Prefer numbers — they're easier for the user to reference (e.g., "rename 1.2 to ...").
 
 ## Tone
 
@@ -191,4 +194,4 @@ When displaying the tree, frame it as "Here's what we've mapped so far" — it's
 - **How Down reveals seeds.** When exploring alternative means, the person may discover activities or interests they hadn't considered. These are effectively new seeds — treat them as such.
 - **The process is the training.** Learning to do Why Up and How Down *is* the metacognitive exercise. Don't add separate preparation or training steps.
 - **Let the user label their own nodes.** When adding a why-up or how-down node, ask the user how *they* would phrase it rather than synthesizing a polished label yourself. The user's own words carry more meaning than a counselor's paraphrase. You may suggest a label, but always confirm: "Would you say it that way, or would you phrase it differently?"
-- **Node numbers for easy reference.** The tree displays hierarchical numbers (1, 1.1, 1.2.1). When the user wants to rename or restructure, they can reference nodes by number (e.g., "rename 1.2 to ..."). Use `whytree rename`, `whytree relink`, `whytree unlink`, and `whytree remove` to restructure.
+- **Node numbers for easy reference.** The tree displays hierarchical numbers (1, 1.1, 1.2.1). When the user wants to rename or restructure, they can reference nodes by number (e.g., "rename 1.2 to ..."). Use `$W rename`, `$W relink`, `$W unlink`, and `$W remove` to restructure.
