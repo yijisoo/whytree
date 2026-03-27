@@ -11,8 +11,8 @@ function ensureDir() {
   }
 }
 
-function treeFileName(name) {
-  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') + '.json';
+export function treeFileName(name) {
+  return name.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') + '.json';
 }
 
 export function saveTree(tree) {

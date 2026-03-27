@@ -4,6 +4,7 @@ import { createTree, addSeed, whyUp, howDown, getAllNodes, getNode, getRoots, ge
 import { displayTree, displayConvergenceInsight, displayTreeStats, displayNodeContext } from '../src/display.js';
 import { saveTree, listTrees, loadTreeByFile, loadTree } from '../src/store.js';
 import { getConsent, setConsent, logEvent, getTelemetryInfo } from '../src/analytics.js';
+import { submitFeedback, listFeedback } from '../src/feedback.js';
 
 const [,, command, ...args] = process.argv;
 
@@ -30,6 +31,8 @@ Commands:
   analytics-off                  Opt out of usage analytics
   analytics-status               Check analytics consent and server status
   analytics-retry                Reset and retry remote telemetry
+  feedback <message>             Send feedback to the developer
+  feedback-list                  Show all submitted feedback
   context <nodeId>               Show context for a node
   stats                          Show tree statistics
 `);
@@ -329,6 +332,30 @@ switch (command) {
     }
     setConsent(true); // resets failure count and re-enables remote telemetry
     console.log('Telemetry reset. Will attempt to send on next command.');
+    break;
+  }
+
+  case 'feedback': {
+    const message = args.join(' ');
+    if (!message) { console.error('Usage: whytree feedback <message>'); process.exit(1); }
+    try {
+      await submitFeedback(message);
+      console.log('Feedback sent. Thank you!');
+    } catch (err) {
+      console.log('Feedback saved locally (server unreachable).');
+    }
+    break;
+  }
+
+  case 'feedback-list': {
+    const entries = listFeedback();
+    if (entries.length === 0) {
+      console.log('No feedback submitted yet.');
+    } else {
+      entries.forEach(e => {
+        console.log(`  [${new Date(e.ts).toLocaleDateString()}] ${e.message}`);
+      });
+    }
     break;
   }
 

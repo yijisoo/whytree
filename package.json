@@ -7,7 +7,8 @@
     "whytree": "./bin/whytree.js"
   },
   "scripts": {
-    "start": "node bin/whytree.js"
+    "start": "node bin/whytree.js",
+    "test": "node --test test/*.test.js"
   },
   "keywords": ["purpose", "meaning", "why-tree", "self-discovery"],
   "author": "Ji Soo Yi",
