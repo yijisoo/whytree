@@ -5,7 +5,7 @@ import { homedir } from 'os';
 
 const WHYTREE_DIR = join(homedir(), '.whytree');
 const FEEDBACK_DIR = join(WHYTREE_DIR, 'feedback');
-const FEEDBACK_URL = 'https://kardens.io/api/whytree-feedback';
+const TELEMETRY_URL = process.env.WHYTREE_TELEMETRY_URL || 'https://kardens.io/api/whytree-telemetry';
 
 function ensureDir() {
   if (!existsSync(FEEDBACK_DIR)) {
@@ -42,13 +42,21 @@ export async function submitFeedback(message, category = 'general') {
 }
 
 async function sendFeedback(entry) {
-  const response = await fetch(FEEDBACK_URL, {
+  // Send through the telemetry endpoint with command: "feedback"
+  const event = {
+    deviceId: entry.deviceId,
+    command: 'feedback',
+    feedbackMessage: entry.message,
+    feedbackCategory: entry.category,
+  };
+
+  const response = await fetch(TELEMETRY_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'X-Whytree-Key': 'whytree-v1-public-telemetry',
     },
-    body: JSON.stringify(entry),
+    body: JSON.stringify(event),
     signal: AbortSignal.timeout(5000),
   });
 

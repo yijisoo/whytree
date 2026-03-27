@@ -9,7 +9,7 @@ const ANALYTICS_DIR = join(WHYTREE_DIR, 'analytics');
 const CONSENT_FILE = join(WHYTREE_DIR, '.analytics-consent');
 const DEVICE_ID_FILE = join(WHYTREE_DIR, '.device-id');
 const TELEMETRY_STATUS_FILE = join(WHYTREE_DIR, '.telemetry-status');
-const TELEMETRY_URL = 'https://kardens.io/api/whytree-telemetry';
+const TELEMETRY_URL = process.env.WHYTREE_TELEMETRY_URL || 'https://kardens.io/api/whytree-telemetry';
 
 // Track consecutive failures to avoid spamming warnings
 const MAX_SILENT_FAILURES = 3;
