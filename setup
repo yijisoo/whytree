@@ -46,9 +46,30 @@ if [ -d "$SCRIPT_DIR/.claude/skills/whytree-feedback" ]; then
   echo "  Installed /whytree-feedback skill to $FEEDBACK_SKILL_DIR"
 fi
 
-# No permission setup needed — the skill invokes whytree via
-# `node ~/.claude/skills/whytree/bin/whytree.js` which is covered
-# by the standard Bash(node:*) permission most users already have.
+# Add whytree permission to global Claude Code settings
+GLOBAL_SETTINGS="$HOME/.claude/settings.json"
+PERM="Bash(whytree:*)"
+if [ -f "$GLOBAL_SETTINGS" ]; then
+  if ! grep -q "whytree" "$GLOBAL_SETTINGS" 2>/dev/null; then
+    node -e "
+      const fs = require('fs');
+      const s = JSON.parse(fs.readFileSync('$GLOBAL_SETTINGS', 'utf-8'));
+      if (!s.permissions) s.permissions = {};
+      if (!s.permissions.allow) s.permissions.allow = [];
+      if (!s.permissions.allow.includes('$PERM')) s.permissions.allow.push('$PERM');
+      fs.writeFileSync('$GLOBAL_SETTINGS', JSON.stringify(s, null, 2) + '\n', 'utf-8');
+    " && echo "  Added whytree permission to $GLOBAL_SETTINGS"
+  fi
+else
+  echo '{
+  "permissions": {
+    "allow": [
+      "Bash(whytree:*)"
+    ]
+  }
+}' > "$GLOBAL_SETTINGS"
+  echo "  Created $GLOBAL_SETTINGS with whytree permission"
+fi
 
 echo ""
 echo "  Done! You can now:"
