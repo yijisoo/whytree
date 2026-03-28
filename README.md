@@ -2,11 +2,9 @@
 
 **You know you want more from life. You just can't say what.**
 
-You're busy. Maybe even successful. But there's a gap — between how your days are spent and what you actually care about.
+Some people come here in crisis — a gap between how their days are spent and what they actually care about, a vague sense that something's off. Others come curious — no particular problem, just wondering what they'd find if they looked honestly.
 
-Or maybe it's simpler. You just feel a bit lost. Like everyone else has a direction and you're still waiting for yours to arrive.
-
-That's not a flaw. It's the most honest starting point there is.
+Both are the right reason.
 
 The Why Tree is a guided conversation — powered by Claude — that starts from where you actually are and helps you trace your way to what matters most.
 
