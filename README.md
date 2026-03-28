@@ -4,7 +4,11 @@
 
 You're a student staring at a major selection form, unable to explain why one path feels right and another doesn't. You're a solopreneur three pivots in, still not sure which problem is truly *yours* to solve. You're someone who has plenty of interests but no coherent story connecting them.
 
-The Why Tree is a guided conversation — powered by Claude — that helps you discover what actually matters to you and why.
+Or maybe it's simpler than that. You just feel a bit lost. Like everyone else has a direction and you're still waiting for yours to arrive.
+
+That's not a flaw. It's the most honest starting point there is.
+
+The Why Tree is a guided conversation — powered by Claude — that helps you discover what actually matters to you and why. It doesn't ask you to have answers. It starts from where you actually are.
 
 ## How it works
 
@@ -60,7 +64,7 @@ Type `/whytree-feedback` in Claude Code to share what worked, what didn't, or su
 
 ## Origin
 
-If the name sounds familiar — yes, the "Why Tree" comes from the same root as the 5 Whys and Why-Why Analysis in Six Sigma and lean manufacturing, where asking "why?" repeatedly uncovers the root cause of a defect. The Why Tree takes that same mechanic and points it inward: instead of diagnosing what went wrong with a process, you're discovering what matters most in your life.
+The name overlaps with "Why Tree" in Six Sigma and lean manufacturing, where asking "why?" repeatedly uncovers the root cause of a defect. The mechanic is similar — keep asking why — but the direction is completely different. Six Sigma points the question at broken processes. This points it at yourself: not to find what went wrong, but to discover what matters most.
 
 It also draws from the means-ends abstraction hierarchy in Work Domain Analysis (Rasmussen 1986, Vicente 1999) — the insight that if a structured hierarchy can reveal the true purpose of a nuclear power plant, it can reveal yours too.
 
