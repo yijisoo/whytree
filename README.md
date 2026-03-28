@@ -2,34 +2,49 @@
 
 **You know you want more from life. You just can't say what.**
 
-You're a student staring at a major selection form, unable to explain why one path feels right and another doesn't. You're a solopreneur three pivots in, still not sure which problem is truly *yours* to solve. You're someone who has plenty of interests but no coherent story connecting them.
+You're busy. Maybe even successful. But there's a gap — between how your days are spent and what you actually care about.
 
-Or maybe it's simpler than that. You just feel a bit lost. Like everyone else has a direction and you're still waiting for yours to arrive.
+Or maybe it's simpler. You just feel a bit lost. Like everyone else has a direction and you're still waiting for yours to arrive.
 
 That's not a flaw. It's the most honest starting point there is.
 
-The Why Tree is a guided conversation — powered by Claude — that helps you discover what actually matters to you and why. It doesn't ask you to have answers. It starts from where you actually are.
+The Why Tree is a guided conversation — powered by Claude — that starts from where you actually are and helps you trace your way to what matters most.
 
 ## How it works
 
-You start with something concrete: an activity you love, a project you keep coming back to, a topic that won't leave your head. Then Claude walks you through two movements:
+You start with something concrete: an activity you love, a project you keep returning to, something that won't leave your head.
 
-**Why Up** — *"Why does this matter to you?"* Then *"Why?"* of that answer. Each step moves from the specific toward something deeper — from "I like cooking" to "I need to nourish the people I love."
+Then Claude walks you through two movements:
 
-**How Down** — *"What are other ways to achieve this?"* From any purpose you've surfaced, explore alternative paths you hadn't considered — career changes, side projects, life experiments.
+**Why Up** — *"Why does this matter to you?"* Then *"Why?"* of that answer. Each step moves from the specific toward something deeper — from "I keep working on this side project" to "I need to feel like I'm building something real."
 
-By going up and back down, patterns emerge:
+**How Down** — *"What else could give you this?"* From any purpose you've surfaced, explore paths you hadn't considered — career changes, projects, life experiments that serve the same root.
 
-- **Convergence** — multiple interests trace back to the same core value. That's a signal.
-- **New paths** — purposes you've already named can be served by means you've never tried.
-- **Clarity** — the things competing for your energy either connect to the same root or they don't.
+By going up and back down, patterns emerge: multiple interests pointing to the same core value, new paths to purposes you've already named, clarity about what's worth your energy and what isn't.
 
 The real outcome isn't the diagram. It's hearing yourself say, out loud, what you couldn't articulate before.
 
+## What it looks like
+
+Here's a fragment from a real session:
+
+```
+=== My Why Tree ===
+
+  +-- [1] ^ feel secured / grounded in myself
+        |-- [1.1] ~ helping people reclaim agency as AI grows
+        |-- [1.2] v a sweaty run
+        |-- [1.3] v sit with difficulty before reaching for relief
+        |-- [1.4] v private discovery journaling
+        +-- [1.5] v track concrete impact, not validation
+```
+
+Someone came in talking about FOMO and burnout. By the end they'd traced it to something specific — and discovered five concrete practices that serve it, some they'd never thought to connect.
+
 ## Who this is for
 
-- **Students** figuring out what to study, what career to pursue, or why nothing on the menu feels right
-- **Solopreneurs and indie builders** who need to stop chasing every opportunity and find the one problem that's truly theirs
+- **Students** who can't explain why nothing on the menu feels right
+- **Builders and solopreneurs** who need to stop chasing every opportunity and find the one problem that's truly theirs
 - **Career changers** who know they want something different but can't name what
 - **Anyone** who has felt the gap between "I'm busy" and "I'm fulfilled"
 
@@ -45,9 +60,9 @@ That's it. Claude handles the rest.
 
 ## Start a session
 
-Type `/whytree` in Claude Code. Claude guides you through a purpose-discovery conversation — no prep needed, just answer honestly.
+Type `/whytree` in Claude Code. No prep needed — just answer honestly.
 
-Your tree is saved locally at `~/.whytree/` and grows across sessions. Come back when you've had new experiences or new questions.
+Your tree saves locally at `~/.whytree/` and grows across sessions. Come back when you've had new experiences or new questions. The tree is a living document.
 
 ## Manage your tree
 
