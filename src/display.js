@@ -74,7 +74,7 @@ export function displayTree(tree, highlightId = null) {
 
   console.log('');
   console.log(chalk.bold.white(`  === ${tree.name} ===`));
-  console.log(chalk.dim('  (top = purpose/why, bottom = means/how)'));
+  console.log(chalk.dim('  (↑ purpose/why  ·  ↓ means/how  ·  "why?" goes up, "how?" goes down)'));
   console.log('');
 
   const lines = [];
@@ -170,47 +170,41 @@ export function displayInsightsSynthesis(tree) {
     .map(id => tree.nodes[id])
     .filter(n => n && n.parentIds.length === 0);
 
-  // Find the deepest purpose root — the node that required the most why-ups to reach
   const purposeRoots = getRoots(tree).filter(n => n.type === 'why');
-  const deepestRoot = purposeRoots.length > 0
-    ? purposeRoots.reduce((a, b) => getDepth(tree, b.id) > getDepth(tree, a.id) ? b : a)
-    : null;
+  const convergenceIds = new Set(findConvergencePoints(tree).map(n => n.id));
 
-  // Reflection anchored to the deepest purpose root (most thoroughly explored question)
-  if (deepestRoot) {
-    console.log(chalk.white('  --- Reflection ---'));
-    console.log(chalk.dim(`  The deepest question your tree has reached:`));
-    console.log(chalk.cyan(`  "${deepestRoot.label}"`));
-    console.log('');
-    console.log(chalk.dim(`  What are you not yet doing that this purpose seems to be asking for?`));
-    console.log(chalk.dim(`  (Not as a demand — just as a direction.)`));
-    console.log('');
-    console.log(chalk.dim(`  Which activities, roles, or paths in your life best express this?`));
-    console.log(chalk.dim(`  Which ones work against it?`));
-    if (undeveloped.length > 0) {
-      console.log('');
-      console.log(chalk.dim(`  (Based on what you've explored so far — your unexplored seeds may confirm or complicate this.)`));
-    }
-    console.log('');
-  }
-
-  // Unresolved threads — with bridging question
+  // Purpose Roots — separate convergence roots (already done work) from open roots
   if (purposeRoots.length > 1) {
-    console.log(chalk.yellow('  --- Unresolved Threads ---'));
-    console.log(chalk.dim(`  These ${purposeRoots.length} purpose threads haven't converged yet:`));
-    purposeRoots.forEach(n => {
-      console.log(chalk.dim(`  ^ ${n.label}`));
-    });
+    const convergenceRoots = purposeRoots.filter(n => convergenceIds.has(n.id));
+    const openRoots = purposeRoots.filter(n => !convergenceIds.has(n.id));
+
+    console.log(chalk.yellow('  --- Purpose Roots ---'));
+    console.log(chalk.dim(`  Your tree currently has ${purposeRoots.length} separate tops.`));
     console.log('');
-    console.log(chalk.dim(`  That tension might be the most important thing in this tree.`));
-    console.log(chalk.dim(`  You don't have to resolve it today.`));
-    console.log('');
-    console.log(chalk.dim(`  When you're ready, ask "why?" about each with what they share in mind.`));
-    console.log(chalk.dim(`  Is there something they all protect? All want? All fear losing?`));
-    purposeRoots.forEach(n => {
-      const num = numbering[n.id] || '?';
-      console.log(chalk.dim(`    whytree why-up ${num} "<because both of these are really about...>"`));
-    });
+
+    if (convergenceRoots.length > 0) {
+      console.log(chalk.dim(`  These have found convergence (* marks) but haven't been explored further:`));
+      convergenceRoots.forEach(n => {
+        const num = numbering[n.id] || '?';
+        console.log(chalk.cyan(`    * "${n.label}"`));
+        console.log(chalk.dim(`      → whytree why-up ${num} "<why does that matter?>"`));
+      });
+      console.log('');
+    }
+
+    if (openRoots.length > 0) {
+      console.log(chalk.dim(`  These threads haven't connected to anything else yet:`));
+      openRoots.forEach(n => {
+        const num = numbering[n.id] || '?';
+        console.log(chalk.dim(`    ^ "${n.label}"`));
+        console.log(chalk.dim(`      → whytree why-up ${num} "<your reason>"`));
+      });
+      console.log('');
+    }
+
+    console.log(chalk.white('  One exercise worth trying:'));
+    console.log(chalk.dim(`  Complete this sentence — then use it as your next why-up on each thread:`));
+    console.log(chalk.white(`  "All of these trace back to _____."`));
     console.log('');
   }
 
@@ -293,9 +287,12 @@ export function displayNarrativeSynthesis(tree) {
     console.log('');
     console.log(chalk.dim(`  The harder question:`));
     console.log(chalk.white(`  What in your life right now is working against "${deepestRoot.label}"?`));
+    console.log('');
+    console.log(chalk.dim(`  What are you not yet doing that this seems to be asking for?`));
+    console.log(chalk.dim(`  (Not as a demand — just as a direction.)`));
     if (purposeRoots.length > 1) {
       console.log('');
-      console.log(chalk.dim(`  The unresolved threads may sharpen that answer — or complicate it.`));
+      console.log(chalk.dim(`  The other threads may sharpen that answer — or complicate it.`));
     }
   } else {
     console.log(chalk.dim(`  Your tree hasn't reached a single root yet.`));

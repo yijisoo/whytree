@@ -180,6 +180,10 @@ switch (command) {
     // Emotional pacing: detect emotional markers and add a beat
     const emotionalMarkers = /\b(feel|love|afraid|scared|lonely|proud|guilty|grief|hope|fear|miss|hurt|angry|joy|loss|meaning|alive|connection|belong|matter)\b/i;
     const isEmotional = emotionalMarkers.test(purpose);
+    // Intellectualized answer detection: abstract nouns without first-person pronouns
+    const abstractTerms = /\b(integrity|virtue|meaning|certainty|authenticity|dignity|freedom|justice|truth|purpose|growth|fulfillment|excellence|principle|value|contribution|impact|legacy)\b/i;
+    const hasPersonal = /\b(I|me|my|mine|myself|I'm|I've|I'd|I'll)\b/i;
+    const isIntellectualized = abstractTerms.test(purpose) && !hasPersonal.test(purpose) && purpose.split(' ').length > 4;
     console.log(`Why Up: "${getNode(tree, fullId).label}" -> "${parent.label}" [${parent.id.slice(0,8)}]`);
     if (isEmotional) {
       console.log(chalk.dim('  (That\'s worth noting.)'));
@@ -203,7 +207,9 @@ switch (command) {
       console.log(chalk.dim(`\n  (You're building something real here.)`));
     }
     displayTree(tree, parent.id);
-    if (isFirstWhy) {
+    if (isIntellectualized && !isFirstWhy) {
+      console.log(chalk.dim('  (That sounds like the considered answer — what\'s the version that\'s personal to you?)'));
+    } else if (isFirstWhy) {
       if (isEmotional) {
         console.log(chalk.dim('  (That already sounds real — is there more underneath?)'));
       } else {
@@ -321,10 +327,16 @@ switch (command) {
   case 'insights': {
     const tree = requireTree();
     displayTree(tree);
+    displayNarrativeSynthesis(tree);
     displayConvergenceInsight(tree);
     displayInsightsSynthesis(tree);
-    displayNarrativeSynthesis(tree);
     displayTreeStats(tree);
+    const nodeCount = Object.values(tree.nodes).length;
+    if (nodeCount >= 6) {
+      console.log(chalk.dim(`  You've done real work here. This is a natural place to pause.`));
+      console.log(chalk.dim(`  Run "whytree show" anytime to come back to where you left off.`));
+      console.log('');
+    }
     break;
   }
 
