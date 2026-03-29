@@ -97,7 +97,7 @@ function printNodeList(tree) {
     const pStr = parents.length > 0 ? ` serves: [${parents.map(p => p.label).join(', ')}]` : '';
     const cStr = children.length > 0 ? ` through: [${children.map(c => c.label).join(', ')}]` : '';
     const typeIcon = n.type === 'seed' ? '~' : n.type === 'why' ? '^' : 'v';
-    console.log(`  [${n.num}] [${n.id.slice(0,8)}] ${typeIcon} ${n.label}${pStr}${cStr}`);
+    console.log(`  [${n.id.slice(0,6)}] ${typeIcon} ${n.label}${pStr}${cStr}`);
   });
 }
 
@@ -233,7 +233,8 @@ switch (command) {
       console.log(chalk.dim('  (That\'s a direction — what does it look like in practice? Something specific and time-bound works better.)'));
     }
     displayTree(tree, child.id);
-    console.log(chalk.dim('  Found a purpose worth acting on. What else could serve it?'));
+    console.log(chalk.dim('  Found a purpose worth acting on.'));
+    console.log(chalk.dim('  One thing worth checking: does this action address the root belief, or work around it?'));
     console.log(chalk.dim('  (IDs are stable — use the [6-char ID] in brackets for your next command:)'));
     printNodeListCompact(tree);
     break;
