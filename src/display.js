@@ -1,6 +1,6 @@
 // ASCII tree visualization for the Why Tree
 import chalk from 'chalk';
-import { getRoots, getChildren, findConvergencePoints, buildNumbering } from './tree.js';
+import { getRoots, getChildren, findConvergencePoints, buildNumbering, getDepth } from './tree.js';
 
 const COLORS = {
   seed: chalk.blue,
@@ -196,13 +196,15 @@ export function displayInsightsSynthesis(tree) {
   // Divergence detection — multiple disconnected top-level purpose chains
   const purposeRoots = getRoots(tree).filter(n => n.type === 'why');
   if (purposeRoots.length > 1) {
-    console.log(chalk.yellow('  --- Divergence Detected ---'));
-    console.log(chalk.dim(`  Your tree has ${purposeRoots.length} separate purpose chains that haven't converged:`));
+    console.log(chalk.yellow('  --- Unresolved Threads ---'));
+    console.log(chalk.dim(`  These ${purposeRoots.length} purpose threads haven't converged yet:`));
     purposeRoots.forEach(n => {
       console.log(chalk.dim(`  ^ ${n.label}`));
     });
-    console.log(chalk.dim(`  Do these point in the same direction — or are they in tension?`));
-    console.log(chalk.dim(`  Try asking "why?" about each to see if they meet at a deeper root:`));
+    console.log('');
+    console.log(chalk.dim(`  That tension might be the most important thing in this tree.`));
+    console.log(chalk.dim(`  You don't have to resolve it today.`));
+    console.log(chalk.dim(`  When you're ready, try asking "why?" about each:`));
     purposeRoots.forEach(n => {
       const num = numbering[n.id] || '?';
       console.log(chalk.dim(`    whytree why-up ${num} "<your reason>"`));
@@ -210,10 +212,17 @@ export function displayInsightsSynthesis(tree) {
     console.log('');
   }
 
-  // Underdeveloped seeds — seeds with only one why-up
+  // Underdeveloped seeds — seeds whose entire why chain is shallow (depth < 2)
   const underdeveloped = tree.seedIds
     .map(id => tree.nodes[id])
-    .filter(n => n && n.parentIds.length === 1);
+    .filter(n => {
+      if (!n || n.parentIds.length === 0) return false;
+      // Only flag if the chain above is shallow (parent has no further parents)
+      return n.parentIds.every(pid => {
+        const parent = tree.nodes[pid];
+        return parent && parent.parentIds.length === 0;
+      });
+    });
 
   if (underdeveloped.length > 0) {
     console.log(chalk.yellow('  --- Worth Going Deeper ---'));
@@ -239,6 +248,49 @@ export function displayInsightsSynthesis(tree) {
     });
     console.log('');
   }
+}
+
+export function displayNarrativeSynthesis(tree) {
+  const convergencePoints = findConvergencePoints(tree);
+  const purposeRoots = getRoots(tree).filter(n => n.type === 'why');
+  const allNodes = Object.values(tree.nodes);
+  if (allNodes.length < 3) return;
+
+  const top = convergencePoints.length > 0
+    ? convergencePoints.reduce((a, b) => b.childIds.length > a.childIds.length ? b : a)
+    : null;
+
+  console.log(chalk.white('  --- What Your Tree Is Saying ---'));
+  console.log('');
+
+  if (top) {
+    const children = top.childIds.map(id => tree.nodes[id]).filter(Boolean);
+    const childLabels = children.map(c => `"${c.label}"`).join(', ');
+    console.log(chalk.white(`  The thread your tree keeps returning to is:`));
+    console.log(chalk.cyan(`  "${top.label}"`));
+    console.log('');
+    if (children.length > 1) {
+      console.log(chalk.dim(`  It shows up across different areas — ${childLabels}.`));
+      console.log(chalk.dim(`  That's not coincidence. It's signal.`));
+    }
+  } else if (purposeRoots.length > 0) {
+    console.log(chalk.dim(`  Your tree hasn't converged on a single thread yet.`));
+    console.log(chalk.dim(`  That's fine — you're still in the middle of the question.`));
+  }
+
+  if (purposeRoots.length > 1) {
+    console.log('');
+    const rootLabels = purposeRoots.map(n => `"${n.label}"`).join(' and ');
+    console.log(chalk.dim(`  The unresolved tension between ${rootLabels}`));
+    console.log(chalk.dim(`  may be the most honest thing this tree contains.`));
+  }
+
+  console.log('');
+  if (top) {
+    console.log(chalk.dim(`  One question worth sitting with:`));
+    console.log(chalk.white(`  What in your life right now is working against "${top.label}"?`));
+  }
+  console.log('');
 }
 
 export function displayTreeStats(tree) {

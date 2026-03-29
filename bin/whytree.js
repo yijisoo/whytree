@@ -2,7 +2,7 @@
 // CLI API for the Why Tree — designed to be driven by Claude as a counselor
 import chalk from 'chalk';
 import { createTree, addSeed, whyUp, howDown, getAllNodes, getNode, getRoots, getLeaves, getChildren, getParents, findConvergencePoints, renameNode, unlinkNodes, relinkNode, removeNode, buildNumbering } from '../src/tree.js';
-import { displayTree, displayConvergenceInsight, displayTreeStats, displayNodeContext, displayInsightsSynthesis } from '../src/display.js';
+import { displayTree, displayConvergenceInsight, displayTreeStats, displayNodeContext, displayInsightsSynthesis, displayNarrativeSynthesis } from '../src/display.js';
 import { saveTree, listTrees, loadTreeByFile, loadTree } from '../src/store.js';
 import { getConsent, setConsent, logEvent, getTelemetryInfo } from '../src/analytics.js';
 import { submitFeedback, listFeedback } from '../src/feedback.js';
@@ -207,7 +207,7 @@ switch (command) {
         console.log(chalk.dim('  (Is that the public answer — or the real one?)'));
       }
     }
-    console.log(chalk.dim('  (Updated node numbers:)'));
+    console.log(chalk.dim('  (Node numbers update as the tree grows — use these for your next command:)'));
     printNodeListCompact(tree);
     break;
   }
@@ -223,9 +223,15 @@ switch (command) {
     saveTree(tree);
     logEvent('how-down', tree);
     console.log(`How Down: "${getNode(tree, fullId).label}" -> "${child.label}" [${child.id.slice(0,8)}]`);
+    // Specificity nudge: flag abstract means
+    const abstractTerms = /^(be |become |get |have |find |make |do |work |help |try |use |learn |grow |build |create |develop |improve |achieve |pursue )/i;
+    const wordCount = means.trim().split(/\s+/).length;
+    if (wordCount <= 3 || abstractTerms.test(means.trim())) {
+      console.log(chalk.dim('  (That\'s a direction — what does it look like in practice? Something specific and time-bound works better.)'));
+    }
     displayTree(tree, child.id);
     console.log(chalk.dim('  Found a purpose worth acting on. What else could serve it?'));
-    console.log(chalk.dim('  (Updated node numbers:)'));
+    console.log(chalk.dim('  (Node numbers update as the tree grows — use these for your next command:)'));
     printNodeListCompact(tree);
     break;
   }
@@ -313,6 +319,7 @@ switch (command) {
     displayTree(tree);
     displayConvergenceInsight(tree);
     displayInsightsSynthesis(tree);
+    displayNarrativeSynthesis(tree);
     displayTreeStats(tree);
     break;
   }
