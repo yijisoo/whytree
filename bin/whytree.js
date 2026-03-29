@@ -29,6 +29,7 @@ Commands:
   edit                           Interactive editor (arrow keys + Enter)
   insights                       Show convergence insights
   purpose <sentence>             Save a one-sentence synthesis of what you're building toward
+  last                           Show the most recently touched node ID
   analytics-on                   Opt in to anonymous usage analytics
   analytics-off                  Opt out of usage analytics
   analytics-status               Check analytics consent and server status
@@ -175,6 +176,7 @@ switch (command) {
     const childNode = tree.nodes[fullId];
     const isFirstWhy = childNode && childNode.type === 'seed' && childNode.parentIds.length === 0;
     const parent = whyUp(tree, fullId, purpose);
+    tree.lastNodeId = parent.id;
     saveTree(tree);
     logEvent('why-up', tree);
     const wasConvergence = parent.childIds.length > 1;
@@ -204,10 +206,22 @@ switch (command) {
       console.log(chalk.yellow(`\n  (3 separate threads now. They may converge — or reveal a real tension.)`));
       console.log(chalk.dim(`  Try asking "why?" about each to see if they meet somewhere deeper.`));
     }
-    // Mid-session momentum beat after 3rd+ why-up
+    // Mid-session signals
     const whyCount = Object.values(tree.nodes).filter(n => n.type === 'why').length;
     if (whyCount === 3) {
       console.log(chalk.dim(`\n  (You're building something real here.)`));
+      console.log(chalk.dim(`  When you're ready to name what it adds up to: whytree purpose "<sentence>"`));
+    }
+    // After 5 why-ups: nudge toward stranded threads before going deeper
+    if (whyCount === 5) {
+      const strandedRoots = getRoots(tree).filter(n => n.type === 'why' &&
+        !n.childIds.some(cid => { const c = tree.nodes[cid]; return c && c.type === 'how'; })
+      );
+      if (strandedRoots.length >= 2) {
+        console.log(chalk.yellow(`\n  (Before going deeper — you have ${strandedRoots.length} threads with no action attached yet.)`));
+        console.log(chalk.dim(`  Is there something they share? Or one that deserves a how-down first?`));
+        strandedRoots.forEach(n => console.log(chalk.dim(`    ^ "${n.label}"  [${n.id.slice(0,6)}]`)));
+      }
     }
     displayTree(tree, parent.id);
     if (isIntellectualized && !isFirstWhy) {
@@ -232,6 +246,7 @@ switch (command) {
     const fullId = resolveNodeRef(tree, nodeId);
     if (!fullId) { console.error(`Node "${nodeId}" not found.`); process.exit(1); }
     const child = howDown(tree, fullId, means);
+    tree.lastNodeId = child.id;
     saveTree(tree);
     logEvent('how-down', tree);
     console.log(`How Down: "${getNode(tree, fullId).label}" -> "${child.label}" [${child.id.slice(0,8)}]`);
@@ -386,10 +401,25 @@ switch (command) {
     tree.updatedAt = new Date().toISOString();
     saveTree(tree);
     console.log('');
-    console.log(chalk.cyan(`  "${sentence}"`));
+    console.log(chalk.bold.cyan(`  ◆ "${sentence}"`));
     console.log('');
-    console.log(chalk.dim('  Saved. This is what your tree is about.'));
+    console.log(chalk.dim('  Saved. Here is the tree that led here:'));
+    displayTree(tree);
+    console.log(chalk.dim('  Does this feel true?'));
+    console.log(chalk.dim('  Is anything in the tree above working against it?'));
     console.log('');
+    break;
+  }
+
+  case 'last': {
+    const tree = requireTree();
+    if (!tree.lastNodeId || !tree.nodes[tree.lastNodeId]) {
+      console.log('No recent node.');
+    } else {
+      const n = tree.nodes[tree.lastNodeId];
+      const typeIcon = n.type === 'seed' ? '~' : n.type === 'why' ? '^' : 'v';
+      console.log(`  [${n.id.slice(0,6)}] ${typeIcon} ${n.label}`);
+    }
     break;
   }
 
