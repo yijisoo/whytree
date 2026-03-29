@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // CLI API for the Why Tree — designed to be driven by Claude as a counselor
+import chalk from 'chalk';
 import { createTree, addSeed, whyUp, howDown, getAllNodes, getNode, getRoots, getLeaves, getChildren, getParents, findConvergencePoints, renameNode, unlinkNodes, relinkNode, removeNode, buildNumbering } from '../src/tree.js';
-import { displayTree, displayConvergenceInsight, displayTreeStats, displayNodeContext } from '../src/display.js';
+import { displayTree, displayConvergenceInsight, displayTreeStats, displayNodeContext, displayInsightsSynthesis } from '../src/display.js';
 import { saveTree, listTrees, loadTreeByFile, loadTree } from '../src/store.js';
 import { getConsent, setConsent, logEvent, getTelemetryInfo } from '../src/analytics.js';
 import { submitFeedback, listFeedback } from '../src/feedback.js';
@@ -82,6 +83,38 @@ function outputJson(obj) {
   console.log(JSON.stringify(obj, null, 2));
 }
 
+// Full node list — for the `nodes` command
+function printNodeList(tree) {
+  const nodes = getAllNodes(tree);
+  const numbering = buildNumbering(tree);
+  if (nodes.length === 0) return;
+  const sorted = nodes
+    .map(n => ({ ...n, num: numbering[n.id] || '?' }))
+    .sort((a, b) => a.num.localeCompare(b.num, undefined, { numeric: true }));
+  sorted.forEach(n => {
+    const parents = getParents(tree, n.id);
+    const children = getChildren(tree, n.id);
+    const pStr = parents.length > 0 ? ` serves: [${parents.map(p => p.label).join(', ')}]` : '';
+    const cStr = children.length > 0 ? ` through: [${children.map(c => c.label).join(', ')}]` : '';
+    const typeIcon = n.type === 'seed' ? '~' : n.type === 'why' ? '^' : 'v';
+    console.log(`  [${n.num}] [${n.id.slice(0,8)}] ${typeIcon} ${n.label}${pStr}${cStr}`);
+  });
+}
+
+// Compact node list — for inline display after why-up/how-down
+function printNodeListCompact(tree) {
+  const nodes = getAllNodes(tree);
+  const numbering = buildNumbering(tree);
+  if (nodes.length === 0) return;
+  const sorted = nodes
+    .map(n => ({ ...n, num: numbering[n.id] || '?' }))
+    .sort((a, b) => a.num.localeCompare(b.num, undefined, { numeric: true }));
+  sorted.forEach(n => {
+    const typeIcon = n.type === 'seed' ? '~' : n.type === 'why' ? '^' : 'v';
+    console.log(chalk.dim(`  [${n.num}] ${typeIcon} ${n.label}`));
+  });
+}
+
 switch (command) {
   case 'init': {
     const name = args.join(' ') || 'My Why Tree';
@@ -90,6 +123,9 @@ switch (command) {
     setCurrentTree(name);
     logEvent('init', tree);
     console.log(`Created tree: "${name}"`);
+    console.log(chalk.dim(`  Now plant your first seed — something you actually do or care about.`));
+    console.log(chalk.dim(`  Try: whytree seed "<something you spend time on>"`));
+    console.log(chalk.dim(`  If anything surfaces that feels heavier than expected, it's okay to pause.`));
     break;
   }
 
@@ -137,11 +173,19 @@ switch (command) {
     if (!nodeId || !purpose) { console.error('Usage: whytree why-up <nodeId|number> <purpose>'); process.exit(1); }
     const fullId = resolveNodeRef(tree, nodeId);
     if (!fullId) { console.error(`Node "${nodeId}" not found.`); process.exit(1); }
+    const childNode = tree.nodes[fullId];
+    const isFirstWhy = childNode && childNode.type === 'seed' && childNode.parentIds.length === 0;
     const parent = whyUp(tree, fullId, purpose);
     saveTree(tree);
     logEvent('why-up', tree);
     const wasConvergence = parent.childIds.length > 1;
+    // Emotional pacing: detect emotional markers and add a beat
+    const emotionalMarkers = /\b(feel|love|afraid|scared|lonely|proud|guilty|grief|hope|fear|miss|hurt|angry|joy|loss|meaning|alive|connection|belong|matter)\b/i;
+    const isEmotional = emotionalMarkers.test(purpose);
     console.log(`Why Up: "${getNode(tree, fullId).label}" -> "${parent.label}" [${parent.id.slice(0,8)}]`);
+    if (isEmotional) {
+      console.log(chalk.dim('  (That\'s worth noting.)'));
+    }
     if (wasConvergence) {
       console.log(`\n*** CONVERGENCE: "${parent.label}" now connects ${parent.childIds.length} paths:`);
       parent.childIds.forEach(cid => {
@@ -149,7 +193,22 @@ switch (command) {
         if (child) console.log(`  - ${child.label}`);
       });
     }
+    // Early divergence signal: warn after 3rd distinct purpose root
+    const purposeRoots = getRoots(tree).filter(n => n.type === 'why');
+    if (purposeRoots.length === 3) {
+      console.log(chalk.yellow(`\n  (You now have 3 separate purpose threads. They may converge — or reveal a real tension.)`));
+      console.log(chalk.dim(`  Try asking "why?" about each to see if they meet somewhere deeper.`));
+    }
     displayTree(tree, parent.id);
+    if (isFirstWhy) {
+      if (isEmotional) {
+        console.log(chalk.dim('  (That already sounds real — is there more underneath?)'));
+      } else {
+        console.log(chalk.dim('  (Is that the public answer — or the real one?)'));
+      }
+    }
+    console.log(chalk.dim('  (Updated node numbers:)'));
+    printNodeListCompact(tree);
     break;
   }
 
@@ -165,6 +224,9 @@ switch (command) {
     logEvent('how-down', tree);
     console.log(`How Down: "${getNode(tree, fullId).label}" -> "${child.label}" [${child.id.slice(0,8)}]`);
     displayTree(tree, child.id);
+    console.log(chalk.dim('  Found a purpose worth acting on. What else could serve it?'));
+    console.log(chalk.dim('  (Updated node numbers:)'));
+    printNodeListCompact(tree);
     break;
   }
 
@@ -177,23 +239,10 @@ switch (command) {
 
   case 'nodes': {
     const tree = requireTree();
-    const nodes = getAllNodes(tree);
-    const numbering = buildNumbering(tree);
-    if (nodes.length === 0) {
+    if (getAllNodes(tree).length === 0) {
       console.log('No nodes yet.');
     } else {
-      // Sort by numbering for readable output
-      const sorted = nodes
-        .map(n => ({ ...n, num: numbering[n.id] || '?' }))
-        .sort((a, b) => a.num.localeCompare(b.num, undefined, { numeric: true }));
-      sorted.forEach(n => {
-        const parents = getParents(tree, n.id);
-        const children = getChildren(tree, n.id);
-        const pStr = parents.length > 0 ? ` serves: [${parents.map(p => p.label).join(', ')}]` : '';
-        const cStr = children.length > 0 ? ` through: [${children.map(c => c.label).join(', ')}]` : '';
-        const typeIcon = n.type === 'seed' ? '~' : n.type === 'why' ? '^' : 'v';
-        console.log(`  [${n.num}] [${n.id.slice(0,8)}] ${typeIcon} ${n.label}${pStr}${cStr}`);
-      });
+      printNodeList(tree);
     }
     break;
   }
@@ -263,6 +312,7 @@ switch (command) {
     const tree = requireTree();
     displayTree(tree);
     displayConvergenceInsight(tree);
+    displayInsightsSynthesis(tree);
     displayTreeStats(tree);
     break;
   }

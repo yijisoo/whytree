@@ -152,12 +152,93 @@ export function displayConvergenceInsight(tree) {
   console.log(chalk.cyan.bold('  --- Convergence Insight ---'));
   for (const node of convergencePoints) {
     const children = node.childIds.map(id => tree.nodes[id]).filter(Boolean);
-    console.log(chalk.cyan(`  "${node.label}" is served by ${children.length} different means:`));
+    console.log(chalk.cyan(`  "${node.label}"`));
+    console.log(chalk.dim(`  ...is where ${children.length} different paths in your tree converge:`));
     children.forEach(c => {
-      console.log(chalk.dim(`    - ${c.label}`));
+      const typeIcon = c.type === 'seed' ? '~' : c.type === 'why' ? '^' : 'v';
+      console.log(chalk.dim(`    ${typeIcon} ${c.label}`));
     });
+    console.log(chalk.dim(`  This is likely a core value. What does it mean that these`));
+    console.log(chalk.dim(`  different things all trace back here?`));
+    console.log('');
   }
-  console.log('');
+}
+
+export function displayInsightsSynthesis(tree) {
+  const numbering = buildNumbering(tree);
+
+  // Reflection prompt anchored to top convergence node (shown first)
+  const convergencePoints = findConvergencePoints(tree);
+  const undeveloped = tree.seedIds
+    .map(id => tree.nodes[id])
+    .filter(n => n && n.parentIds.length === 0);
+
+  if (convergencePoints.length > 0) {
+    const top = convergencePoints.reduce((a, b) => b.childIds.length > a.childIds.length ? b : a);
+    console.log(chalk.white('  --- Reflection ---'));
+    console.log(chalk.dim(`  Your tree converges most strongly around:`));
+    console.log(chalk.cyan(`  "${top.label}"`));
+    console.log('');
+    // Q2 first (actionable direction), then Q1, then Q3
+    console.log(chalk.dim(`  What are you not yet doing that this purpose seems to be asking for?`));
+    console.log(chalk.dim(`  (Not as a demand — just as a direction.)`));
+    console.log('');
+    console.log(chalk.dim(`  Which activities, roles, or paths in your life best express this?`));
+    console.log(chalk.dim(`  Which ones work against it?`));
+    // Partial convergence caveat when unexplored seeds exist
+    if (undeveloped.length > 0) {
+      console.log('');
+      console.log(chalk.dim(`  (Based on what you've explored so far — your unexplored seeds may confirm or complicate this.)`));
+    }
+    console.log('');
+  }
+
+  // Divergence detection — multiple disconnected top-level purpose chains
+  const purposeRoots = getRoots(tree).filter(n => n.type === 'why');
+  if (purposeRoots.length > 1) {
+    console.log(chalk.yellow('  --- Divergence Detected ---'));
+    console.log(chalk.dim(`  Your tree has ${purposeRoots.length} separate purpose chains that haven't converged:`));
+    purposeRoots.forEach(n => {
+      console.log(chalk.dim(`  ^ ${n.label}`));
+    });
+    console.log(chalk.dim(`  Do these point in the same direction — or are they in tension?`));
+    console.log(chalk.dim(`  Try asking "why?" about each to see if they meet at a deeper root:`));
+    purposeRoots.forEach(n => {
+      const num = numbering[n.id] || '?';
+      console.log(chalk.dim(`    whytree why-up ${num} "<your reason>"`));
+    });
+    console.log('');
+  }
+
+  // Underdeveloped seeds — seeds with only one why-up
+  const underdeveloped = tree.seedIds
+    .map(id => tree.nodes[id])
+    .filter(n => n && n.parentIds.length === 1);
+
+  if (underdeveloped.length > 0) {
+    console.log(chalk.yellow('  --- Worth Going Deeper ---'));
+    console.log(chalk.dim(`  These started to open up but haven't been fully explored:`));
+    underdeveloped.forEach(n => {
+      const num = numbering[n.id] || '?';
+      const parentNode = tree.nodes[n.parentIds[0]];
+      const parentLabel = parentNode ? parentNode.label : '?';
+      console.log(chalk.dim(`  ~ ${n.label} → ${parentLabel}`));
+      console.log(chalk.dim(`    → whytree why-up ${numbering[n.parentIds[0]] || '?'} "<why does that matter?>"`));
+    });
+    console.log('');
+  }
+
+  // Unexplored seeds (shown last)
+  if (undeveloped.length > 0) {
+    console.log(chalk.yellow('  --- Unexplored Seeds ---'));
+    console.log(chalk.dim(`  These seeds are still here when you're ready.`));
+    undeveloped.forEach(n => {
+      const num = numbering[n.id] || '?';
+      console.log(chalk.dim(`  ~ ${n.label}`));
+      console.log(chalk.dim(`    → whytree why-up ${num} "<your reason>"`));
+    });
+    console.log('');
+  }
 }
 
 export function displayTreeStats(tree) {
