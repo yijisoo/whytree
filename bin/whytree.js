@@ -258,10 +258,12 @@ switch (command) {
     }
     displayTree(tree, child.id);
     console.log(chalk.dim('  Found a purpose worth acting on.'));
-    // Root-check only on first how-down to avoid canned repetition
     const howCount = Object.values(tree.nodes).filter(n => n.type === 'how').length;
+    // Root-check only on first how-down to avoid canned repetition
     if (howCount === 1) {
       console.log(chalk.dim('  One thing worth checking: does this action address the root belief, or work around it?'));
+    } else {
+      console.log(chalk.dim('  Does this feel like something you\'d actually do — or something you\'d tell someone else to do?'));
     }
     console.log(chalk.dim('  (IDs are stable — use the [6-char ID] in brackets for your next command:)'));
     printNodeListCompact(tree);
@@ -397,6 +399,16 @@ switch (command) {
     const tree = requireTree();
     const sentence = args.join(' ');
     if (!sentence) { console.error('Usage: whytree purpose "<your sentence>"'); process.exit(1); }
+    // Soft gate: if there are multiple separate threads, flag that not all may be explored equally
+    const openRoots = getRoots(tree).filter(n => n.type === 'why');
+    if (openRoots.length > 1) {
+      console.log('');
+      console.log(chalk.dim(`  You have ${openRoots.length} threads still open:`));
+      openRoots.forEach(n => {
+        console.log(chalk.dim(`    ^ "${n.label}"`));
+      });
+      console.log(chalk.dim('  Does your purpose statement account for all of them? Proceed if so.'));
+    }
     tree.purpose = sentence;
     tree.updatedAt = new Date().toISOString();
     saveTree(tree);
