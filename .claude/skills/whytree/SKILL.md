@@ -183,6 +183,7 @@ Use the `whytree` CLI to manage tree data. Run these commands silently in the ba
 - `whytree show` — display the tree with hierarchical node numbers
 - `whytree nodes` — list all nodes with numbers and IDs
 - `whytree insights` — show convergence analysis
+- `whytree converge <ref1> <ref2> "<shared meaning>"` — explicitly name the shared root of two threads that the user intuits as connected. Use this when the user says things like "these feel like the same thing" or "both of these trace back to the same fear." The new node becomes a convergence point above both.
 
 Node references (`<ref>`) can be hierarchical numbers (e.g., `1.2.1`) or partial UUIDs (first 8 chars). Hierarchical numbers are shown in `whytree show` and `whytree nodes` output. Prefer numbers — they're easier for the user to reference (e.g., "rename 1.2 to ...").
 

@@ -26,6 +26,7 @@ Commands:
   relink <nodeId> <newParentId>  Add a parent link to a node
   unlink <childId> <parentId>    Break a link between two nodes
   remove <nodeId>                Remove a node (children become roots)
+  converge <id1> <id2> <label>   Name the shared root of two threads
   edit                           Interactive editor (arrow keys + Enter)
   insights                       Show convergence insights
   purpose <sentence>             Save a one-sentence synthesis of what you're building toward
@@ -335,6 +336,38 @@ switch (command) {
     saveTree(tree);
     console.log(`Unlinked: "${getNode(tree, childFullId).label}" from "${getNode(tree, parentFullId).label}"`);
     displayTree(tree);
+    break;
+  }
+
+  case 'converge': {
+    const tree = requireTree();
+    const ref1 = args[0];
+    const ref2 = args[1];
+    const label = args.slice(2).join(' ');
+    if (!ref1 || !ref2 || !label) {
+      console.error('Usage: whytree converge <nodeId1> <nodeId2> "<shared meaning>"');
+      process.exit(1);
+    }
+    const id1 = resolveNodeRef(tree, ref1);
+    const id2 = resolveNodeRef(tree, ref2);
+    if (!id1) { console.error(`Node "${ref1}" not found.`); process.exit(1); }
+    if (!id2) { console.error(`Node "${ref2}" not found.`); process.exit(1); }
+    // whyUp handles existing-label case: first call creates parent, second links to it
+    const parent = whyUp(tree, id1, label);
+    whyUp(tree, id2, label);
+    saveTree(tree);
+    logEvent('converge', tree);
+    const n1 = getNode(tree, id1);
+    const n2 = getNode(tree, id2);
+    console.log('');
+    console.log(chalk.cyan(`  Converged: "${n1.label}" + "${n2.label}"`));
+    console.log(chalk.cyan(`  ↑ shared root: "${label}" [${parent.id.slice(0,6)}]`));
+    displayTree(tree, parent.id);
+    const isConvergence = findConvergencePoints(tree).some(n => n.id === parent.id);
+    if (isConvergence) {
+      console.log(chalk.cyan.bold(`  * "${label}" is now a convergence point — multiple threads meet here.`));
+      console.log('');
+    }
     break;
   }
 
