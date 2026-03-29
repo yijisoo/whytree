@@ -104,14 +104,11 @@ function printNodeList(tree) {
 // Compact node list — for inline display after why-up/how-down
 function printNodeListCompact(tree) {
   const nodes = getAllNodes(tree);
-  const numbering = buildNumbering(tree);
   if (nodes.length === 0) return;
-  const sorted = nodes
-    .map(n => ({ ...n, num: numbering[n.id] || '?' }))
-    .sort((a, b) => a.num.localeCompare(b.num, undefined, { numeric: true }));
-  sorted.forEach(n => {
+  // Show stable hash IDs — these never change as the tree grows
+  nodes.forEach(n => {
     const typeIcon = n.type === 'seed' ? '~' : n.type === 'why' ? '^' : 'v';
-    console.log(chalk.dim(`  [${n.num}] ${typeIcon} ${n.label}`));
+    console.log(chalk.dim(`  [${n.id.slice(0,6)}] ${typeIcon} ${n.label}`));
   });
 }
 
@@ -125,6 +122,7 @@ switch (command) {
     console.log(`Created tree: "${name}"`);
     console.log(chalk.dim(`  Now plant your first seed — something you actually do or care about.`));
     console.log(chalk.dim(`  Try: whytree seed "<something you spend time on>"`));
+    console.log(chalk.dim(`  Tip: use single quotes around labels with special characters like $, !, &`));
     console.log(chalk.dim(`  If anything surfaces that feels heavier than expected, it's okay to pause.`));
     break;
   }
@@ -199,6 +197,11 @@ switch (command) {
       console.log(chalk.yellow(`\n  (You now have 3 separate purpose threads. They may converge — or reveal a real tension.)`));
       console.log(chalk.dim(`  Try asking "why?" about each to see if they meet somewhere deeper.`));
     }
+    // Mid-session momentum beat after 3rd+ why-up
+    const whyCount = Object.values(tree.nodes).filter(n => n.type === 'why').length;
+    if (whyCount === 3) {
+      console.log(chalk.dim(`\n  (You're building something real here.)`));
+    }
     displayTree(tree, parent.id);
     if (isFirstWhy) {
       if (isEmotional) {
@@ -207,7 +210,7 @@ switch (command) {
         console.log(chalk.dim('  (Is that the public answer — or the real one?)'));
       }
     }
-    console.log(chalk.dim('  (Node numbers update as the tree grows — use these for your next command:)'));
+    console.log(chalk.dim('  (IDs are stable — use the [6-char ID] in brackets for your next command:)'));
     printNodeListCompact(tree);
     break;
   }
@@ -231,7 +234,7 @@ switch (command) {
     }
     displayTree(tree, child.id);
     console.log(chalk.dim('  Found a purpose worth acting on. What else could serve it?'));
-    console.log(chalk.dim('  (Node numbers update as the tree grows — use these for your next command:)'));
+    console.log(chalk.dim('  (IDs are stable — use the [6-char ID] in brackets for your next command:)'));
     printNodeListCompact(tree);
     break;
   }

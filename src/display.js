@@ -79,7 +79,9 @@ export function displayTree(tree, highlightId = null) {
 
   const lines = [];
   const visited = new Set();
-  const numbering = buildNumbering(tree);
+  // Use stable 6-char hash IDs as addresses — these never change as the tree grows
+  const numbering = {};
+  Object.keys(tree.nodes).forEach(id => { numbering[id] = id.slice(0, 6); });
 
   roots.forEach((root, i) => {
     renderSubtree(tree, root.id, '  ', i === roots.length - 1, visited, highlightId, convergenceIds, numbering, lines);
@@ -149,19 +151,14 @@ export function displayConvergenceInsight(tree) {
   const convergencePoints = findConvergencePoints(tree);
   if (convergencePoints.length === 0) return;
 
-  console.log(chalk.cyan.bold('  --- Convergence Insight ---'));
+  console.log(chalk.cyan.bold('  --- Convergence Points ---'));
   for (const node of convergencePoints) {
     const children = node.childIds.map(id => tree.nodes[id]).filter(Boolean);
-    console.log(chalk.cyan(`  "${node.label}"`));
-    console.log(chalk.dim(`  ...is where ${children.length} different paths in your tree converge:`));
-    children.forEach(c => {
-      const typeIcon = c.type === 'seed' ? '~' : c.type === 'why' ? '^' : 'v';
-      console.log(chalk.dim(`    ${typeIcon} ${c.label}`));
-    });
-    console.log(chalk.dim(`  This is likely a core value. What does it mean that these`));
-    console.log(chalk.dim(`  different things all trace back here?`));
-    console.log('');
+    const childLabels = children.map(c => `"${c.label}"`).join(', ');
+    console.log(chalk.cyan(`  * "${node.label}"`));
+    console.log(chalk.dim(`    ← connects ${childLabels}`));
   }
+  console.log('');
 }
 
 export function displayInsightsSynthesis(tree) {
@@ -265,31 +262,31 @@ export function displayNarrativeSynthesis(tree) {
 
   if (top) {
     const children = top.childIds.map(id => tree.nodes[id]).filter(Boolean);
-    const childLabels = children.map(c => `"${c.label}"`).join(', ');
-    console.log(chalk.white(`  The thread your tree keeps returning to is:`));
+    console.log(chalk.dim(`  In your own words, the thing this tree is actually about is:`));
     console.log(chalk.cyan(`  "${top.label}"`));
     console.log('');
     if (children.length > 1) {
-      console.log(chalk.dim(`  It shows up across different areas — ${childLabels}.`));
-      console.log(chalk.dim(`  That's not coincidence. It's signal.`));
+      console.log(chalk.dim(`  Most people don't act like that's what they're optimizing for.`));
+      console.log(chalk.dim(`  Your tree suggests you might be.`));
     }
-  } else if (purposeRoots.length > 0) {
-    console.log(chalk.dim(`  Your tree hasn't converged on a single thread yet.`));
-    console.log(chalk.dim(`  That's fine — you're still in the middle of the question.`));
-  }
-
-  if (purposeRoots.length > 1) {
     console.log('');
-    const rootLabels = purposeRoots.map(n => `"${n.label}"`).join(' and ');
-    console.log(chalk.dim(`  The unresolved tension between ${rootLabels}`));
-    console.log(chalk.dim(`  may be the most honest thing this tree contains.`));
+    console.log(chalk.dim(`  The harder question:`));
+    console.log(chalk.white(`  What in your life right now is working against "${top.label}"?`));
+  } else if (purposeRoots.length > 0) {
+    console.log(chalk.dim(`  Your tree hasn't converged yet.`));
+    console.log(chalk.dim(`  That's not a problem — it means you're still in the middle of the question.`));
+    console.log('');
+    console.log(chalk.dim(`  The threads so far:`));
+    purposeRoots.forEach(n => console.log(chalk.cyan(`  ^ "${n.label}"`)));
+    console.log('');
+    console.log(chalk.dim(`  What would it mean if these were all pointing at the same thing?`));
   }
 
-  console.log('');
-  if (top) {
-    console.log(chalk.dim(`  One question worth sitting with:`));
-    console.log(chalk.white(`  What in your life right now is working against "${top.label}"?`));
+  if (purposeRoots.length > 1 && top) {
+    console.log('');
+    console.log(chalk.dim(`  The unresolved threads may sharpen that answer — or complicate it.`));
   }
+
   console.log('');
 }
 
