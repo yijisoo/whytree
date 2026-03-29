@@ -270,23 +270,31 @@ export function displayNarrativeSynthesis(tree) {
   const allNodes = Object.values(tree.nodes);
   if (allNodes.length < 3) return;
 
-  // Use the deepest purpose root as anchor — the most thoroughly explored question
-  const deepestRoot = purposeRoots.length > 0
-    ? purposeRoots.reduce((a, b) => getDepth(tree, b.id) > getDepth(tree, a.id) ? b : a)
-    : null;
+  // Anchor = convergence node with highest (childIds.length + depth) score,
+  // falling back to deepest purpose root if no convergence points exist
+  const convergencePoints = findConvergencePoints(tree);
+  const anchor = convergencePoints.length > 0
+    ? convergencePoints.reduce((best, n) => {
+        const score = n.childIds.length + getDepth(tree, n.id);
+        const bestScore = best.childIds.length + getDepth(tree, best.id);
+        return score > bestScore ? n : best;
+      })
+    : (purposeRoots.length > 0
+        ? purposeRoots.reduce((a, b) => getDepth(tree, b.id) > getDepth(tree, a.id) ? b : a)
+        : null);
 
   console.log(chalk.white('  --- What Your Tree Is Saying ---'));
   console.log('');
 
-  if (deepestRoot) {
+  if (anchor) {
     console.log(chalk.dim(`  In your own words, the thing this tree is ultimately about is:`));
-    console.log(chalk.cyan(`  "${deepestRoot.label}"`));
+    console.log(chalk.cyan(`  "${anchor.label}"`));
     console.log('');
     console.log(chalk.dim(`  Most people don't act like that's what they're optimizing for.`));
-    console.log(chalk.dim(`  Your tree suggests you might be.`));
+    console.log(chalk.white(`  Your tree says you might be.`));
     console.log('');
     console.log(chalk.dim(`  The harder question:`));
-    console.log(chalk.white(`  What in your life right now is working against "${deepestRoot.label}"?`));
+    console.log(chalk.white(`  What in your life right now is working against "${anchor.label}"?`));
     console.log('');
     console.log(chalk.dim(`  What are you not yet doing that this seems to be asking for?`));
     console.log(chalk.dim(`  (Not as a demand — just as a direction.)`));

@@ -28,6 +28,7 @@ Commands:
   remove <nodeId>                Remove a node (children become roots)
   edit                           Interactive editor (arrow keys + Enter)
   insights                       Show convergence insights
+  purpose <sentence>             Save a one-sentence synthesis of what you're building toward
   analytics-on                   Opt in to anonymous usage analytics
   analytics-off                  Opt out of usage analytics
   analytics-status               Check analytics consent and server status
@@ -195,10 +196,12 @@ switch (command) {
         if (child) console.log(`  - ${child.label}`);
       });
     }
-    // Early divergence signal: warn after 3rd distinct purpose root
+    // Divergence signal: warn when 2nd and 3rd distinct purpose root appear
     const purposeRoots = getRoots(tree).filter(n => n.type === 'why');
-    if (purposeRoots.length === 3) {
-      console.log(chalk.yellow(`\n  (You now have 3 separate purpose threads. They may converge — or reveal a real tension.)`));
+    if (purposeRoots.length === 2) {
+      console.log(chalk.yellow(`\n  (You now have 2 separate purpose threads — do they feel connected to you?)`));
+    } else if (purposeRoots.length === 3) {
+      console.log(chalk.yellow(`\n  (3 separate threads now. They may converge — or reveal a real tension.)`));
       console.log(chalk.dim(`  Try asking "why?" about each to see if they meet somewhere deeper.`));
     }
     // Mid-session momentum beat after 3rd+ why-up
@@ -236,11 +239,15 @@ switch (command) {
     const abstractTerms = /^(be |become |get |have |find |make |do |work |help |try |use |learn |grow |build |create |develop |improve |achieve |pursue )/i;
     const wordCount = means.trim().split(/\s+/).length;
     if (wordCount <= 3 || abstractTerms.test(means.trim())) {
-      console.log(chalk.dim('  (That\'s a direction — what does it look like in practice? Something specific and time-bound works better.)'));
+      console.log(chalk.dim('  (That\'s a direction — what would it look like in practice? When, with whom, in what form?)'));
     }
     displayTree(tree, child.id);
     console.log(chalk.dim('  Found a purpose worth acting on.'));
-    console.log(chalk.dim('  One thing worth checking: does this action address the root belief, or work around it?'));
+    // Root-check only on first how-down to avoid canned repetition
+    const howCount = Object.values(tree.nodes).filter(n => n.type === 'how').length;
+    if (howCount === 1) {
+      console.log(chalk.dim('  One thing worth checking: does this action address the root belief, or work around it?'));
+    }
     console.log(chalk.dim('  (IDs are stable — use the [6-char ID] in brackets for your next command:)'));
     printNodeListCompact(tree);
     break;
@@ -248,6 +255,10 @@ switch (command) {
 
   case 'show': {
     const tree = requireTree();
+    if (tree.purpose) {
+      console.log('');
+      console.log(chalk.cyan(`  Purpose: "${tree.purpose}"`));
+    }
     displayTree(tree);
     displayTreeStats(tree);
     break;
@@ -326,15 +337,26 @@ switch (command) {
 
   case 'insights': {
     const tree = requireTree();
-    displayTree(tree);
+    // Synthesis leads — no tree reprint (use "whytree show" for the tree)
     displayNarrativeSynthesis(tree);
     displayConvergenceInsight(tree);
     displayInsightsSynthesis(tree);
     displayTreeStats(tree);
+    // Closing synthesis ritual
+    console.log(chalk.white('  ---'));
+    if (tree.purpose) {
+      console.log(chalk.dim('  Your saved purpose statement:'));
+      console.log(chalk.cyan(`  "${tree.purpose}"`));
+      console.log(chalk.dim('  Does it still hold?'));
+    } else {
+      console.log(chalk.dim('  In one sentence: what are you building toward?'));
+      console.log(chalk.dim('  → whytree purpose "<your sentence>"'));
+    }
+    console.log('');
     const nodeCount = Object.values(tree.nodes).length;
     if (nodeCount >= 6) {
       console.log(chalk.dim(`  You've done real work here. This is a natural place to pause.`));
-      console.log(chalk.dim(`  Run "whytree show" anytime to come back to where you left off.`));
+      console.log(chalk.dim(`  Run "whytree show" anytime to see the full tree.`));
       console.log('');
     }
     break;
@@ -353,6 +375,21 @@ switch (command) {
   case 'stats': {
     const tree = requireTree();
     displayTreeStats(tree);
+    break;
+  }
+
+  case 'purpose': {
+    const tree = requireTree();
+    const sentence = args.join(' ');
+    if (!sentence) { console.error('Usage: whytree purpose "<your sentence>"'); process.exit(1); }
+    tree.purpose = sentence;
+    tree.updatedAt = new Date().toISOString();
+    saveTree(tree);
+    console.log('');
+    console.log(chalk.cyan(`  "${sentence}"`));
+    console.log('');
+    console.log(chalk.dim('  Saved. This is what your tree is about.'));
+    console.log('');
     break;
   }
 
