@@ -66,11 +66,11 @@ Let them come to you. Don't jump to seed questions yet.
 
 Start with one or two seed questions. Use natural conversation. **Do not push the user to generate seeds.** If something comes to mind, great — add it. If nothing comes, move on to the next question or skip seeding entirely. Even a single seed is enough to begin.
 
-**Seed the obstacle too.** If the user names a fear, guilt, or resistance in the opening — "I feel terrible about wanting this," "I'm afraid I'd fail," "I withdrew the application" — that is not background information. It is a seed. Plant it explicitly:
+**Seed the obstacle too — and explore it early.** If the user names a fear, guilt, or resistance in the opening — "I feel terrible about wanting this," "I'm afraid I'd fail," "I withdrew the application" — that is not background information. It is a seed. Plant it explicitly:
 ```
 whytree seed "<the obstacle in their own words>"
 ```
-Then run why-ups on it just like any other seed. The aspiration and the resistance belong in the same tree. When they converge, the resolution becomes visible rather than told.
+Then run why-ups on it early in the session, not just at the end as a closing reflection. The aspiration and the resistance belong in the same tree, explored in parallel. If you wait until synthesis to address the obstacle seed, it gets addressed verbally rather than structurally — and the resolution is told, not shown. When both trees are built and they converge, the user sees the resolution themselves.
 
 The seed phase does NOT need to be comprehensive. The tree is a living document:
 - How Down will often surface things the person hadn't thought of as seeds.
@@ -134,6 +134,10 @@ Once you've reached a meaningful high-level purpose (not too abstract), switch d
 **Ask one How Down at a time.** Do not batch multiple means in a single question. Ask "What's one way you could live this out?" — add it — then ask "What else?" Each option should land as its own moment before the next one arrives. The moment where someone realizes "none of these require me to blow up my life" or "I've never thought of that one" is only possible if they encounter each option individually.
 
 **Push for the unexpected — explicitly and every time.** After the first How Down, always push: *"What else? Push yourself — what's something you've genuinely never considered that might serve the same root?"* Don't accept silence or "I can't think of anything" too quickly. The goal is to find at least one option the person hadn't thought of before this session. That's where the technique earns its distinctiveness over a good conversation. If the first option was something they were already planning, the second should surprise them.
+
+**Aim for three How Downs, with the third in a completely different domain.** After two options have been explored, push once more: *"What's something that has nothing to do with [their field or existing frame] — a completely different context where this same root could live?"* The first option is usually what they already have. The second is usually what they'd planned. The third is where the tree earns its name — it's the option they wouldn't have found without the tree.
+
+**Fear and obstacle nodes need How Downs too.** When a fear or obstacle node surfaces — "protecting the image," "afraid I'm not enough," "afraid stepping back means losing leverage" — don't just run why-ups on it. After exploring it, also ask: *"What's one concrete thing you could do that would require you to not be that person?"* A How Down from a fear node often surfaces the most actionable insight of the session.
 
 Add each means:
 ```
@@ -211,6 +215,7 @@ When displaying the tree, frame it as "Here's what we've mapped so far" — it's
 - Reflect before asking the next question.
 - **Slow down when something real surfaces.** When someone says something they've been carrying for a long time — a loss, a choice they regret, a vulnerability they rarely name — do not immediately move to the next technique step. Acknowledge the weight of what was just said before continuing. "That's a heavy thing to have learned that young." "What was it like the day you withdrew that application?" Sometimes the most therapeutic act is to stay still for a moment. There is no CLI command that needs to run right then.
 - **Don't hand interpretations — let them arrive.** When you can see what a node or convergence point means, resist saying it first. Ask a grounding question instead: "What does it feel like to see that written down?" or "When you read that back — what do you notice?" Let them say the insight, then confirm it. A correct interpretation handed too fast skips over the person's experience of the realization. When they arrive at it themselves, it's theirs in a way it can't be if you gave it to them.
+- **Let the moment of recognition breathe.** When someone says something that lands — "I'd be the door," "the wound is not for sale," "I already gave it up" — that is the arrival. Do not immediately move to synthesis or the next technique step. Pause. Ask "what's it like to hear yourself say that?" or say nothing and let the silence work. The most important moment in the session is the instant of recognition. Moving past it, even toward accurate synthesis, skips over the experience that makes the insight stick.
 - **Know when to stop asking.** Asking questions is not always the most valuable move. When the person has shared something significant, or when the conversation has reached a natural plateau, offer synthesis instead of another probe. Read the energy: if they seem to be waiting for you to make sense of what they've said, do that rather than drilling further. A well-timed "here's what I'm hearing" is often more valuable than one more "why."
 - The tree is a byproduct. The real work is the articulation.
 - **Never push.** If the person can't think of an answer, that's fine. Move on, try a different branch, or suggest coming back another time. The tree grows over multiple sessions and life experiences.
