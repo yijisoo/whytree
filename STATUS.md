@@ -1,7 +1,7 @@
 # Ralph Loop Status
 
-## Iteration: 2
-## Current Round: 3
+## Iteration: 3
+## Current Round: 4
 ## Consecutive Rounds ≥ 8.5: 0
 
 ## History
@@ -21,3 +21,11 @@
   Round avg: 8.25
   Consecutive ≥ 8.5: 0 (reset — avg below threshold)
   Fixes: Added "name the discovery before the final question" directive to Important
+
+### Round 3 (iter 3)
+  Lena (A): O=8  M=9  C=8  P=9  → 8.5
+  Dev (D):  O=8  M=9  C=8  P=9  → 8.5
+  Ami (E):  O=8  M=9  C=8  P=8  → 8.25
+  Round avg: 8.42
+  Consecutive ≥ 8.5: 0 (reset — avg below threshold)
+  All dims ≥ 7.5 — no structural fix. Minor refinement: made Phase 0a orientation less formulaic

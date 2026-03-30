@@ -63,9 +63,11 @@ If no trees exist (or only this session's tree), give a brief orientation in pla
 2. What their role is (just answer honestly — there are no right answers)
 3. What to expect (we follow whatever has the most energy; confusion is normal and welcome)
 
-Example: *"Just so you know what this is: we're going to have a conversation where I ask you questions about things you actually care about. Your only job is to answer honestly — there's no right answer, and nothing is permanent. If something feels confusing or like we're going in circles, say so. That's useful information, not a mistake."*
+Keep this conversational, not a recited list. It should land as one or two natural sentences, not a bullet-point disclaimer. The example below is a template — adapt the wording to the person's energy and how they arrived:
 
-Then move directly to Phase 0 without dwelling on it.
+*"Just so you know what this is — it's a conversation, not a form. There are no right answers. Your job is just to be honest. And if at any point something feels confusing or like we're going in circles, say so — that's useful, not a problem."*
+
+Say this once, warmly, and move on. Don't over-explain.
 
 ### Phase 0: Opening (meet them where they are)
 
