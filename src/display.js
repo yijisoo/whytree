@@ -1,4 +1,4 @@
-// ASCII tree visualization for the Why Tree
+// Bullet-list tree visualization for the Why Tree
 import chalk from 'chalk';
 import { getRoots, getChildren, findConvergencePoints, buildNumbering, getDepth } from './tree.js';
 
@@ -11,37 +11,34 @@ const COLORS = {
   dim: chalk.dim,
 };
 
-function nodeLabel(node, highlightId, convergenceIds, number = '') {
-  let label = node.label;
-  const isHighlight = node.id === highlightId;
-  const isConvergence = convergenceIds.has(node.id);
-
-  let prefix = '';
-  if (node.type === 'seed') prefix = '~ ';
-  else if (node.type === 'why') prefix = '^ ';
-  else if (node.type === 'how') prefix = 'v ';
-
-  const numTag = number ? chalk.dim.white(`[${number}] `) : '';
-
-  let styled;
-  if (isHighlight) {
-    styled = numTag + COLORS.highlight(`>>> ${prefix}${label} <<<`);
-  } else if (isConvergence) {
-    styled = numTag + COLORS.convergence(`* ${prefix}${label}`);
-  } else {
-    styled = numTag + COLORS[node.type](`${prefix}${label}`);
-  }
-
-  return styled;
+function alphaLabel(index) {
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  if (index < 26) return letters[index];
+  return letters[Math.floor(index / 26) - 1] + letters[index % 26];
 }
 
-// Render tree top-down from roots (purposes at top, means at bottom)
-function renderSubtree(tree, nodeId, indent, isLast, visited, highlightId, convergenceIds, numbering, lines) {
+function nodeLabel(node, highlightId, convergenceIds, alpha) {
+  const label = node.label;
+  const isHighlight = node.id === highlightId;
+  const isConvergence = convergenceIds.has(node.id);
+  const alphaTag = chalk.dim(`${alpha}. `);
+
+  if (isHighlight) {
+    return alphaTag + COLORS.highlight(label);
+  } else if (isConvergence) {
+    return alphaTag + COLORS.convergence(label);
+  } else {
+    return alphaTag + COLORS[node.type](label);
+  }
+}
+
+// prefix     — the connector string printed before this node's bullet
+// childPrefix — the indent string prepended to each direct child's connector
+function renderBulletTree(tree, nodeId, prefix, childPrefix, visited, highlightId, convergenceIds, alphaLabels, lines) {
   if (visited.has(nodeId)) {
     const node = tree.nodes[nodeId];
-    const num = numbering[nodeId] || '';
-    const connector = isLast ? '  +-- ' : '  |-- ';
-    lines.push(indent + connector + COLORS.dim(`(-> [${num}] ${node?.label || '?'})`));
+    const alpha = alphaLabels[nodeId] || '?';
+    lines.push(prefix + chalk.dim(`→ ${alpha}. ${node?.label || '?'} (see above)`));
     return;
   }
   visited.add(nodeId);
@@ -49,16 +46,17 @@ function renderSubtree(tree, nodeId, indent, isLast, visited, highlightId, conve
   const node = tree.nodes[nodeId];
   if (!node) return;
 
-  const connector = indent === '' ? '' : (isLast ? '  +-- ' : '  |-- ');
-  const childIndent = indent === '' ? '' : indent + (isLast ? '      ' : '  |   ');
-  const num = numbering[nodeId] || '';
-
-  lines.push(indent + connector + nodeLabel(node, highlightId, convergenceIds, num));
+  const alpha = alphaLabels[nodeId] || '?';
+  lines.push(prefix + '• ' + nodeLabel(node, highlightId, convergenceIds, alpha));
 
   const children = getChildren(tree, nodeId);
-  children.forEach((child, i) => {
-    const last = i === children.length - 1;
-    renderSubtree(tree, child.id, childIndent, last, visited, highlightId, convergenceIds, numbering, lines);
+  children.forEach(child => {
+    renderBulletTree(
+      tree, child.id,
+      childPrefix + '+- ',   // child connector
+      childPrefix + '|  ',   // grandchild indent
+      visited, highlightId, convergenceIds, alphaLabels, lines
+    );
   });
 }
 
@@ -72,32 +70,31 @@ export function displayTree(tree, highlightId = null) {
   const convergencePoints = findConvergencePoints(tree);
   const convergenceIds = new Set(convergencePoints.map(n => n.id));
 
+  // Assign sequential alpha labels in traversal order
+  const alphaLabels = {};
+  let counter = 0;
+  const preVisited = new Set();
+
+  function assignAlpha(nodeId) {
+    if (preVisited.has(nodeId)) return;
+    preVisited.add(nodeId);
+    alphaLabels[nodeId] = alphaLabel(counter++);
+    getChildren(tree, nodeId).forEach(child => assignAlpha(child.id));
+  }
+  roots.forEach(root => assignAlpha(root.id));
+
   console.log('');
-  console.log(chalk.bold.white(`  === ${tree.name} ===`));
-  console.log(chalk.dim('  (↑ purpose/why  ·  ↓ means/how  ·  "why?" goes up, "how?" goes down)'));
+  console.log(chalk.bold.white(`  ${tree.name}`));
   console.log('');
 
   const lines = [];
   const visited = new Set();
-  // Use stable 6-char hash IDs as addresses — these never change as the tree grows
-  const numbering = {};
-  Object.keys(tree.nodes).forEach(id => { numbering[id] = id.slice(0, 6); });
 
-  roots.forEach((root, i) => {
-    renderSubtree(tree, root.id, '  ', i === roots.length - 1, visited, highlightId, convergenceIds, numbering, lines);
-    if (i < roots.length - 1) lines.push('');
+  roots.forEach(root => {
+    renderBulletTree(tree, root.id, '  ', '  ', visited, highlightId, convergenceIds, alphaLabels, lines);
   });
 
   lines.forEach(l => console.log(l));
-
-  console.log('');
-
-  // Legend
-  console.log(chalk.dim('  Legend: ') +
-    COLORS.seed('~ seed') + '  ' +
-    COLORS.why('^ why/purpose') + '  ' +
-    COLORS.how('v how/means') + '  ' +
-    COLORS.convergence('* convergence'));
   console.log('');
 }
 
@@ -313,12 +310,5 @@ export function displayNarrativeSynthesis(tree) {
 }
 
 export function displayTreeStats(tree) {
-  const nodes = Object.values(tree.nodes);
-  const seeds = nodes.filter(n => n.type === 'seed').length;
-  const whys = nodes.filter(n => n.type === 'why').length;
-  const hows = nodes.filter(n => n.type === 'how').length;
-  const convergence = findConvergencePoints(tree).length;
-
-  console.log(chalk.dim(`  Tree: ${nodes.length} nodes (${seeds} seeds, ${whys} purposes, ${hows} means) | ${convergence} convergence points`));
-  console.log('');
+  // Stats intentionally omitted — the tree speaks for itself.
 }
