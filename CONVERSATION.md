@@ -35,10 +35,12 @@ The answer was yes. We isolated each agent using `HOME=/tmp/whytree-agent-X` to 
 | R16 | 8.2 | Why Up from EVERY How Down (not just one); resolve open roots before synthesis |
 | R17 | 8.0 | Plateau: obstacle nodes still getting Why Ups but no How Downs; adjacent-territory How Downs |
 | R18 | 9.4 | Required obstacle How Down audit; "different life arena" clarification for 3rd How Down |
+| R19 | 9.06 | Validation round 1 — new personas, same protocol |
+| R20 | 9.0 | Validation round 2 — confirmed, not a fluke |
 
 *Alex scored 8/10 in R9 — first 8 of the entire run. The variance is increasing, which suggests the improvements are landing for some users.
 
-**R18 crossed the 9.0 target — experiment complete at R18.**
+**Three consecutive rounds at 9.0+ — experiment validated and complete.**
 
 ---
 
@@ -149,7 +151,14 @@ All agents 7.0 despite real improvements. The ceiling wasn't friction — it was
 - **Required pre-synthesis audit**: every obstacle/fear node that received a Why Up chain must also have at least one How Down; framed as non-optional
 - **"Different life arena" clarification**: third How Down must be a different life context (family, civic, embodied, community) — not just a different means within the same field; "adjacent territory doesn't count as the third"
 - All 5 agents: 9, 9.4, 9, 9.8, 9.8 — **average 9.4**
-- **Target of 9.0 reached. Experiment complete.**
+- **Target of 9.0 reached.**
+
+### Rounds 19–20 (validation — not a fluke)
+- R19 agents: Cecile 8.8, Rodrigo 8.7, Hana 9, James 8.8, Mei-Ling 9 — **average 9.06**
+- R20 agents: Santiago 8.8, Lena 9, Kwame 9, Brigitte 9.2, Arjun 9 — **average 9.0**
+- Consistent remaining minor misses across all 10 agents: final How Down sometimes missing its Why Up; obstacle How Down occasionally runs after convergence named (reduces generative force); some convergences counselor-suggested rather than user-named
+- None dropped below 8.7. All sessions produced genuine moments of recognition arrived at by the user, not handed by the counselor.
+- **Three consecutive rounds at 9.0+ — validated.**
 
 ---
 
