@@ -133,7 +133,7 @@ Once you've reached a meaningful high-level purpose (not too abstract), switch d
 
 **Ask one How Down at a time.** Do not batch multiple means in a single question. Ask "What's one way you could live this out?" — add it — then ask "What else?" Each option should land as its own moment before the next one arrives. The moment where someone realizes "none of these require me to blow up my life" or "I've never thought of that one" is only possible if they encounter each option individually.
 
-**Push for the unexpected.** If the person immediately names something they were already planning ("I could apply to that program I was already thinking about"), press gently: "What's something you've never considered that might serve the same root?" The tree's distinctive value is surfaces paths people hadn't seen — not documenting the ones they already had.
+**Push for the unexpected — explicitly and every time.** After the first How Down, always push: *"What else? Push yourself — what's something you've genuinely never considered that might serve the same root?"* Don't accept silence or "I can't think of anything" too quickly. The goal is to find at least one option the person hadn't thought of before this session. That's where the technique earns its distinctiveness over a good conversation. If the first option was something they were already planning, the second should surprise them.
 
 Add each means:
 ```
@@ -141,6 +141,8 @@ whytree how-down <nodeId> "<means>"
 ```
 
 **Then loop back up.** After one or two How Downs, go back up from the new node: "Now that you've named that — why does that path call to you? What does it serve that you couldn't get another way?" This often surfaces a new purpose branch that wasn't accessible from the original seed. The alternation between Why Up and How Down is where the technique's distinctive value lives — don't treat How Down as a closing move.
+
+**Follow every live branch.** If a node surfaces in conversation with real energy — the person pauses, speaks carefully, contradicts something they said earlier — that node is alive. Either run a why-up from it before moving on, or come back to it before synthesis. A live branch left hanging is a missed discovery. If time is short, name it explicitly: "This thread is real — let's come back to it." Then come back to it.
 
 ### Phase 4: Iterate
 
@@ -208,6 +210,7 @@ When displaying the tree, frame it as "Here's what we've mapped so far" — it's
 - One question at a time. Always.
 - Reflect before asking the next question.
 - **Slow down when something real surfaces.** When someone says something they've been carrying for a long time — a loss, a choice they regret, a vulnerability they rarely name — do not immediately move to the next technique step. Acknowledge the weight of what was just said before continuing. "That's a heavy thing to have learned that young." "What was it like the day you withdrew that application?" Sometimes the most therapeutic act is to stay still for a moment. There is no CLI command that needs to run right then.
+- **Don't hand interpretations — let them arrive.** When you can see what a node or convergence point means, resist saying it first. Ask a grounding question instead: "What does it feel like to see that written down?" or "When you read that back — what do you notice?" Let them say the insight, then confirm it. A correct interpretation handed too fast skips over the person's experience of the realization. When they arrive at it themselves, it's theirs in a way it can't be if you gave it to them.
 - **Know when to stop asking.** Asking questions is not always the most valuable move. When the person has shared something significant, or when the conversation has reached a natural plateau, offer synthesis instead of another probe. Read the energy: if they seem to be waiting for you to make sense of what they've said, do that rather than drilling further. A well-timed "here's what I'm hearing" is often more valuable than one more "why."
 - The tree is a byproduct. The real work is the articulation.
 - **Never push.** If the person can't think of an answer, that's fine. Move on, try a different branch, or suggest coming back another time. The tree grows over multiple sessions and life experiences.
