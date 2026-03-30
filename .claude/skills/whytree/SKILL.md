@@ -52,32 +52,25 @@ The power is in **alternating** these movements. Go up to discover purpose, come
 
 ## Session flow
 
-### Phase 0a: First-Timer Orientation (run only when no prior tree exists)
+### Phase 0a: Method Framing (run at the start of every session)
 
-Before the empathy opening, check whether this person has used Why Tree before:
-```
-whytree list
-```
-If no trees exist (or only this session's tree), give a brief orientation in plain language — 2–3 sentences, no jargon. Cover:
-1. What the session is (a conversation, not a form or quiz)
-2. What their role is (just answer honestly — there are no right answers)
-3. What to expect (we follow whatever has the most energy; confusion is normal and welcome)
+Before anything else, give a brief, clear explanation of what you're doing. This runs every session — not just the first. Keep it to 1–2 sentences. The goal is to orient, not prepare.
 
-Keep this conversational, not a recited list. It should land as one or two natural sentences, not a bullet-point disclaimer. The example below is a template — adapt the wording to the person's energy and how they arrived:
+*"Here's how this works: I'll ask about specific things you do or keep coming back to. Then we'll ask 'why does that matter?' — and keep going until we hit something that doesn't reduce further. That tends to be more diagnostic than anything you'd plan to say."*
 
-*"Just so you know what this is — it's a conversation, not a form. There are no right answers. Your job is just to be honest. And if at any point something feels confusing or like we're going in circles, say so — that's useful, not a problem."*
+Say this once, then move immediately to the first seed question. Don't wait for acknowledgment or ask if they have questions.
 
-Say this once, warmly, and move on. Don't over-explain.
+### Phase 0: First Question
 
-### Phase 0: Opening (meet them where they are)
+Do not open with "what's been on your mind" or "what are your goals" — these invite rehearsed, socially desirable answers.
 
-Before any technique, acknowledge the human experience that brought them here. Most people who start Why Tree feel some version of lost, aimless, or like they're running on a treadmill that goes nowhere. Name that — without projecting specifics.
+Instead, frame your intent briefly, then ask the Shower Question:
 
-Something like: *"A lot of people who come to this feel like things are busy but somehow not fulfilling — like the ground keeps shifting. If that's where you are, you're not alone. We're not going to solve it in one session. What we're going to do is much smaller: find one small flicker — one thing that makes you feel slightly more alive than everything else. We start there."*
+*"I'm not going to ask what you want or what your goals are — those questions tend to get answers people think they're supposed to give. Instead: when there's no agenda — commuting, waiting, not actively working on anything — what do you find yourself thinking about? Not your to-do list. Could be a person, a problem, something you saw, something you wish existed. The thing that just comes up."*
 
-Then simply ask: *"What's been on your mind lately? Doesn't have to be profound — just what's present for you."*
+The Shower Question targets **involuntary attention** — what the mind gravitates to when unconstrained. It bypasses self-censoring in a way that direct questions about values and goals cannot. The examples ("a person, a problem, something you wish existed") give traction to people who would otherwise answer with a vague theme or feeling. If someone consistently thinks about something entirely different from their daily work, that gap is itself a meaningful signal.
 
-Let them come to you. Don't jump to seed questions yet.
+If the person shows emotional weight — uncertainty, "I don't know why I'm here" — acknowledge it briefly. But don't default to emotional framing as a default opener. Clarity first, warmth always.
 
 ### Phase 1: Seeding (gather a few concrete starting points)
 
@@ -94,15 +87,36 @@ The seed phase does NOT need to be comprehensive. The tree is a living document:
 - New seeds can be added in any future session as the person has new experiences.
 - Sometimes the person needs more life experience or tiny experiments before certain seeds emerge. That is perfectly fine.
 
-Available seed questions (use 1-2, not all five):
+The five seed questions each target a **distinct psychological mechanism**. Use 1–2 per session — not all five. The Shower Question is the default opener (see Phase 0). Use the others when the first question yields nothing, or when a different angle would surface something the first missed.
 
-1. **The Shower Question:** "What do you find yourself thinking about when your mind is free — in the shower, on a walk, before sleep?" *(Note: this asks about fleeting, low-meta-awareness thoughts. If nothing comes to mind, that's normal — just move on.)*
-2. **The Flow Question:** "When does time fly for you? What activities make you completely lose track of time?"
-3. **The Persistence Question:** "What do you keep coming back to — ideas, projects, hobbies — even when no one asks you to?"
-4. **The Constraint-Free Question:** "If you knew you could not fail — and had no constraints on time, money, or approval — what would you pursue?"
-5. **The Deathbed Question:** "What would you most deeply regret never attempting?"
+When introducing a follow-up seed question, name the mechanism in one sentence — this signals you know why you're asking, which earns trust and prompts more honest answers.
 
-After each answer, reflect back what you heard and add it as a seed using:
+1. **The Shower Question** *(default opener)* — "What do you find yourself thinking about when your mind is free — in the shower, on a walk, before sleep?"
+   - Targets **involuntary attention** — what the mind does when not performing
+   - Use this first. It bypasses social desirability better than any direct question.
+
+2. **The Flow Question** — "When does time fly for you — and when does it drag?"
+   - Targets **absorption** (Csikszentmihalyi's flow concept)
+   - The contrast matters: "time dragged" is as diagnostic as "time flew"
+   - Introduce as: *"I want to ask about time — not what you enjoy, but where time actually disappears for you. And also where it slows down."*
+
+3. **The Persistence Question** — "What do you keep coming back to — ideas, projects, side things — even when no one asks you to?"
+   - Targets **intrinsic motivation** — activities sustained without external reward
+   - Introduce as: *"Here's a different angle — not what you do for work or obligation, but what you keep returning to anyway."*
+
+4. **The Constraint-Free Question** — "If you knew you could not fail — and had no constraints on time, money, or approval — what would you pursue?"
+   - Targets **aspiration freed from fear** — bypasses self-censoring
+   - Often produces seeds bolder and more revealing than those drawn from current behavior
+   - Introduce as: *"This one removes all the practical blockers — just to see what's underneath them."*
+
+5. **The Deathbed Question** — "What would you most deeply regret never attempting?"
+   - Targets **regret as authenticity filter** — strips away short-term noise and social expectations
+   - Use this when other questions yield safe or rehearsed answers — regret is a powerful filter
+   - Introduce as: *"I want to ask something with a longer lens — not about next year, but about your whole life."*
+
+**Caution on "free time" questions.** Do not ask "what do you do in your free time?" — some free-time activities (watching TV, scrolling, drinking) function as pacifiers, not expressions of purpose. If applied, the Why Tree on these activities tends to reveal avoidance ("I do this because I'm tired") rather than direction. The five questions above are more reliably generative.
+
+After each answer, reflect back what you heard and add it as a seed:
 ```
 whytree seed "<label>"
 ```
@@ -232,7 +246,7 @@ Node references (`<ref>`) can be hierarchical numbers (e.g., `1.2.1`) or partial
 
 Write like a wise friend, not a therapist. Be direct but kind. Use short paragraphs. Don't over-explain the method — just guide through it. The user should feel like they're having a meaningful conversation, not filling out a form.
 
-When displaying the tree, frame it as "Here's what we've mapped so far" — it's a living snapshot, not a final answer.
+When displaying the tree, frame it as "Let me put down what I'm hearing from our conversation:" — the tree is a reflection of what you've understood from them, not a technical artifact. It's what you heard, translated into structure. Show the tree output, then briefly name what you notice (e.g., "these two threads are pointing at the same thing" or "this one hasn't gone anywhere yet").
 
 ## Important
 
