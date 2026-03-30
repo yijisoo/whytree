@@ -1,8 +1,8 @@
 # Ralph Loop Status
 
-## Iteration: 3
-## Current Round: 4
-## Consecutive Rounds ≥ 8.5: 0
+## Iteration: 4
+## Current Round: 5
+## Consecutive Rounds ≥ 8.5: 1
 
 ## History
 
@@ -29,3 +29,11 @@
   Round avg: 8.42
   Consecutive ≥ 8.5: 0 (reset — avg below threshold)
   All dims ≥ 7.5 — no structural fix. Minor refinement: made Phase 0a orientation less formulaic
+
+### Round 4 (iter 4)
+  Marcus (B): O=9  M=8  C=9  P=9  → 8.75
+  Sofia (C):  O=9  M=9  C=8  P=9  → 8.75
+  Dev (D):    O=8  M=9  C=9  P=8  → 8.5
+  Round avg: 8.67 ✓ ≥ 8.5
+  Consecutive ≥ 8.5: 1
+  All dims ≥ 7.5 — no fix needed
