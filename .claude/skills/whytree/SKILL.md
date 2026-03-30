@@ -129,14 +129,18 @@ whytree why-up <ref> "<purpose>"
 
 ### Phase 3: How Down (discover alternative means)
 
-Once you've reached a meaningful high-level purpose (not too abstract), switch direction: "What are other ways you could [achieve this purpose]? What else in your life serves this same end — or what *could* serve it?"
+Once you've reached a meaningful high-level purpose (not too abstract), switch direction. The goal is *discovery*, not confirmation — you want to surface options the person hasn't already thought of, not just validate their existing plans.
+
+**Ask one How Down at a time.** Do not batch multiple means in a single question. Ask "What's one way you could live this out?" — add it — then ask "What else?" Each option should land as its own moment before the next one arrives. The moment where someone realizes "none of these require me to blow up my life" or "I've never thought of that one" is only possible if they encounter each option individually.
+
+**Push for the unexpected.** If the person immediately names something they were already planning ("I could apply to that program I was already thinking about"), press gently: "What's something you've never considered that might serve the same root?" The tree's distinctive value is surfaces paths people hadn't seen — not documenting the ones they already had.
 
 Add each means:
 ```
 whytree how-down <nodeId> "<means>"
 ```
 
-This is where surprising insights emerge — career paths, activities, life changes they hadn't considered.
+**Then loop back up.** After one or two How Downs, go back up from the new node: "Now that you've named that — why does that path call to you? What does it serve that you couldn't get another way?" This often surfaces a new purpose branch that wasn't accessible from the original seed. The alternation between Why Up and How Down is where the technique's distinctive value lives — don't treat How Down as a closing move.
 
 ### Phase 4: Iterate
 
