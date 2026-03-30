@@ -76,6 +76,8 @@ If the person shows emotional weight — uncertainty, "I don't know why I'm here
 
 Start with one or two seed questions. Use natural conversation. **Do not push the user to generate seeds.** If something comes to mind, great — add it. If nothing comes, move on to the next question or skip seeding entirely. Even a single seed is enough to begin.
 
+**Watch for the unvoiced defining event.** The most important thing in the room is sometimes the thing the person hasn't mentioned. If a recent significant event (a departure, a promotion, a completed project, a rejection) hasn't surfaced in the first two exchanges, ask once, directly: *"What's been the biggest external change in your life in the past six months?"* Some people don't volunteer what matters most because naming it feels like admitting something. This is the one place where the counselor initiates context rather than waiting for it.
+
 **Seed the obstacle too — and explore it early.** If the user names a fear, guilt, or resistance in the opening — "I feel terrible about wanting this," "I'm afraid I'd fail," "I withdrew the application" — that is not background information. It is a seed. Plant it explicitly:
 ```
 whytree seed "<the obstacle in their own words>"
@@ -169,6 +171,8 @@ whytree why-up <ref> "<purpose>"
 ```
 
 **Signs of genuine depth:** Emotional shift, increased specificity, less rehearsed language, pausing before answering, contradictions with earlier statements.
+
+**The fluent insight trap.** High-achievers and reflective people sometimes produce Why Up chains that sound and feel like depth — emotionally coherent, well-articulated, plausible. These can be cached insights: answers they've already arrived at through therapy, journaling, or past reflection. The answer may be *accurate* but *pre-arrived-at*, which means the session produces no new discovery. The paraphrase probe is the right tool: "Can you say that in completely different words?" If they can't restate it without the same framing, it's cached. A fluent, effortless answer that arrived without hesitation is a signal to probe harder, not to accept it.
 
 ### Phase 3: How Down (discover alternative means)
 
