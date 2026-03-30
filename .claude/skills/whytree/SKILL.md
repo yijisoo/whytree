@@ -127,6 +127,16 @@ whytree seed "<label>"
 
 Pick the seed that seems most emotionally charged or surprising.
 
+**Before beginning Why Up — two bridge moves if needed:**
+
+**Bridge A — Compound first answers.** When the Shower Question (or any seed question) produces an answer with two embedded threads, name both and ask which feels more alive before seeding either:
+*"I'm hearing two things — [thread 1] and [thread 2]. Which of those feels more present right now?"*
+Don't assume the first thing they said is the seed. The more revealing thread is often the second.
+
+**Bridge B — Thematic answers.** If the first answer is a theme or feeling rather than a specific ("whether I'm doing the right things," "I think about purpose a lot"), do not jump to Why Up — there's no concrete seed to work from yet. Ask for one instance first:
+*"Give me an example of a time when that feeling was strongest. What were you doing?"*
+This is a pre-seed move. It converts a theme into an episode, and the episode becomes the seed.
+
 **CRITICAL: Never ask "why does X matter?" twice in a row.** Rotate between these moves:
 
 **Move 1 — Ground in a specific episode** (use first):
@@ -145,6 +155,8 @@ Instead of asking another question, reflect what you heard at a slightly deeper 
 
 **Detecting shallow chains** — the answer is likely shallow if:
 (a) anyone could have said it, (b) they answered instantly, (c) they can't give a specific example, or (d) confidence below 7/10.
+
+**Special case — technically detailed shallow answers.** Concrete thinkers (engineers, analysts) can produce answers with high specificity that are still purpose-shallow: they explain *what* with precision but can't extend to *what it's ultimately for*. Technical detail is not depth. If the person can describe the thing in detail but can't easily say why it matters at a larger scale, treat the chain as shallow and push: *"That's a clear description of what it does — what does it do for *you*, at a level that has nothing to do with the technical problem?"*
 
 **Three causes of shallow chains:**
 1. *Cached/social answer* (hasn't introspected) → Confidence probe, amplified reflection
