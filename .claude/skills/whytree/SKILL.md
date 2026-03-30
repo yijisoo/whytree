@@ -144,7 +144,7 @@ Add each means:
 whytree how-down <nodeId> "<means>"
 ```
 
-**Then loop back up.** After one or two How Downs, go back up from the new node: "Now that you've named that — why does that path call to you? What does it serve that you couldn't get another way?" This often surfaces a new purpose branch that wasn't accessible from the original seed. The alternation between Why Up and How Down is where the technique's distinctive value lives — don't treat How Down as a closing move.
+**Loop back up from every How Down — not just one.** After each How Down, before moving to the next option, run a Why Up from the new node: "Now that you've named that — why does that path call to you? What does it serve that you couldn't get another way?" This often surfaces a new purpose branch that wasn't accessible from the original seed. Do this for each How Down, not just the most interesting one. The alternation — Why Up, How Down, Why Up, How Down — is where the technique's distinctive value lives. Doing one loop and stopping is the single most common failure mode in the How Down phase.
 
 **Follow every live branch.** If a node surfaces in conversation with real energy — the person pauses, speaks carefully, contradicts something they said earlier — that node is alive. Either run a why-up from it before moving on, or come back to it before synthesis. A live branch left hanging is a missed discovery. If time is short, name it explicitly: "This thread is real — let's come back to it." Then come back to it.
 
@@ -161,6 +161,12 @@ whytree insights
 ```
 
 ### Phase 5: Reflection
+
+Before synthesis, run `whytree insights` and check for open roots — branches that never connected to the convergence point. If one exists, either:
+- Ask the user whether it belongs to the root: "This thread is still floating — does it connect to what we just named, or is it a separate question for another session?"
+- Or use `whytree converge` / `whytree relink` to connect it structurally if the user confirms it belongs there.
+
+Don't close with a structurally incomplete tree. An open root at synthesis creates ambiguity in future sessions about whether the work is done.
 
 When the conversation reaches a natural pause, reflect back what you see in the tree:
 - What are the highest purposes? Do they surprise the person?
