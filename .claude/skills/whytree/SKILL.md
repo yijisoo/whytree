@@ -19,14 +19,14 @@ If yes, run:
 ```bash
 cd ~/.claude/skills/whytree && git pull origin main && ./setup
 ```
-Then say "Updated! Let's begin." and continue.
+Then say "Updated to latest!" and continue. Do NOT mention a version number here — the update may or may not include a version bump.
 If no, say "No problem." and continue normally.
 
-If `update.available` is false, capture `version` for Phase 0a. Say nothing about updates.
+If `update.available` is false, say nothing about updates.
 
 **Session gap** — use `sessionGap` for Phase 0a and Phase 0b routing.
 
-**Changelog** — use `changelog.version` as `CHANGELOG_VER` and `changelog.items` as `CHANGELOG_ITEMS` for Phase 0a. If `changelog` is null, proceed without changelog content.
+**Changelog** — use `changelog.items` as `CHANGELOG_ITEMS` for post-update messaging. Do not surface `changelog.version` to the user. If `changelog` is null, proceed without changelog content.
 
 # The Why Tree — Purpose Discovery Session
 
@@ -57,15 +57,15 @@ The power is in **alternating** these movements. Go up to discover purpose, come
 
 **For returning users** (SESSION_GAP is SAME_DAY, RECENT, WEEK, or LONG_GAP):
 
-Skip the full framing below entirely. If the preamble output was `UP_TO_DATE`, say nothing about version or updates — go directly to Phase 0.
+Skip the full framing below entirely. Say nothing about version or updates — go directly to Phase 0.
 
-Only surface the changelog when `UPDATE_AVAILABLE`: tell the user what version they're now on and pick the 1–2 most relevant items from `CHANGELOG_ITEMS` to mention conversationally. Example: *"You're now on v[CHANGELOG_VER] — the main change is [most relevant item]."* Keep it to one sentence.
+Only surface the changelog after a successful update pull: if `changelog` is not null, pick the 1–2 most relevant items from `CHANGELOG_ITEMS` to mention conversationally. Example: *"Main recent change: [most relevant item]."* Keep it to one sentence. Do not mention version numbers.
 
 ---
 
 **For first-time users** (SESSION_GAP is NEW_USER):
 
-Show version if captured: *"You're running whytree v[VERSION]."* Then immediately continue — no pause.
+Show version: *"You're running whytree v[VERSION]."* Then immediately continue — no pause.
 
 Run the full framing — three beats: mechanism, example, permission.
 
