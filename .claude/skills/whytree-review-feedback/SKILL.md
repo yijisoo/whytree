@@ -1,7 +1,7 @@
 ---
 name: whytree-review-feedback
 description: Pull all user feedback and generate a prioritized list of things to update
-user_invocable: true
+user_invocable: false
 ---
 
 # Why Tree — Feedback Review
