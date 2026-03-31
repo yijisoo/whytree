@@ -27,14 +27,14 @@ Every session ends with **one concrete experiment** — not a list of possibilit
 Someone came in talking about FOMO and burnout. A few sessions later they'd traced it to something specific — and discovered five concrete practices that serve it, some they'd never thought to connect:
 
 ```
-=== My Why Tree ===
+  My Why Tree
 
-  +-- [1] ^ feel secured / grounded in myself
-        |-- [1.1] ~ helping people reclaim agency as AI grows
-        |-- [1.2] v a sweaty run
-        |-- [1.3] v sit with difficulty before reaching for relief
-        |-- [1.4] v private discovery journaling
-        +-- [1.5] v track concrete impact, not validation
+  • A. feel secured / grounded in myself *
+    +- • B. helping people reclaim agency as AI grows
+    +- • C. a sweaty run
+    +- • D. sit with difficulty before reaching for relief
+    +- • E. private discovery journaling
+    +- • F. track concrete impact, not validation
 ```
 
 ## Across sessions
@@ -65,21 +65,6 @@ That's it. The setup script installs the CLI, registers the MCP server, and conf
 Type `/whytree` in Claude Code. No prep needed — just answer honestly.
 
 First-time users get a brief orientation. Returning users skip straight in.
-
-## Manage your tree
-
-```bash
-whytree show              # Display your tree with node numbers
-whytree nodes             # List all nodes with IDs and timestamps
-whytree edit              # Interactive editor (arrow keys + Enter)
-whytree rename 1.2 "..."  # Rename a node by number
-whytree relink 1.2 1.1    # Move a node to a different parent
-whytree remove 1.3        # Remove a node (children become roots)
-whytree insights          # Show convergence analysis
-whytree context 1.2       # Show context for a specific node
-whytree purpose "..."     # Save a one-sentence synthesis
-whytree stats             # Show tree statistics
-```
 
 ## Give feedback
 
