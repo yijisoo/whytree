@@ -73,8 +73,8 @@ export function renderNodeList(tree) {
   return sorted.map(n => {
     const parents = getParents(tree, n.id);
     const children = getChildren(tree, n.id);
-    const pStr = parents.length > 0 ? ` serves: [${parents.map(p => p.label).join(', ')}]` : '';
-    const cStr = children.length > 0 ? ` through: [${children.map(c => c.label).join(', ')}]` : '';
+    const pStr = parents.length > 0 ? ` <[${parents.map(p => p.id.slice(0, 6)).join(',')}]` : '';
+    const cStr = children.length > 0 ? ` >[${children.map(c => c.id.slice(0, 6)).join(',')}]` : '';
     const typeIcon = n.type === 'seed' ? '~' : n.type === 'why' ? '^' : 'v';
     return `  [${n.id.slice(0, 6)}] ${typeIcon} ${n.label}${pStr}${cStr}`;
   }).join('\n');

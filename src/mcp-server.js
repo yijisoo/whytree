@@ -96,11 +96,11 @@ function detectHowDownSignals(means) {
 // --- Helpers for structured responses ---
 
 function nodeInfo(node) {
-  return { id: node.id, shortId: node.id.slice(0, 8), label: node.label, type: node.type };
+  return { id: node.id.slice(0, 6), label: node.label, type: node.type };
 }
 
 function jsonText(obj) {
-  return JSON.stringify(obj, null, 2);
+  return 'j:' + JSON.stringify(obj);
 }
 
 // --- MCP Server ---
@@ -314,8 +314,8 @@ server.tool('nodes', {},
       nodeList: renderNodeList(tree),
       nodes: nodes.map(n => ({
         ...nodeInfo(n),
-        parentLabels: getParents(tree, n.id).map(p => p.label),
-        childLabels: getChildren(tree, n.id).map(c => c.label),
+        parentIds: getParents(tree, n.id).map(p => p.id.slice(0, 6)),
+        childIds: getChildren(tree, n.id).map(c => c.id.slice(0, 6)),
       })),
     })}]};
   }
@@ -508,8 +508,8 @@ server.tool('context', { nodeRef: z.string() },
       context: renderNodeContext(tree, fullId),
       node: {
         ...nodeInfo(node),
-        parentLabels: getParents(tree, fullId).map(p => p.label),
-        childLabels: getChildren(tree, fullId).map(c => c.label),
+        parentIds: getParents(tree, fullId).map(p => p.id.slice(0, 6)),
+        childIds: getChildren(tree, fullId).map(c => c.id.slice(0, 6)),
       },
     })}]};
   }
