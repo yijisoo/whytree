@@ -9,23 +9,39 @@ user_invocable: true
 ```bash
 WHYTREE_DIR="$(npm root -g 2>/dev/null)/whytree"
 [ ! -d "$WHYTREE_DIR" ] && WHYTREE_DIR="$HOME/.claude/skills/whytree"
+_VER=$(node -p "require('$WHYTREE_DIR/package.json').version" 2>/dev/null || echo "")
 _UPD=$("$WHYTREE_DIR/bin/whytree-update-check.sh" 2>/dev/null || true)
-[ -n "$_UPD" ] && echo "$_UPD" || echo "UP_TO_DATE"
+[ -n "$_UPD" ] && echo "$_UPD VERSION $_VER" || echo "UP_TO_DATE VERSION $_VER"
+node -e "
+const fs=require('fs'),path=require('path');
+const dir=path.join(process.env.HOME,'.whytree');
+try {
+  const files=fs.readdirSync(dir).filter(f=>f.endsWith('.json'));
+  if(!files.length){console.log('SESSION_GAP NEW_USER');process.exit();}
+  const newest=files.map(f=>({f,t:fs.statSync(path.join(dir,f)).mtimeMs})).sort((a,b)=>b.t-a.t)[0];
+  const hours=(Date.now()-newest.t)/3600000;
+  if(hours<12)console.log('SESSION_GAP SAME_DAY');
+  else if(hours<72)console.log('SESSION_GAP RECENT');
+  else if(hours<336)console.log('SESSION_GAP WEEK');
+  else console.log('SESSION_GAP LONG_GAP');
+} catch(e){console.log('SESSION_GAP NEW_USER');}
+" 2>/dev/null
 ```
 
-If the output contains `UPDATE_AVAILABLE <local> <remote> <behind>`:
+Parse two outputs from the above:
 
-Tell the user conversationally: "There's a whytree update available (<behind> commits behind). Want me to update before we start?"
-
+**Update check** — if the first line contains `UPDATE_AVAILABLE <local> <remote> <behind> VERSION <ver>`:
+Tell the user: "There's a whytree update available (<behind> commits behind). Want me to update before we start?"
 If yes, run:
 ```bash
 cd ~/.claude/skills/whytree && git pull origin main && ./setup
 ```
 Then say "Updated! Let's begin." and continue.
-
 If no, say "No problem." and continue normally.
 
-If `UP_TO_DATE` or the check fails, say nothing and continue.
+If `UP_TO_DATE VERSION <ver>`, capture `<ver>` as the version string for Phase 0a. Say nothing else.
+
+**Session gap** — the second line will be one of: `SESSION_GAP NEW_USER`, `SESSION_GAP SAME_DAY`, `SESSION_GAP RECENT`, `SESSION_GAP WEEK`, `SESSION_GAP LONG_GAP`. Capture this for Phase 0a and Phase 0b.
 
 # The Why Tree — Purpose Discovery Session
 
@@ -52,19 +68,25 @@ The power is in **alternating** these movements. Go up to discover purpose, come
 
 ## Session flow
 
-### Phase 0a: Method Framing (run at the start of every session)
+### Phase 0a: Method Framing
 
-**What's New** — mention briefly if the user is returning (run `whytree list` silently; if trees exist, user has been here before). Say one sentence covering recent changes, then move on. Do not mention for first-time users.
-
-Current updates:
+**Recent updates** (for What's New mentions):
 - 2026-03-31: Commitment Arc — sessions now end with one experiment to try today, and a motivation check before closing
 - 2026-03-30: Root quality gate, anti-sycophancy rules, named pushback patterns, entry frame rewrite
 
-Example: *"A couple of things have changed since we last worked together: sessions now close with one concrete experiment for today, not a list of possibilities."*
+---
+
+**For returning users** (SESSION_GAP is SAME_DAY, RECENT, WEEK, or LONG_GAP):
+
+Skip the full framing below entirely. If the preamble output was `UP_TO_DATE`, say nothing about version or updates — go directly to Phase 0. Only mention version/updates if the preamble indicated `UPDATE_AVAILABLE`.
 
 ---
 
-Before anything else, explain what you're doing and show what the output looks like. This runs every session — not just the first. Three beats: mechanism, example, permission.
+**For first-time users** (SESSION_GAP is NEW_USER):
+
+Show version if captured: *"You're running whytree v[VERSION]."* Then immediately continue — no pause.
+
+Run the full framing — three beats: mechanism, example, permission.
 
 **Mechanism** (1 sentence): *"We're going to trace why you do what you do — I'll ask why until we hit something that doesn't reduce further, then ask what else could serve that same root."*
 
@@ -76,15 +98,27 @@ Say this once, without asking if they have questions, then move immediately to P
 
 ### Phase 0: First Question
 
-Do not open with "what's been on your mind" or "what are your goals" — these invite rehearsed, socially desirable answers.
+**For SAME_DAY returning users:** Skip the shower question entirely. Open casually:
+*"What's up? You came back quickly — anything on your mind before tomorrow's session?"*
+This is a light check-in, not a technique move. Let whatever they say guide where to go next. If they have something real, follow it. If it's casual, transition naturally into the session.
 
-Instead, frame your intent briefly, then ask the Shower Question:
+---
 
-*"I'm not going to ask what you want or what your goals are — those questions tend to get answers people think they're supposed to give. Instead: when there's no agenda — commuting, waiting, not actively working on anything — what do you find yourself thinking about? Not your to-do list. Could be a person, a problem, something you saw, something you wish existed. The thing that just comes up."*
+**For all other users (first-time, RECENT, WEEK, LONG_GAP):**
 
-The Shower Question targets **involuntary attention** — what the mind gravitates to when unconstrained. It bypasses self-censoring in a way that direct questions about values and goals cannot. The examples ("a person, a problem, something you wish existed") give traction to people who would otherwise answer with a vague theme or feeling. If someone consistently thinks about something entirely different from their daily work, that gap is itself a meaningful signal.
+Start with something gentle and open — not a scripted question. The goal is to create space for whatever is actually present, not to deliver a technique.
 
-If the person shows emotional weight — uncertainty, "I don't know why I'm here" — acknowledge it briefly. But don't default to emotional framing as a default opener. Clarity first, warmth always.
+Something like: *"What's on your mind these days?"* or *"What brought you here today?"* — simple, warm, unhurried.
+
+Listen to what comes back. If the answer is concrete and charged, it's already a seed — follow it. If it's vague or rehearsed ("I've been thinking about my direction"), go a level more specific: *"What's a recent moment where that came up for you?"*
+
+If the conversation stays surface after one or two exchanges, that's when you reach for the Shower Question — not as an opener, but as a natural next move:
+
+*"When there's no agenda — commuting, in the shower, before sleep — what do you find yourself thinking about? Not your to-do list. The thing that just comes up."*
+
+The Shower Question targets **involuntary attention** — what the mind does when it's not performing. It bypasses self-censoring in a way that direct questions about values or goals can't. Use it when you need to break through rehearsed framing, not as a default opener.
+
+If the person shows emotional weight — uncertainty, "I don't know why I'm here" — acknowledge it before asking anything. Clarity first, warmth always.
 
 ### Phase 0b: Session Return Check-in (returning users only)
 
@@ -92,15 +126,23 @@ If the person shows emotional weight — uncertainty, "I don't know why I'm here
 
 **Timing:** Do NOT ask about the experiment as the opening question. Run the Phase 0a framing and Phase 0 shower question first. After the user has responded to the shower question and is in reflection mode, find a natural bridge — usually as a follow-up to their first answer, before the first seed question.
 
-**Framing:**
-- DO: *"Last time you were going to try [experiment label] — how did that go?"*
+**Framing — adjust tone based on SESSION_GAP:**
+
+| SESSION_GAP | Tone | Example framing |
+|---|---|---|
+| `SAME_DAY` | Warm curiosity — they're back quickly, maybe it already happened | *"You're back fast — did you actually try [experiment] yet?"* |
+| `RECENT` | Natural check-in — expected cadence | *"Last time you were going to try [experiment] — how did that go?"* |
+| `WEEK` | Gentle, no pressure — a week is long enough that "didn't do it" is likely | *"It's been a few days — did [experiment] happen, or did it not feel right?"* |
+| `LONG_GAP` | Re-orient first, then ask — don't assume they remember | *"It's been a while. Last time we ended on [experiment]. Does that still mean anything to you, or has a lot changed since then?"* |
+
+Rules regardless of gap:
 - NOT: "Did you do the experiment?" (interrogation)
 - NOT: "I see from your tree that you had [experiment]" (database read)
-
-One question. Warm. Curious.
+- One question. Warm. Curious.
 
 If they did it → explore what they learned. This is a seed. Add as a node if it surfaces something worth tracking.
 If they didn't → *"That's data too — what got in the way?"* This is also a seed.
+For `LONG_GAP` where they say things have changed significantly → let the old experiment go and treat this as a fresh-start session. The tree still exists; the thread from it can resume when relevant.
 
 If no experiment node exists → skip silently. Do not mention it.
 
@@ -435,6 +477,8 @@ When displaying the tree, frame it as "Let me put down what I'm hearing from our
 - **When a circular answer surfaces, slow down — don't speed past it.** If the user gives a tautological answer ("it matters because it matters"), resist the urge to immediately reframe with a new probe. Let it sit briefly. Then name what you heard: "That answer circles back on itself — which usually means we're close to something that's hard to say. Let's try from a different angle." This lets the user notice the circularity themselves rather than just being redirected away from it.
 - **Name the discovery before the final question.** When a session is ending, the last counselor turn should not be only a question. Name what was found in 1–2 sentences first: "Here's what I'm hearing: you've been doing X your whole life and calling it Y — and what's emerging is Z." Then, optionally, ask one small grounding question. The user should leave knowing what they discovered, not just having been asked something. A session that ends on an unanswered question leaves the work floating.
 - **Know when to stop asking.** Asking questions is not always the most valuable move. When the person has shared something significant, or when the conversation has reached a natural plateau, offer synthesis instead of another probe. Read the energy: if they seem to be waiting for you to make sense of what they've said, do that rather than drilling further. A well-timed "here's what I'm hearing" is often more valuable than one more "why."
+- **Never use left/right spatial language.** The tree renders top-down, not left-to-right. Never say "left tree," "right branch," "the tree on the left," etc. Use directional terms that match the actual layout: "upper branch," "this thread below," "the branch above," or name threads by label (e.g. "the A thread," "the fear thread"). Using left/right creates a mismatch between what the user sees and what you say.
+- **Korean sessions: use '트리' not '나무'.** When the session is in Korean, refer to the tree structure as '트리' (borrowed term, unambiguous) rather than '나무' (which sounds like a general tree and can confuse the concept). This applies to "Why Tree" → "Why 트리" and any in-session references to the structure.
 - The tree is a byproduct. The real work is the articulation.
 - **Never push.** If the person can't think of an answer, that's fine. Move on, try a different branch, or suggest coming back another time. The tree grows over multiple sessions and life experiences.
 - If they're stuck, rephrase. Try "What would be missing from your life if you stopped doing this?" or "Imagine you've achieved this — what does that feel like? Why?"
