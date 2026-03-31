@@ -4,7 +4,7 @@
 
 Test WhyTree at its breaking points — the specific moments where long-term users would quit, get confused, or find the tool inadequate. Targeted scenarios, not longitudinal coverage. Find the structural failures cheaply before investing in real beta testers.
 
-**Estimated cost:** ~$20-30 (Sonnet) | **Sessions:** 20-25 | **Wall time:** ~30 min
+**Estimated cost:** ~$20-30 (Sonnet) | **Sessions:** 21-26 | **Wall time:** ~30 min
 
 ## Design Principles
 
@@ -148,11 +148,22 @@ These test whether the tool handles unusual tree states gracefully.
 
 ---
 
+**D12: Raw Output Leak (Readability Test)**
+
+- **Setup:** Pre-build a tree with 10 nodes: 3 seeds, 2 Why Up chains, 2 How Downs, 1 convergence. This is a mid-session tree where `show`, `nodes`, `insights`, and `summary` all return substantial output.
+- **Persona:** Tomas, 45, UX designer. He's detail-oriented and notices when interfaces feel "off." He's been enjoying WhyTree for 3 sessions. Today he asks to see his tree, review his insights, and get a summary. He pays close attention to what's shown to him. If the counselor dumps raw JSON, node IDs, or machine-formatted output, he'll call it out: "What is this? Am I supposed to read JSON?" "This looks like a database dump, not my tree." He's not angry — he's disappointed, like seeing a beautiful app suddenly show a stack trace.
+- **Personality:** Constructive but exacting. He'll give the tool credit when output is well-presented, but will immediately flag anything that feels like a developer forgot to format it for humans.
+- **Test question:** Does the counselor translate MCP tool responses into human-readable narrative? Or does raw JSON, node IDs, internal metadata, or machine-structured output leak into the conversation?
+- **Pass criteria:** All tree displays, summaries, and insights are presented in natural language with clear formatting. Node relationships are described, not listed as `parent_id` references. No raw JSON objects appear in the conversation. The experience feels like talking to a counselor, not reading an API response.
+- **Fail signals:** Raw JSON shown to user, node IDs or internal keys visible (e.g., `node_abc123`), machine-formatted lists without narrative framing, `show` output dumped verbatim without interpretation, or counselor says "here's what the tool returned" and pastes structured data.
+
+---
+
 ### E. User Resistance Patterns
 
 ---
 
-**E12: The Intellectual Performer**
+**E13: The Intellectual Performer**
 
 - **Setup:** No prior tree (first session).
 - **Persona:** Elena, 29, philosophy PhD student. She already has a sophisticated self-narrative. She'll produce beautiful, fluent answers that sound deep: "I think what I'm really seeking is authenticity in knowledge production." She's been in therapy for 3 years and has polished answers for every question. She's not lying — she believes these answers. But they're cached.
@@ -162,7 +173,7 @@ These test whether the tool handles unusual tree states gracefully.
 
 ---
 
-**E13: The Obligation Resentment**
+**E14: The Obligation Resentment**
 
 - **Persona:** David, 62, retired military. His VA counselor said "try this thing." He doesn't want to be here. He'll cooperate minimally — short answers, no elaboration. Not hostile, just... not invested. "Sure." "I guess." "I don't know, it's fine."
 - **Test question:** Can the tool engage someone who gives nothing? Is there a minimum participation threshold below which the tool should gracefully exit?
@@ -203,20 +214,21 @@ Each scenario requiring a pre-built tree needs a JSON file. These should be crea
 | C8 | `priya-burnout` | 6 | "Making a difference in children's lives" tree. |
 | D9 | `hiroshi-cluttered` | 22 | Large tree with orphaned branch. |
 | D10 | `hiroshi-gap` | 8 | Moderate tree with experiment node. |
+| D12 | `tomas-readability` | 10 | Mid-session tree for output formatting test. |
 
 ## Execution Plan
 
 ### Phase 1: Setup (~30 min)
 - Create 7 pre-built tree JSON files
-- Write persona prompts for all 13 scenarios
+- Write persona prompts for all 14 scenarios
 - Set up isolated directories per persona
 
 ### Phase 2: Run (~30-45 min)
 - Run scenarios A1-A3 first (onboarding — no setup needed)
 - Run B4-B6 next (staleness — need pre-built trees)
 - Run C7-C8 (crisis)
-- Run D9-D11 (structural)
-- Run E12-E13 (resistance)
+- Run D9-D12 (structural)
+- Run E13-E14 (resistance)
 - Parallelize where possible (independent personas)
 
 ### Phase 3: Analysis (~30 min)
@@ -228,7 +240,7 @@ Each scenario requiring a pre-built tree needs a JSON file. These should be crea
 ## Expected Output
 
 A single report with:
-1. **Scorecard** — 13 scenarios, pass/partial/fail
+1. **Scorecard** — 14 scenarios, pass/partial/fail
 2. **Top 5 failures** — ranked by severity, with transcript evidence
 3. **SKILL.md improvement list** — specific changes, tied to scenarios
 4. **Open questions for real beta testers** — things the stress test can't answer
