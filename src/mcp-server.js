@@ -446,7 +446,59 @@ server.tool('purpose', { sentence: z.string() },
   }
 );
 
-// 16. context
+// 16. summary — thematic overview for large trees
+server.tool('summary', {},
+  async () => {
+    const tree = requireTree();
+    const allNodes = getAllNodes(tree);
+    const roots = getRoots(tree);
+    const leaves = getLeaves(tree);
+    const convergence = findConvergencePoints(tree);
+
+    // Build branches: for each root, walk down and collect all descendant nodes
+    const branches = roots.map(root => {
+      const visited = new Set();
+      const queue = [root.id];
+      const branchNodes = [];
+      while (queue.length > 0) {
+        const id = queue.shift();
+        if (visited.has(id)) continue;
+        visited.add(id);
+        const node = getNode(tree, id);
+        if (!node) continue;
+        branchNodes.push(node);
+        for (const cid of node.childIds) queue.push(cid);
+      }
+      const howDowns = branchNodes.filter(n => n.type === 'how');
+      const depth = getDepth(tree, root.id);
+      return {
+        root: { label: root.label, shortId: root.id.slice(0, 6), type: root.type },
+        nodeCount: branchNodes.length,
+        depth,
+        howDownCount: howDowns.length,
+        leafLabels: branchNodes.filter(n => n.childIds.length === 0).map(n => n.label),
+      };
+    });
+
+    // Orphan detection: seeds with no parents and no children
+    const orphans = allNodes.filter(n => n.parentIds.length === 0 && n.childIds.length === 0 && n.type === 'seed')
+      .map(n => ({ label: n.label, shortId: n.id.slice(0, 6) }));
+
+    return { content: [{ type: 'text', text: jsonText({
+      totalNodes: allNodes.length,
+      branches,
+      convergencePoints: convergence.map(n => ({
+        label: n.label,
+        shortId: n.id.slice(0, 6),
+        childCount: n.childIds.length,
+      })),
+      orphans,
+      purpose: tree.purpose || null,
+    })}]};
+  }
+);
+
+// 17. context
 server.tool('context', { nodeRef: z.string() },
   async ({ nodeRef }) => {
     const tree = requireTree();
