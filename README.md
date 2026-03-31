@@ -93,4 +93,4 @@ It also draws from the means-ends abstraction hierarchy in Work Domain Analysis 
 
 ## License
 
-MIT
+[Business Source License 1.1](LICENSE) — free for personal, non-commercial use. Converts to MIT on 2030-03-31.
