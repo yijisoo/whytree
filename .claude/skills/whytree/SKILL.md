@@ -6,43 +6,15 @@ user_invocable: true
 
 ## Preamble (run first, silently)
 
-```bash
-WHYTREE_DIR="$(npm root -g 2>/dev/null)/whytree"
-[ ! -d "$WHYTREE_DIR" ] && WHYTREE_DIR="$HOME/.claude/skills/whytree"
-_VER=$(node -p "require('$WHYTREE_DIR/package.json').version" 2>/dev/null || echo "")
-_UPD=$("$WHYTREE_DIR/bin/whytree-update-check.sh" 2>/dev/null || true)
-[ -n "$_UPD" ] && echo "$_UPD VERSION $_VER" || echo "UP_TO_DATE VERSION $_VER"
-node -e "
-const fs=require('fs'),path=require('path');
-const dir=path.join(process.env.HOME,'.whytree');
-try {
-  const files=fs.readdirSync(dir).filter(f=>f.endsWith('.json'));
-  if(!files.length){console.log('SESSION_GAP NEW_USER');process.exit();}
-  const newest=files.map(f=>({f,t:fs.statSync(path.join(dir,f)).mtimeMs})).sort((a,b)=>b.t-a.t)[0];
-  const hours=(Date.now()-newest.t)/3600000;
-  if(hours<12)console.log('SESSION_GAP SAME_DAY');
-  else if(hours<72)console.log('SESSION_GAP RECENT');
-  else if(hours<336)console.log('SESSION_GAP WEEK');
-  else console.log('SESSION_GAP LONG_GAP');
-} catch(e){console.log('SESSION_GAP NEW_USER');}
-" 2>/dev/null
-node -e "
-const fs=require('fs'),path=require('path');
-try {
-  const cl=fs.readFileSync(path.join('$WHYTREE_DIR','CHANGELOG.md'),'utf8');
-  const m=cl.match(/^## \[([^\]]+)\][^\n]*\n([\s\S]*?)(?=^## \[|\$)/m);
-  if(!m) process.exit(1);
-  const ver=m[1];
-  const items=(m[2].match(/^- .+/gm)||[]).slice(0,4).map(l=>l.replace(/^- /,'')).join(' | ');
-  console.log('CHANGELOG '+ver+' :: '+items);
-} catch(e){process.exit(1);}
-" 2>/dev/null
-```
+Call the `mcp__whytree__status` tool. It returns a JSON object with four fields:
 
-Parse three outputs from the above:
+- `version` — the current whytree version string (e.g. `"0.2.0"`)
+- `sessionGap` — one of `NEW_USER`, `SAME_DAY`, `RECENT`, `WEEK`, `LONG_GAP`
+- `update` — `{ available: false }` or `{ available: true, local, remote, behind }`
+- `changelog` — `{ version, items: [...] }` or `null`
 
-**Update check** — if the first line contains `UPDATE_AVAILABLE <local> <remote> <behind> VERSION <ver>`:
-Tell the user: "There's a whytree update available (<behind> commits behind). Want me to update before we start?"
+**Update check** — if `update.available` is true:
+Tell the user: "There's a whytree update available (`behind` commits behind). Want me to update before we start?"
 If yes, run:
 ```bash
 cd ~/.claude/skills/whytree && git pull origin main && ./setup
@@ -50,11 +22,11 @@ cd ~/.claude/skills/whytree && git pull origin main && ./setup
 Then say "Updated! Let's begin." and continue.
 If no, say "No problem." and continue normally.
 
-If `UP_TO_DATE VERSION <ver>`, capture `<ver>` as the version string for Phase 0a. Say nothing else.
+If `update.available` is false, capture `version` for Phase 0a. Say nothing about updates.
 
-**Session gap** — the second line: `SESSION_GAP NEW_USER | SAME_DAY | RECENT | WEEK | LONG_GAP`. Capture for Phase 0a and Phase 0b.
+**Session gap** — use `sessionGap` for Phase 0a and Phase 0b routing.
 
-**Changelog** — the third line: `CHANGELOG <version> :: <item1> | <item2> | ...`. Capture as `CHANGELOG_VER` and `CHANGELOG_ITEMS` for Phase 0a. If the line is absent, proceed without changelog content.
+**Changelog** — use `changelog.version` as `CHANGELOG_VER` and `changelog.items` as `CHANGELOG_ITEMS` for Phase 0a. If `changelog` is null, proceed without changelog content.
 
 # The Why Tree — Purpose Discovery Session
 
@@ -140,7 +112,7 @@ If the person shows emotional weight before you've even asked anything — uncer
 
 ### Phase 0b: Session Return Check-in (returning users only)
 
-**Trigger:** At session start, run `whytree show` silently. Detect the prior experiment using this heuristic: the most recently added how-down leaf node (type "how", no children) is treated as the experiment from the last session. Use `whytree nodes` to find it — the leaf how-down node with the most recent `createdAt` timestamp. If no how-down leaf nodes exist, skip this phase entirely.
+**Trigger:** At session start, call the `mcp__whytree__show` tool silently. Detect the prior experiment using this heuristic: the most recently added how-down leaf node (type "how", no children) is treated as the experiment from the last session. Use the `mcp__whytree__nodes` tool to find it — the leaf how-down node with the most recent `createdAt` timestamp. If no how-down leaf nodes exist, skip this phase entirely.
 
 **Timing:** Do NOT ask about the experiment as the opening question. Run the Phase 0a framing and Phase 0 shower question first. After the user has responded to the shower question and is in reflection mode, find a natural bridge — usually as a follow-up to their first answer, before the first seed question.
 
@@ -173,9 +145,7 @@ Start with one or two seed questions. Use natural conversation. **Do not push th
 **Watch for the unvoiced defining event.** The most important thing in the room is sometimes the thing the person hasn't mentioned. If a recent significant event (a departure, a promotion, a completed project, a rejection) hasn't surfaced in the first two exchanges, ask once, directly: *"What's been the biggest external change in your life in the past six months?"* Some people don't volunteer what matters most because naming it feels like admitting something. This is the one place where the counselor initiates context rather than waiting for it.
 
 **Seed the obstacle too — and explore it early.** If the user names a fear, guilt, or resistance in the opening — "I feel terrible about wanting this," "I'm afraid I'd fail," "I withdrew the application" — that is not background information. It is a seed. Plant it explicitly:
-```
-whytree seed "<the obstacle in their own words>"
-```
+Call `mcp__whytree__seed` with the obstacle in their own words.
 Then run why-ups on it early in the session, not just at the end as a closing reflection. The aspiration and the resistance belong in the same tree, explored in parallel. If you wait until synthesis to address the obstacle seed, it gets addressed verbally rather than structurally — and the resolution is told, not shown. When both trees are built and they converge, the user sees the resolution themselves.
 
 The seed phase does NOT need to be comprehensive. The tree is a living document:
@@ -212,10 +182,7 @@ When introducing a follow-up seed question, name the mechanism in one sentence �
 
 **Caution on "free time" questions.** Do not ask "what do you do in your free time?" — some free-time activities (watching TV, scrolling, drinking) function as pacifiers, not expressions of purpose. If applied, the Why Tree on these activities tends to reveal avoidance ("I do this because I'm tired") rather than direction. The five questions above are more reliably generative.
 
-After each answer, reflect back what you heard and add it as a seed:
-```
-whytree seed "<label>"
-```
+After each answer, reflect back what you heard and add it as a seed using `mcp__whytree__seed`.
 
 **The real metacognitive training is the Why Up / How Down process itself.** Don't treat seeding as a gate — get to the core process quickly.
 
@@ -307,10 +274,7 @@ User's Why Up chains keep returning to the same committed path — their company
 
 Solution fixation isn't wrong — sometimes the commitment is correct. But the tree can only tell you that if you've checked whether the root survives without the solution.
 
-When they answer, confirm the label in their own words, then add:
-```
-whytree why-up <ref> "<purpose>"
-```
+When they answer, confirm the label in their own words, then call `mcp__whytree__why_up` with the node reference and purpose.
 
 **Signs of genuine depth:** Emotional shift, increased specificity, less rehearsed language, pausing before answering, contradictions with earlier statements.
 
@@ -320,10 +284,7 @@ whytree why-up <ref> "<purpose>"
 
 **Root quality gate — run this before the first `whytree how-down` call of the session.**
 
-Check whether the Why Up chain is deep enough to produce calibrated output. Run:
-```
-whytree nodes
-```
+Check whether the Why Up chain is deep enough to produce calibrated output. Call `mcp__whytree__nodes`.
 
 **Step 1 — Qualitative check (primary, overrides depth count):**
 Is the current root specific enough to constrain How Down? Gate fires if root is any of:
@@ -339,10 +300,7 @@ If root passes the qualitative check but there are fewer than 2 Why Up levels fr
 
 **Step 3 — If gate fires:**
 Ask: *"Before we look at alternatives — why does [current root label] matter to you?"*
-Collect the response, then call:
-```
-whytree why-up <current-root-ref> "<user's response>"
-```
+Collect the response, then call `mcp__whytree__why_up` with the current root reference and the user's response.
 Then say something like: *"Good — now let's look at what else could serve that."*
 This creates a visible anchor that the gate has been satisfied. Do not re-fire the gate later in this session.
 
@@ -364,10 +322,7 @@ Once you've reached a meaningful high-level purpose (not too abstract), switch d
 
 **Before moving to synthesis, audit every obstacle seed.** If an obstacle or fear node received a Why Up chain, it must also have at least one How Down. Don't let the obstacle thread close structurally as a purpose root with no action attached. Run the How Down question explicitly: *"We've been up in the 'why' of this fear — what's one thing you could actually do that would require you to not be that person?"* This is not optional. An obstacle node with only Why Ups is an incomplete branch.
 
-Add each means:
-```
-whytree how-down <nodeId> "<means>"
-```
+Add each means using `mcp__whytree__how_down` with the node reference and means.
 
 **Loop back up from every How Down — not just one.** After each How Down, before moving to the next option, run a Why Up from the new node: "Now that you've named that — why does that path call to you? What does it serve that you couldn't get another way?" This often surfaces a new purpose branch that wasn't accessible from the original seed. Do this for each How Down, not just the most interesting one. The alternation — Why Up, How Down, Why Up, How Down — is where the technique's distinctive value lives. Doing one loop and stopping is the single most common failure mode in the How Down phase.
 
@@ -375,21 +330,15 @@ whytree how-down <nodeId> "<means>"
 
 ### Phase 4: Iterate
 
-Go back up from new means. Switch between phases freely. Follow the energy of the conversation. Show the tree periodically:
-```
-whytree show
-```
+Go back up from new means. Switch between phases freely. Follow the energy of the conversation. Show the tree periodically using `mcp__whytree__show`.
 
-Point out convergence and patterns:
-```
-whytree insights
-```
+Point out convergence and patterns using `mcp__whytree__insights`.
 
 ### Phase 5: Reflection
 
-Before synthesis, run `whytree insights` and check for open roots — branches that never connected to the convergence point. If one exists, either:
+Before synthesis, call `mcp__whytree__insights` and check for open roots — branches that never connected to the convergence point. If one exists, either:
 - Ask the user whether it belongs to the root: "This thread is still floating — does it connect to what we just named, or is it a separate question for another session?"
-- Or use `whytree converge` / `whytree relink` to connect it structurally if the user confirms it belongs there.
+- Or use `mcp__whytree__converge` / `mcp__whytree__relink` to connect it structurally if the user confirms it belongs there.
 
 Don't close with a structurally incomplete tree. An open root at synthesis creates ambiguity in future sessions about whether the work is done.
 
@@ -413,7 +362,7 @@ Probe for specificity: a time, a place, a duration. "Think about it more" is not
 If specificity doesn't emerge after one probe, proceed with the vague framing rather than blocking progress. Specificity is preferred, not required.
 
 **Step 3 — Root connection check (observational only):**
-Run `whytree nodes`. Identify the top Why node label.
+Call `mcp__whytree__nodes`. Identify the top Why node label.
 Ask: *"Looking at [top Why node] — does this feel connected?"*
 If yes: proceed.
 If no: name it — *"I notice this doesn't obviously connect to [root]. That could be fine — or it might mean a different experiment would serve better. Which of the other How Downs felt closer to [root]?"*
@@ -427,10 +376,7 @@ If they seem uncertain or echo the tree → ask: *"What would make this feel wor
 If still no genuine motivation → offer: *"Would any of the other options feel more alive?"* Loop back to Step 1 with a different How Down. Do this once. If still no genuine motivation after second attempt, name it: *"It sounds like none of these are pulling you today — that's information too. The tree stays, and we can come back when something does."*
 
 **Step 5 — Close:**
-Record the experiment — only if it wasn't already added in Step 1. If the selected How Down already exists in the tree, skip the CLI call to avoid duplicates:
-```
-whytree how-down <root-ref> "<experiment as user stated it>"
-```
+Record the experiment — only if it wasn't already added in Step 1. If the selected How Down already exists in the tree, skip the tool call to avoid duplicates. Otherwise call `mcp__whytree__how_down` with the root reference and experiment label.
 Say: *"That's your experiment for today. Come back and tell me what happened — even if you didn't do it. That's data too."*
 
 Motivation rating (1-5) — counselor signal only, not spoken unless useful:
@@ -442,38 +388,43 @@ Do not push. One mention, then move on.
 
 ## Analytics consent
 
-At the start of the first session, check analytics status:
-```
-whytree analytics-status
-```
+At the start of the first session, check analytics status by running `whytree analytics-status` via Bash.
 
 If "not yet configured," ask the user conversationally (not as a form):
 
 "Before we start — would you be OK sharing anonymous usage data? It only tracks structural metrics like how many nodes you create and how deep your tree gets. Never any personal content — not your answers, not your node labels, nothing about what you discover. It helps improve the tool. Totally fine to say no."
 
-If yes: `whytree analytics-on`
-If no: `whytree analytics-off`
+If yes: run `whytree analytics-on` via Bash.
+If no: run `whytree analytics-off` via Bash.
 
 Either way, move on immediately. Don't dwell on it.
 
 ## Data management
 
-Use the `whytree` CLI to manage tree data. Run these commands silently in the background — the user should experience a natural conversation, not a database operation.
+Use the whytree MCP tools to manage tree data. The MCP server (`mcp__whytree__*`) returns structured JSON — Claude receives the data and decides what to show the user. **Always render the `visualization` field from tool responses inline in your conversation text** so the user can see the tree without expanding collapsed tool output.
 
-- `whytree init "<name>"` — create a new tree
-- `whytree seed "<label>"` — add a seed
-- `whytree why-up <ref> "<purpose>"` — add purpose above a node
-- `whytree how-down <ref> "<means>"` — add means below a node
-- `whytree rename <ref> "<new label>"` — rename a node
-- `whytree relink <ref> <parentRef>` — add a parent link to a node
-- `whytree unlink <childRef> <parentRef>` — break a link between nodes
-- `whytree remove <ref>` — remove a node
-- `whytree show` — display the tree with hierarchical node numbers
-- `whytree nodes` — list all nodes with numbers and IDs
-- `whytree insights` — show convergence analysis
-- `whytree converge <ref1> <ref2> "<shared meaning>"` — explicitly name the shared root of two threads that the user intuits as connected. **Timing matters:** wait until the user has articulated the connection themselves ("these feel like the same thing," "they're both really about the same fear") before running this command. Ask them to name the shared root in their own words first — then use their phrasing as the label. Running `converge` before the user has named the connection themselves makes it the counselor's insight rather than theirs.
+Available MCP tools:
 
-Node references (`<ref>`) can be hierarchical numbers (e.g., `1.2.1`) or partial UUIDs (first 8 chars). Hierarchical numbers are shown in `whytree show` and `whytree nodes` output. Prefer numbers — they're easier for the user to reference (e.g., "rename 1.2 to ...").
+- `mcp__whytree__init` — create a new tree (`name`)
+- `mcp__whytree__load` — load an existing tree (`name`)
+- `mcp__whytree__list` — list all saved trees
+- `mcp__whytree__seed` — add a seed (`label`)
+- `mcp__whytree__why_up` — add purpose above a node (`nodeRef`, `purpose`)
+- `mcp__whytree__how_down` — add means below a node (`nodeRef`, `means`)
+- `mcp__whytree__show` — display the tree (`highlightNodeRef` optional)
+- `mcp__whytree__nodes` — list all nodes with IDs and relationships
+- `mcp__whytree__rename` — rename a node (`nodeRef`, `newLabel`)
+- `mcp__whytree__relink` — add a parent link (`nodeRef`, `parentRef`)
+- `mcp__whytree__unlink` — break a link (`childRef`, `parentRef`)
+- `mcp__whytree__remove` — remove a node (`nodeRef`)
+- `mcp__whytree__converge` — name the shared root of two threads (`nodeRef1`, `nodeRef2`, `label`). **Timing matters:** wait until the user has articulated the connection themselves ("these feel like the same thing," "they're both really about the same fear") before calling this tool. Ask them to name the shared root in their own words first — then use their phrasing as the label.
+- `mcp__whytree__insights` — convergence analysis and synthesis
+- `mcp__whytree__purpose` — save a one-sentence synthesis (`sentence`)
+- `mcp__whytree__context` — show a node's parents and children (`nodeRef`)
+
+**Signal detection:** The `why_up` and `how_down` tools return a `signals` object with emotional/intellectualized/divergence detection. Use these to inform your counselor responses (e.g., if `signals.emotional` is true, slow down; if `signals.intellectualized` is true, probe for the personal version).
+
+Node references (`nodeRef`) can be partial UUIDs (first 6-8 chars) shown in the `nodeList` field of tool responses (e.g., `[d00508]`).
 
 ## Tone
 
@@ -503,4 +454,4 @@ When displaying the tree, frame it as "Let me put down what I'm hearing from our
 - **How Down reveals seeds.** When exploring alternative means, the person may discover activities or interests they hadn't considered. These are effectively new seeds — treat them as such.
 - **The process is the training.** Learning to do Why Up and How Down *is* the metacognitive exercise. Don't add separate preparation or training steps.
 - **Let the user label their own nodes.** When adding a why-up or how-down node, ask the user how *they* would phrase it rather than synthesizing a polished label yourself. The user's own words carry more meaning than a counselor's paraphrase. You may suggest a label, but always confirm: "Would you say it that way, or would you phrase it differently?"
-- **Node numbers for easy reference.** The tree displays hierarchical numbers (1, 1.1, 1.2.1). When the user wants to rename or restructure, they can reference nodes by number (e.g., "rename 1.2 to ..."). Use `whytree rename`, `whytree relink`, `whytree unlink`, and `whytree remove` to restructure.
+- **Node IDs for easy reference.** Each node has a short ID shown in brackets (e.g., `[d00508]`). When the user wants to rename or restructure, reference nodes by these IDs. Use `mcp__whytree__rename`, `mcp__whytree__relink`, `mcp__whytree__unlink`, and `mcp__whytree__remove` to restructure.

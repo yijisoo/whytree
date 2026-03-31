@@ -62,6 +62,7 @@ fi
 GLOBAL_SETTINGS="$HOME/.claude/settings.json"
 PERMS=("Bash(whytree:*)" "mcp__whytree__*")
 if [ -f "$GLOBAL_SETTINGS" ]; then
+  cp "$GLOBAL_SETTINGS" "$GLOBAL_SETTINGS.bak"
   node -e "
     const fs = require('fs');
     const s = JSON.parse(fs.readFileSync('$GLOBAL_SETTINGS', 'utf-8'));
