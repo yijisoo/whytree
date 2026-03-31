@@ -26,9 +26,20 @@ try {
   else console.log('SESSION_GAP LONG_GAP');
 } catch(e){console.log('SESSION_GAP NEW_USER');}
 " 2>/dev/null
+node -e "
+const fs=require('fs'),path=require('path');
+try {
+  const cl=fs.readFileSync(path.join('$WHYTREE_DIR','CHANGELOG.md'),'utf8');
+  const m=cl.match(/^## \[([^\]]+)\][^\n]*\n([\s\S]*?)(?=^## \[|\$)/m);
+  if(!m) process.exit(1);
+  const ver=m[1];
+  const items=(m[2].match(/^- .+/gm)||[]).slice(0,4).map(l=>l.replace(/^- /,'')).join(' | ');
+  console.log('CHANGELOG '+ver+' :: '+items);
+} catch(e){process.exit(1);}
+" 2>/dev/null
 ```
 
-Parse two outputs from the above:
+Parse three outputs from the above:
 
 **Update check** — if the first line contains `UPDATE_AVAILABLE <local> <remote> <behind> VERSION <ver>`:
 Tell the user: "There's a whytree update available (<behind> commits behind). Want me to update before we start?"
@@ -41,7 +52,9 @@ If no, say "No problem." and continue normally.
 
 If `UP_TO_DATE VERSION <ver>`, capture `<ver>` as the version string for Phase 0a. Say nothing else.
 
-**Session gap** — the second line will be one of: `SESSION_GAP NEW_USER`, `SESSION_GAP SAME_DAY`, `SESSION_GAP RECENT`, `SESSION_GAP WEEK`, `SESSION_GAP LONG_GAP`. Capture this for Phase 0a and Phase 0b.
+**Session gap** — the second line: `SESSION_GAP NEW_USER | SAME_DAY | RECENT | WEEK | LONG_GAP`. Capture for Phase 0a and Phase 0b.
+
+**Changelog** — the third line: `CHANGELOG <version> :: <item1> | <item2> | ...`. Capture as `CHANGELOG_VER` and `CHANGELOG_ITEMS` for Phase 0a. If the line is absent, proceed without changelog content.
 
 # The Why Tree — Purpose Discovery Session
 
@@ -70,15 +83,11 @@ The power is in **alternating** these movements. Go up to discover purpose, come
 
 ### Phase 0a: Method Framing
 
-**Recent updates** (for What's New mentions):
-- 2026-03-31: Commitment Arc — sessions now end with one experiment to try today, and a motivation check before closing
-- 2026-03-30: Root quality gate, anti-sycophancy rules, named pushback patterns, entry frame rewrite
-
----
-
 **For returning users** (SESSION_GAP is SAME_DAY, RECENT, WEEK, or LONG_GAP):
 
-Skip the full framing below entirely. If the preamble output was `UP_TO_DATE`, say nothing about version or updates — go directly to Phase 0. Only mention version/updates if the preamble indicated `UPDATE_AVAILABLE`.
+Skip the full framing below entirely. If the preamble output was `UP_TO_DATE`, say nothing about version or updates — go directly to Phase 0.
+
+Only surface the changelog when `UPDATE_AVAILABLE`: tell the user what version they're now on and pick the 1–2 most relevant items from `CHANGELOG_ITEMS` to mention conversationally. Example: *"You're now on v[CHANGELOG_VER] — the main change is [most relevant item]."* Keep it to one sentence.
 
 ---
 
