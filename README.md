@@ -1,30 +1,30 @@
 # The Why Tree
 
-**You know you want more from life. You just can't say what.**
+**The real outcome isn't a diagram. It's hearing yourself say what you couldn't articulate before.**
 
-Some people come here in crisis — a gap between how their days are spent and what they actually care about, a vague sense that something's off. Others come curious — no particular problem, just wondering what they'd find if they looked honestly.
+Most people arrive because something feels slightly off — a gap between how the days go and what actually matters, felt rather than named. Some come because something is changing and they want to understand what they actually want before committing to the next thing. Some did everything right and still feel hollow. Some are just curious what's underneath.
 
-Both are the right reason.
+All of it is the right reason.
 
-The Why Tree is a guided conversation — powered by Claude — that starts from where you actually are and helps you trace your way to what matters most.
+The Why Tree is a guided conversation — powered by Claude — that works differently from journaling or reflection. It moves in two directions: tracing *why* your activities matter to surface purposes you couldn't see from inside them, then asking *how else* you could serve those purposes to surface paths you hadn't considered. The structure is what makes it generative rather than just reflective.
 
 ## How it works
 
-You start with something concrete: an activity you love, a project you keep returning to, something that won't leave your head.
+You start somewhere real. Claude doesn't open with "what are your goals?" — that question gets rehearsed answers. Instead it listens to what's actually on your mind, and follows the thread from there.
 
-Then Claude walks you through two movements:
+Then it walks you through two movements:
 
 **Why Up** — *"Why does this matter to you?"* Then *"Why?"* of that answer. Each step moves from the specific toward something deeper — from "I keep working on this side project" to "I need to feel like I'm building something real."
 
 **How Down** — *"What else could give you this?"* From any purpose you've surfaced, explore paths you hadn't considered — career changes, projects, life experiments that serve the same root.
 
-By going up and back down, patterns emerge: multiple interests pointing to the same core value, new paths to purposes you've already named, clarity about what's worth your energy and what isn't.
+By alternating these movements, patterns emerge: multiple interests pointing to the same core value, new paths to purposes you've already named, clarity about what's worth your energy and what isn't.
 
-The real outcome isn't the diagram. It's hearing yourself say, out loud, what you couldn't articulate before.
+Every session ends with **one concrete experiment** — not a list of possibilities, but the single thing you'd most want to try today. Small enough to do, specific enough to mean something.
 
 ## What it looks like
 
-Here's a fragment from a real session:
+Someone came in talking about FOMO and burnout. A few sessions later they'd traced it to something specific — and discovered five concrete practices that serve it, some they'd never thought to connect:
 
 ```
 === My Why Tree ===
@@ -37,22 +37,26 @@ Here's a fragment from a real session:
         +-- [1.5] v track concrete impact, not validation
 ```
 
-Someone came in talking about FOMO and burnout. By the end they'd traced it to something specific — and discovered five concrete practices that serve it, some they'd never thought to connect.
+## Across sessions
 
-## Who this is for
+Your tree saves locally at `~/.whytree/` and grows over time. Come back when you've had new experiences, made a decision, or just have a new question. The tree is a living document — not a finished product.
 
-- **Students** who can't explain why nothing on the menu feels right
-- **Builders and solopreneurs** who need to stop chasing every opportunity and find the one problem that's truly theirs
-- **Career changers** who know they want something different but can't name what
-- **Anyone** who has felt the gap between "I'm busy" and "I'm fulfilled"
+## Your data
 
-You don't need to have your life figured out. You just need 20 minutes and an honest conversation.
+Everything you discover stays on your device. Node labels, answers, personal insights — none of it leaves your machine.
+
+Two things can reach the developer, and only with your explicit involvement:
+
+- **Anonymous usage metrics** — structural information only: how many nodes you created, how deep your tree went, session counts. Never any content — not your words, not your labels, not what you discovered. You're asked once at your first session and can say no.
+- **Feedback** — only what you deliberately send via `/whytree-feedback`. Nothing from your tree is included unless you type it yourself.
+
+If you said no to analytics and change your mind: `whytree analytics-on`. To opt back out: `whytree analytics-off`.
 
 ## Install
 
 Tell Claude:
 
-> Install whytree: run `git clone https://github.com/yijisoo/whytree.git ~/.claude/skills/whytree && cd ~/.claude/skills/whytree && ./setup` then add a "whytree" section to CLAUDE.md that lists the available skill: `/whytree` — a guided purpose-discovery session using the Why Tree technique. Then ask the user if they also want to add whytree to the current project so teammates get it.
+> Install whytree: run `git clone https://github.com/yijisoo/whytree.git ~/.claude/skills/whytree && cd ~/.claude/skills/whytree && ./setup` then add a "whytree" section to CLAUDE.md that lists the available skills: `/whytree` — a guided purpose-discovery session, and `/whytree-feedback` — send feedback to the developer. Then ask the user if they also want to add whytree to the current project so teammates get it.
 
 That's it. Claude handles the rest.
 
@@ -60,15 +64,21 @@ That's it. Claude handles the rest.
 
 Type `/whytree` in Claude Code. No prep needed — just answer honestly.
 
-Your tree saves locally at `~/.whytree/` and grows across sessions. Come back when you've had new experiences or new questions. The tree is a living document.
+First-time users get a brief orientation. Returning users skip straight in.
 
 ## Manage your tree
 
 ```bash
 whytree show              # Display your tree with node numbers
+whytree nodes             # List all nodes with IDs and timestamps
 whytree edit              # Interactive editor (arrow keys + Enter)
 whytree rename 1.2 "..."  # Rename a node by number
+whytree relink 1.2 1.1    # Move a node to a different parent
+whytree remove 1.3        # Remove a node (children become roots)
 whytree insights          # Show convergence analysis
+whytree context 1.2       # Show context for a specific node
+whytree purpose "..."     # Save a one-sentence synthesis
+whytree stats             # Show tree statistics
 ```
 
 ## Give feedback
