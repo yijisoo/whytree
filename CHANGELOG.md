@@ -3,6 +3,24 @@
 All notable changes to The Why Tree are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.2.3] — 2026-04-01
+
+### Added
+- Crisis/grief protocol — technique suspends, counselor becomes presence
+- Post-discovery mode — tree shifts from discovery to decision tool
+- Obligation/referral routing — graceful exit for disengaged users
+- Pattern-aware returning users — skip entry ritual, show tree directly
+- Multilingual support — follow user's language, adopt L1 terms as node labels
+- Purpose-identity collapse pattern — grief before structure
+- High-volume opener triage — seed 2-3, hold the rest
+- Consolidation session guidance — reorganize without forcing growth
+- Large-tree navigation with `summary` MCP tool — thematic orientation without full dump
+- Deferred analytics consent — ask after first real response
+- Impatience/ROI skepticism handling — show tree immediately, don't explain method
+
+### Fixed
+- ESL fallback guidance — concrete questions, feeling-word options
+
 ## [0.2.2] — 2026-03-31
 
 ### Fixed

@@ -1,6 +1,7 @@
 # WhyTree Stress Test Results
 
 **Date:** 2026-04-01
+**SKILL.md Commit:** `ff0e099` — feat(skill): implement all 10 stress test recommendations
 **Scenarios:** 13 | **Passed:** 13 | **Partial:** 0 | **Failed:** 0
 
 ## Scorecard
