@@ -3,6 +3,15 @@
 All notable changes to The Why Tree are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.2.1] — 2026-03-31
+
+### Added
+- Setup auto-registers MCP server at user scope — no manual `claude mcp add` needed
+- Setup adds `mcp__whytree__*` permission to global settings — zero approval prompts during sessions
+
+### Fixed
+- Upgrades from older versions now clean up local/project-scoped MCP registrations before re-adding at user scope
+
 ## [0.2.0] — 2026-03-31
 
 ### Added

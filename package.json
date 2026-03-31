@@ -1,22 +1,30 @@
 {
   "name": "whytree",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A structured, generative technique for discovering personal purpose",
   "main": "src/index.js",
   "bin": {
-    "whytree": "./bin/whytree.js"
+    "whytree": "./bin/whytree.js",
+    "whytree-mcp": "./src/mcp-server.js"
   },
   "scripts": {
     "start": "node bin/whytree.js",
+    "mcp": "node src/mcp-server.js",
     "test": "node --test test/*.test.js"
   },
-  "keywords": ["purpose", "meaning", "why-tree", "self-discovery"],
+  "keywords": [
+    "purpose",
+    "meaning",
+    "why-tree",
+    "self-discovery"
+  ],
   "author": "Ji Soo Yi",
   "license": "BUSL-1.1",
   "type": "module",
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "chalk": "^5.6.2",
-    "inquirer": "^13.3.2"
-  },
-  "devDependencies": {}
+    "inquirer": "^13.3.2",
+    "zod": "^4.3.6"
+  }
 }
