@@ -3,6 +3,15 @@
 All notable changes to The Why Tree are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.2.2] — 2026-03-31
+
+### Fixed
+- MCP server version now read from package.json dynamically instead of hardcoded
+- Converge tool links second node directly to parent, avoiding duplicate nodes on case mismatch
+- Setup script backs up settings.json before modifying it
+- Added .heartbeat to .gitignore
+- Tracked mcp-server.js and text-render.js (previously untracked)
+
 ## [0.2.1] — 2026-03-31
 
 ### Added
