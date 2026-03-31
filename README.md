@@ -58,7 +58,7 @@ Tell Claude:
 
 > Install whytree: run `git clone https://github.com/yijisoo/whytree.git ~/.claude/skills/whytree && cd ~/.claude/skills/whytree && ./setup` then add a "whytree" section to CLAUDE.md that lists the available skills: `/whytree` — a guided purpose-discovery session, and `/whytree-feedback` — send feedback to the developer. Then ask the user if they also want to add whytree to the current project so teammates get it.
 
-That's it. Claude handles the rest.
+That's it. The setup script installs the CLI, registers the MCP server, and configures permissions — no manual approval prompts during sessions.
 
 ## Start a session
 
