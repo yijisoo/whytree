@@ -35,7 +35,10 @@ if [ "$SCRIPT_DIR" != "$GLOBAL_SKILL_DIR" ]; then
   cp "$SCRIPT_DIR/.claude/skills/whytree/SKILL.md" "$GLOBAL_SKILL_DIR/SKILL.md"
   echo "  Installed /whytree skill to $GLOBAL_SKILL_DIR"
 else
-  echo "  Skill already at $GLOBAL_SKILL_DIR"
+  # Repo cloned directly into the skills dir — SKILL.md is nested under
+  # .claude/skills/whytree/ but Claude Code expects it at the repo root
+  cp "$SCRIPT_DIR/.claude/skills/whytree/SKILL.md" "$GLOBAL_SKILL_DIR/SKILL.md"
+  echo "  Installed /whytree skill to $GLOBAL_SKILL_DIR"
 fi
 
 # Install /whytree-feedback skill
