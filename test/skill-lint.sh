@@ -99,7 +99,7 @@ fi
 # --- 6. Schema completeness — required fields ---
 echo
 echo "6. Schema required fields"
-for field in rootIds seedIds currentNodeId lastExperimentId createdAt updatedAt purpose; do
+for field in schemaVersion rootIds seedIds currentNodeId lastExperimentId createdAt updatedAt purpose; do
   if grep -q "\"$field\"" "$SKILL"; then
     pass "Schema has $field"
   else
