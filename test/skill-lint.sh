@@ -27,7 +27,6 @@ done
 # --- 2. All file references in SKILL.md resolve ---
 echo
 echo "2. File references"
-# Extract paths like ~/.claude/skills/whytree/SOMETHING.md
 refs=$(grep -oE '~/.claude/skills/whytree/[A-Z_]+\.md' "$SKILL" | sort -u || true)
 for ref in $refs; do
   filename=$(basename "$ref")
@@ -41,12 +40,11 @@ done
 # --- 3. JSON schema example is valid ---
 echo
 echo "3. JSON schema"
-# Extract the first ```json block in the file (the schema)
-schema_json=$(awk '/^```json/{found=1;next} found && /^```/{found=0;next} found{print}' "$SKILL")
+# Extract only the FIRST ```json block (stop after closing ```)
+schema_json=$(awk '/^```json/{found=1;next} found && /^```/{exit} found{print}' "$SKILL")
 if [ -z "$schema_json" ]; then
   fail "Could not extract JSON schema from SKILL.md"
 else
-  # The schema uses placeholder values like <uuid> — replace them for validation
   test_json=$(echo "$schema_json" \
     | sed 's/<uuid>/test-uuid/g' \
     | sed 's/seed | why | how/seed/g' \
@@ -55,7 +53,6 @@ else
     | sed 's/node text/test/g' \
     | sed 's/null/null/g')
 
-  # Try to parse with python (most portable JSON validator)
   if echo "$test_json" | python3 -c "import sys,json; json.load(sys.stdin)" 2>/dev/null; then
     pass "Schema example is valid JSON (after placeholder substitution)"
   elif echo "$test_json" | python -c "import sys,json; json.load(sys.stdin)" 2>/dev/null; then
@@ -85,14 +82,13 @@ check_section "Operating rules" "Operating rules.*CRITICAL"
 check_section "Never show raw JSON" "Never show raw JSON"
 check_section "Crisis protocol" "Crisis.*acute distress"
 check_section "Analytics consent" "Analytics consent"
-check_section "Feedback injection safety" "Write tool.*not shell interpolation"
+check_section "Feedback injection safety" "Never interpolate user input"
 check_section "Validation invariants" "rootIds.*set of node IDs"
 check_section "Corrupted JSON recovery" "corrupted"
 
 # --- 5. No personal content patterns in curl commands ---
 echo
 echo "5. Curl payload safety"
-# Extract curl -d lines and check they don't reference node labels or tree names
 curl_payloads=$(grep -A2 'curl.*POST' "$SKILL" | grep "\-d" || true)
 if echo "$curl_payloads" | grep -qi "label\|treeName\|node.text\|user.*name"; then
   fail "Curl payload may contain personal content fields"
@@ -114,15 +110,51 @@ done
 # --- 7. Platform support ---
 echo
 echo "7. Platform support"
-if grep -q "powershell\|PowerShell" "$SKILL"; then
-  pass "Windows UUID fallback documented"
+if grep -q "Git Bash" "$SKILL"; then
+  pass "Git Bash requirement documented"
 else
-  fail "No Windows UUID fallback (PowerShell) found"
+  fail "No Git Bash requirement found"
 fi
-if grep -q '\$HOME\|USERPROFILE' "$SKILL"; then
-  pass "Windows home directory expansion documented"
+
+# --- 8. Phase heading completeness ---
+echo
+echo "8. Phase headings"
+for phase in "Phase 0a" "Phase 0:" "Phase 0b" "Phase 1" "Phase 2" "Phase 3" "Phase 4" "Phase 5:" "Phase 5 close"; do
+  if grep -q "$phase" "$SKILL"; then
+    pass "Phase heading '$phase' present"
+  else
+    fail "Phase heading '$phase' missing"
+  fi
+done
+
+# --- 9. Supporting file content (not empty/truncated) ---
+echo
+echo "9. Supporting file content"
+for f in COMMITMENT_ARC.md PROBE_PATTERNS.md SEED_QUESTIONS.md; do
+  lines=$(wc -l < "$SKILL_DIR/$f" | tr -d ' ')
+  if [ "$lines" -gt 5 ]; then
+    pass "$f has content ($lines lines)"
+  else
+    fail "$f appears empty or truncated ($lines lines)"
+  fi
+done
+
+# --- 10. YAML frontmatter ---
+echo
+echo "10. YAML frontmatter"
+if head -1 "$SKILL" | grep -q "^---$"; then
+  if sed -n '2,/^---$/p' "$SKILL" | grep -q "name:.*whytree"; then
+    pass "Frontmatter has name: whytree"
+  else
+    fail "Frontmatter missing or wrong skill name"
+  fi
+  if sed -n '2,/^---$/p' "$SKILL" | grep -q "user_invocable: true"; then
+    pass "Frontmatter has user_invocable: true"
+  else
+    fail "Frontmatter missing user_invocable flag"
+  fi
 else
-  fail "No Windows home directory guidance found"
+  fail "No YAML frontmatter (missing opening ---)"
 fi
 
 # --- Summary ---

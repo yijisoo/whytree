@@ -31,9 +31,9 @@ Tree files live in `~/.whytree/<slug>.json`. The active tree slug is in `~/.whyt
 
 ### Platform support
 
-- macOS/Linux: fully supported (Claude Code terminal + IDE extensions)
-- Windows: supported with caveats (PowerShell UUID, `$env:USERPROFILE` for home, `curl.exe`)
-- Claude Desktop: not supported (no Bash/file system access)
+- macOS/Linux/Windows: fully supported (Claude Code terminal, Claude Desktop Code tab, IDE extensions)
+- Windows requires Git for Windows — Claude Code uses Git Bash internally, so all bash commands work
+- claude.ai web chat: not supported (no Bash/file system access)
 
 ### Security notes
 
