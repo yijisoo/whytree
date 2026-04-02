@@ -1,3 +1,5 @@
+> **STALE:** This test harness references the deleted CLI (`whytree seed`, `whytree show`, etc.). It needs to be rewritten for the current skill-only architecture before use.
+
 # Whytree Counselor — First-Timer Validation Loop
 
 **Working directory:** /Users/yij/devel/whytree

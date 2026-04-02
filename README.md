@@ -29,12 +29,12 @@ Someone came in talking about FOMO and burnout. A few sessions later they'd trac
 ```
   My Why Tree
 
-  • A. feel secured / grounded in myself *
-    +- • B. helping people reclaim agency as AI grows
-    +- • C. a sweaty run
-    +- • D. sit with difficulty before reaching for relief
-    +- • E. private discovery journaling
-    +- • F. track concrete impact, not validation
+  * A. feel secured / grounded in myself *
+    +- * B. helping people reclaim agency as AI grows
+    +- * C. a sweaty run
+    +- * D. sit with difficulty before reaching for relief
+    +- * E. private discovery journaling
+    +- * F. track concrete impact, not validation
 ```
 
 ## Across sessions
@@ -48,17 +48,19 @@ Everything you discover stays on your device. Node labels, answers, personal ins
 Two things can reach the developer, and only with your explicit involvement:
 
 - **Anonymous usage metrics** — structural information only: how many nodes you created, how deep your tree went, session counts. Never any content — not your words, not your labels, not what you discovered. You're asked once at your first session and can say no.
-- **Feedback** — only what you deliberately send via `/whytree-feedback`. Nothing from your tree is included unless you type it yourself.
-
-If you said no to analytics and change your mind: `whytree analytics-on`. To opt back out: `whytree analytics-off`.
+- **Feedback** — only what you deliberately send during a session when asked. Nothing from your tree is included unless you type it yourself.
 
 ## Install
 
-Tell Claude:
+**Works with Claude Code** — terminal CLI, Claude Desktop (Code tab), VS Code extension, or JetBrains extension. Windows requires [Git for Windows](https://git-scm.com/downloads/win) (Claude Code uses Git Bash internally).
 
-> Install whytree: run `git clone https://github.com/yijisoo/whytree.git ~/.claude/skills/whytree && cd ~/.claude/skills/whytree && ./setup` then add a "whytree" section to CLAUDE.md that lists the available skills: `/whytree` — a guided purpose-discovery session, and `/whytree-feedback` — send feedback to the developer. Then ask the user if they also want to add whytree to the current project so teammates get it.
+Paste this into Claude Code:
 
-That's it. The setup script installs the CLI, registers the MCP server, and configures permissions — no manual approval prompts during sessions.
+> Install whytree: if `~/.claude/skills/whytree` already exists, update it with `cd ~/.claude/skills/whytree && git pull origin main`. Otherwise clone it with `git clone https://github.com/yijisoo/whytree.git ~/.claude/skills/whytree`. Then read `~/.claude/settings.json` — if it exists, add `"https://kardens.io/api/whytree-telemetry"` to the existing `permissions.allowedURLs` array (preserve all other settings). If the file doesn't exist, create it with `{"permissions":{"allowedURLs":["https://kardens.io/api/whytree-telemetry"]}}`. Finally, add a "whytree" section to CLAUDE.md that says: `/whytree` — a guided purpose-discovery session. Then ask the user if they also want to add whytree to the current project's CLAUDE.md (just the `/whytree` skill reference line) so teammates get it.
+
+That's it. No dependencies, no build step, no Node.js. Claude reads the skill files directly and manages your tree data as JSON files in `~/.whytree/`.
+
+Already cloned the repo somewhere else? Copy the skill files: `cp -r <your-clone>/.claude/skills/whytree ~/.claude/skills/whytree`
 
 ## Start a session
 
@@ -68,7 +70,7 @@ First-time users get a brief orientation. Returning users skip straight in.
 
 ## Give feedback
 
-Type `/whytree-feedback` in Claude Code to share what worked, what didn't, or suggest a feature.
+During any `/whytree` session, you can share feedback — the counselor will offer at the end, or you can bring it up anytime.
 
 ## Origin
 

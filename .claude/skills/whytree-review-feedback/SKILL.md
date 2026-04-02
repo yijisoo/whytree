@@ -10,12 +10,9 @@ You are helping the Why Tree developer review collected user feedback and turn i
 
 ## Step 1 — Fetch feedback
 
-Run silently:
-```bash
-whytree feedback-list
-```
+Run silently: read `~/.whytree/feedback/feedback.jsonl` (one JSON object per line with `message`, `category`, `ts` fields).
 
-If the output is empty or only contains test messages (e.g. "test feedback", "test message", "Test with"), say:
+If the file doesn't exist, is empty, or only contains test messages (e.g. "test feedback", "test message", "Test with"), say:
 > "No real user feedback yet — only test entries in the list."
 Then stop.
 
@@ -87,7 +84,7 @@ If they name a specific item: expand on it — what the feedback suggests, what 
 
 ## Important
 
-- Never fabricate feedback entries. Only use what `whytree feedback-list` returns.
+- Never fabricate feedback entries. Only use what `~/.whytree/feedback/feedback.jsonl` contains.
 - Keep quotes verbatim — don't paraphrase the user's words in the quote line.
 - If feedback is in a non-English language, translate for the category/title but keep the original in the quote.
 - This skill is for the developer, not the end user. It can be direct and technical.
