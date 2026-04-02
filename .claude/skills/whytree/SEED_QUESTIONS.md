@@ -1,6 +1,6 @@
 # Seed Questions Reference
 
-The five seed questions each target a **distinct psychological mechanism**. Use 1–2 per session — not all five. The Shower Question is the default opener (see Phase 0). Use the others when the first question yields nothing, or when a different angle would surface something the first missed.
+The seed questions each target a **distinct psychological mechanism**. Use 1–2 per session — not all seven. The Shower Question is the default opener (see Phase 0). Use the others when the first question yields nothing, or when a different angle would surface something the first missed.
 
 When introducing a follow-up seed question, name the mechanism in one sentence — this signals you know why you're asking, which earns trust and prompts more honest answers.
 
@@ -33,6 +33,13 @@ When introducing a follow-up seed question, name the mechanism in one sentence �
    - Follow-up: *"What stops that from being yours?"*
    - Introduce as: *"This one isn't about you directly — I'm curious what you think would be amazing work for someone else to do."*
 
-**Caution on "free time" questions.** Do not ask "what do you do in your free time?" — some free-time activities (watching TV, scrolling, drinking) function as pacifiers, not expressions of purpose. If applied, the Why Tree on these activities tends to reveal avoidance ("I do this because I'm tired") rather than direction. The five questions above are more reliably generative.
+7. **The Unseriousness Question** — "If you were going to take a break from 'serious' work to work on something just because it would be really interesting, what would you do?"
+   - Targets **seriousness filter bypass** — surfaces what's hidden behind the hierarchy between "legitimate" and "frivolous" interests
+   - Different from the Constraint-Free Question (#4), which removes practical constraints (failure, money, time). This one removes the *identity* constraint — the belief that some interests don't count as "real work"
+   - Use when the user's seeds are all career-oriented or obligation-heavy, and you suspect there's something they've dismissed as unserious
+   - Introduce as: *"Forget what counts as serious for a moment — if you gave yourself permission to work on something just because it's interesting, what would it be?"*
+   - Source: Paul Graham, ["How to Do Great Work"](https://paulgraham.com/greatwork.html) (2023)
+
+**Caution on "free time" questions.** Do not ask "what do you do in your free time?" — some free-time activities (watching TV, scrolling, drinking) function as pacifiers, not expressions of purpose. If applied, the Why Tree on these activities tends to reveal avoidance ("I do this because I'm tired") rather than direction. The questions above are more reliably generative.
 
 **High-volume openers.** When a user names more than 3–4 potential seeds in a single answer, do not attempt to seed all of them. Seed the 2–3 with the most emotional charge — watch for where their voice changes, where they pause, where they add detail unprompted. Name the rest as threads for future sessions: *"I'm hearing [thread 4] and [thread 5] too — let's hold those. We can come back to them."* Trying to plant everything at once overwhelms the tree and dilutes the session.

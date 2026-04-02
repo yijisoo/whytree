@@ -13,7 +13,7 @@ No CLI, no runtime dependencies. Claude reads the skill files in `.claude/skills
 ### Key files
 
 - `.claude/skills/whytree/SKILL.md` — The entire product. Defines the counselor behavior, JSON schema, tree operations, visualization format, signal detection, analytics/feedback via curl, and session flow (Phases 0–5).
-- `.claude/skills/whytree/SEED_QUESTIONS.md` — Six seed questions with psychological mechanisms. Loaded at Phase 1.
+- `.claude/skills/whytree/SEED_QUESTIONS.md` — Seven seed questions with psychological mechanisms. Loaded at Phase 1.
 - `.claude/skills/whytree/PROBE_PATTERNS.md` — Anti-sycophancy rules, three probe moves, six named pushback patterns. Loaded at Phase 2.
 - `.claude/skills/whytree/COMMITMENT_ARC.md` — Six-step closing protocol. Loaded at Phase 5.
 - `.claude/skills/whytree/READING.md` — Contextual reading recommendations (Paul Graham, Garry Tan, Anne-Laure Le Cunff). Loaded before Phase 5.
