@@ -16,6 +16,7 @@ No CLI, no runtime dependencies. Claude reads the skill files in `.claude/skills
 - `.claude/skills/whytree/SEED_QUESTIONS.md` — Five seed questions with psychological mechanisms. Loaded at Phase 1.
 - `.claude/skills/whytree/PROBE_PATTERNS.md` — Anti-sycophancy rules, three probe moves, five named pushback patterns. Loaded at Phase 2.
 - `.claude/skills/whytree/COMMITMENT_ARC.md` — Six-step closing protocol. Loaded at Phase 5.
+- `.claude/skills/whytree/preamble.sh` — Single-shot session state gatherer (user status, session gap, tree JSON, consent, update check). Run once at startup to avoid multiple permission prompts.
 - `.claude/skills/whytree-review-feedback/SKILL.md` — Developer-facing skill to review collected feedback from `~/.whytree/feedback/feedback.jsonl`.
 
 ### Data format
