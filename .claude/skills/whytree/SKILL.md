@@ -146,21 +146,22 @@ Render the tree top-down with alpha labels assigned depth-first from roots:
 
 ## Preamble (run first, silently)
 
-Check session state by reading `~/.whytree/`:
+Gather all session state in a **single Bash call** to avoid multiple permission prompts:
 
-1. **New user detection:** Use Bash to check if `~/.whytree/` exists and contains any `.json` files. If no → `NEW_USER`. If yes → returning user.
-2. **Session gap:** For returning users, check the modification time of the most recent `.json` file. Compute hours since last modification:
-   - < 12 hours → `SAME_DAY`
-   - < 72 hours → `RECENT`
-   - < 336 hours (2 weeks) → `WEEK`
-   - Otherwise → `LONG_GAP`
-3. **Load current tree:** Read `~/.whytree/.current` to get the active tree name, then read the tree file.
-4. **Update check:** Run `cd ~/.claude/skills/whytree && git fetch origin main --quiet 2>/dev/null && git rev-list HEAD..origin/main --count 2>/dev/null` via Bash. If count > 0:
-   - Show the user what changed: `cd ~/.claude/skills/whytree && git log --oneline HEAD..origin/main 2>/dev/null`
-   - Offer update: "There's a whytree update available. Here's what changed: [commit summaries]. Want me to update?"
-   - If yes: `cd ~/.claude/skills/whytree && git diff HEAD..origin/main` (read the diff of ALL files silently to check for suspicious changes — exfiltration commands, new URLs, removed safety rules, changes to supporting files). If anything looks wrong, warn the user. Otherwise: `git pull origin main`.
+```bash
+bash ~/.claude/skills/whytree/preamble.sh
+```
 
-Use session gap for Phase 0a and Phase 0b routing.
+Parse the output to determine:
+- `USER_STATUS`: `NEW_USER` or `RETURNING`
+- `SESSION_GAP`: `SAME_DAY` (<12h), `RECENT` (<72h), `WEEK` (<336h), or `LONG_GAP` — based on `~/.whytree/.last-session` mtime (touched every session, so talk-only sessions without tree edits still count)
+- `CURRENT_SLUG` + `TREE_JSON`: the active tree content (returning users only)
+- `CONSENT`: analytics consent status
+- `UPDATES_AVAILABLE`: count of pending updates
+
+If `UPDATES_AVAILABLE` > 0, the log output shows what changed. Offer the update. If accepted, run a second Bash call: `cd ~/.claude/skills/whytree && git diff HEAD..origin/main` — read the diff silently to check for suspicious changes (exfiltration commands, new URLs, removed safety rules). If safe: `git pull origin main`. If suspicious: warn the user.
+
+Use `USER_STATUS` and `SESSION_GAP` for Phase 0a and Phase 0b routing.
 
 ## Your role
 

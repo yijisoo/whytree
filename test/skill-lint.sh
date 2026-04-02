@@ -16,7 +16,7 @@ echo
 
 # --- 1. Required files exist ---
 echo "1. Required files"
-for f in SKILL.md COMMITMENT_ARC.md PROBE_PATTERNS.md SEED_QUESTIONS.md; do
+for f in SKILL.md COMMITMENT_ARC.md PROBE_PATTERNS.md SEED_QUESTIONS.md preamble.sh; do
   if [ -f "$SKILL_DIR/$f" ]; then
     pass "$f exists"
   else
