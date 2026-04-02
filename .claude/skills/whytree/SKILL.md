@@ -143,6 +143,10 @@ Render the tree top-down with alpha labels assigned depth-first from roots:
 - **Divergence warning:** 2 purpose roots = name both threads; 3 = check if user sees connection
 - **Stranded threads:** At 5+ why nodes, check if any purpose roots have no how-down children
 
+**Interest vs. obligation signal (any phase):**
+- **Genuine interest:** Unprompted detail, forward-leaning language ("I've always wanted to...," "I keep thinking about..."), energy rises when discussing the topic — this branch is alive regardless of how "practical" it sounds. Trust it.
+- **Obligation language:** "I should," "people expect," "it would be responsible," "I owe it to..." without interest markers — flag internally. This may be someone else's tree. Probe: *"Is this something you want, or something you feel you're supposed to want?"*
+
 **How Down signals:**
 - **Too abstract:** 3 or fewer words, or starts with generic verbs (be, become, get, find, make...) — probe for specificity
 
@@ -334,6 +338,10 @@ Go back up from new means. Switch between phases freely. Follow the energy. Show
 **Consolidation sessions.** When the user reports nothing new, do not force tree growth. Look for orphan or under-connected nodes. A session that reorganizes without adding a node is successful.
 
 Point out convergence and patterns. Check for: nodes with multiple children (convergence points), purpose roots without how-downs (unreached threads), seeds with only one why-up level (worth going deeper), unexplored seeds.
+
+### Reading recommendations
+
+**You MUST read `~/.claude/skills/whytree/READING.md` before Phase 5.** Offer at most one reading per session, only when the session theme matches. Never interrupt discovery to recommend reading.
 
 ### Phase 5: Reflection
 

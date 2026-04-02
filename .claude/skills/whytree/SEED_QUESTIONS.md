@@ -27,6 +27,12 @@ When introducing a follow-up seed question, name the mechanism in one sentence �
    - Use this when other questions yield safe or rehearsed answers — regret is a powerful filter
    - Introduce as: *"I want to ask something with a longer lens — not about next year, but about your whole life."*
 
+6. **The Proxy Question** — "What would be a great thing for *someone else* to work on — something you find fascinating but haven't pursued yourself?"
+   - Targets **self-censorship bypass** — removes ego-protection that filters out ideas felt as "too ambitious for me" or "not my lane"
+   - The gap between "great for someone else" and "not for me" is the diagnostic data — that gap is where fear, identity, and permission live
+   - Follow-up: *"What stops that from being yours?"*
+   - Introduce as: *"This one isn't about you directly — I'm curious what you think would be amazing work for someone else to do."*
+
 **Caution on "free time" questions.** Do not ask "what do you do in your free time?" — some free-time activities (watching TV, scrolling, drinking) function as pacifiers, not expressions of purpose. If applied, the Why Tree on these activities tends to reveal avoidance ("I do this because I'm tired") rather than direction. The five questions above are more reliably generative.
 
 **High-volume openers.** When a user names more than 3–4 potential seeds in a single answer, do not attempt to seed all of them. Seed the 2–3 with the most emotional charge — watch for where their voice changes, where they pause, where they add detail unprompted. Name the rest as threads for future sessions: *"I'm hearing [thread 4] and [thread 5] too — let's hold those. We can come back to them."* Trying to plant everything at once overwhelms the tree and dilutes the session.

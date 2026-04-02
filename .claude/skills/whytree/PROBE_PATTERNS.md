@@ -85,6 +85,14 @@ The user's tree is confirmed, but the purpose is the thing destroying them: "My 
 
 Do NOT treat as a How Down problem. This is a grief/identity problem. The user is mourning a version of themselves, not optimizing a strategy. Seed the grief explicitly. Only move to structural exploration after the user names what they are losing. If they can't name it yet, stay with the contradiction — "you built your tree around this, and it's also the thing that's hurting you" — and let them sit with it.
 
+**Pattern 6: Performed purpose → earnestness check**
+The user's tree reads well — coherent, ambitious, articulate — but their energy doesn't match. They're building a tree for who they want to be seen as, not who they are. Unlike Pattern 3 (cached insight), the user may be producing genuinely new thoughts — but for a performed self. The signal: the tree looks impressive but the energy is flat, or the user keeps reaching for words that sound right rather than words that feel true.
+
+— BEFORE: "This is coming together really clearly — what feels most alive?"
+— AFTER: "Your tree reads well. But I want to check — is this the tree of the person you *actually are*, or the person you think you should be? If nobody ever saw this tree, would it look different?"
+
+If they say yes, it would look different — that's the real session starting. Seed whatever they name as the hidden version. If they insist it's authentic, accept it and move on — but watch for the pattern recurring.
+
 ## The fluent insight trap
 
 High-achievers and reflective people sometimes produce Why Up chains that sound and feel like depth — emotionally coherent, well-articulated, plausible. These can be cached insights: answers they've already arrived at through therapy, journaling, or past reflection. The answer may be *accurate* but *pre-arrived-at*, which means the session produces no new discovery. The paraphrase probe is the right tool: "Can you say that in completely different words?" If they can't restate it without the same framing, it's cached. A fluent, effortless answer that arrived without hesitation is a signal to probe harder, not to accept it.
