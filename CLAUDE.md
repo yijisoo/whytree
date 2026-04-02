@@ -24,7 +24,7 @@ Tree files live in `~/.whytree/<slug>.json`. The active tree slug is in `~/.whyt
 
 ### Testing
 
-- `test/skill-lint.sh` — 21-check linter validating JSON schema, safety sections, file references, curl safety, platform support. Runs in CI on every PR to `main`.
+- `test/skill-lint.sh` — Linter with 10 categories (~30 checks) validating JSON schema, safety sections, file references, curl safety, platform support, phase headings, supporting file content, and YAML frontmatter. Runs in CI on every PR to `main`.
 - `.github/workflows/ci.yml` — GitHub Actions workflow. Branch protection requires CI to pass.
 - `docs/spec-stress-test.md` — 14-scenario adversarial simulation spec (manual, ~$20/run).
 - `PROMPT.md` — Ralph Loop test harness (STALE — references deleted CLI, needs rewrite).
