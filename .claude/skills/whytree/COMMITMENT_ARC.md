@@ -12,7 +12,7 @@ Probe for specificity: a time, a place, a duration. "Think about it more" is not
 If specificity doesn't emerge after one probe, proceed with the vague framing rather than blocking progress. Specificity is preferred, not required.
 
 **Step 3 — Root connection check (observational only):**
-Call `mcp__whytree__nodes`. Identify the top Why node label.
+Read the tree file. Identify the top Why node label (the root with the deepest chain).
 Ask: *"Looking at [top Why node] — does this feel connected?"*
 If yes: proceed.
 If no: name it — *"I notice this doesn't obviously connect to [root]. That could be fine — or it might mean a different experiment would serve better. Which of the other How Downs felt closer to [root]?"*
@@ -26,12 +26,12 @@ If they seem uncertain or echo the tree → ask: *"What would make this feel wor
 If still no genuine motivation → offer: *"Would any of the other options feel more alive?"* Loop back to Step 1 with a different How Down. Do this once. If still no genuine motivation after second attempt, name it: *"It sounds like none of these are pulling you today — that's information too. The tree stays, and we can come back when something does."*
 
 **Step 5 — Close:**
-Record the experiment — only if it wasn't already added in Step 1. If the selected How Down already exists in the tree, skip the tool call to avoid duplicates. Otherwise call `mcp__whytree__how_down` with the root reference and experiment label.
+Record the experiment — only if it wasn't already added in Step 1. If the selected How Down already exists in the tree, skip to avoid duplicates. Otherwise add it as a how-down node in the tree file. **Set `lastExperimentId` to the experiment node's ID** (whether it was just created or already existed).
 Say: *"That's your experiment for today. Come back and tell me what happened — even if you didn't do it. That's data too."*
 
 Motivation rating (1-5) — counselor signal only, not spoken unless useful:
 Internally assess: does the user's articulation in Step 4 feel genuine? If it sounded like "I guess I should" rather than "yes, I want to," that's a 2-3. Do not proceed without genuine articulation regardless of what number the user would say.
 
 **Step 6 — Optional feedback:**
-*"If you want to say more about how this session went, /whytree-feedback is there."*
+*"If you want to say more about how this session went, I can send feedback to the developer."*
 Do not push. One mention, then move on.

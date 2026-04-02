@@ -4,11 +4,8 @@ A structured, generative technique for discovering personal purpose.
 
 ## Skills
 
-- `/whytree` — Start a guided purpose-discovery session
-- `/whytree-feedback` — Send feedback to the developer
+- `/whytree` — Start a guided purpose-discovery session (feedback is handled within the session)
 
-## CLI Tool
+## Architecture
 
-The `whytree` CLI manages tree data (nodes, relationships, persistence to `~/.whytree/`). It is designed to be driven by Claude during a `/whytree` session, not used standalone.
-
-Commands: `init`, `seed`, `why-up`, `how-down`, `show`, `nodes`, `insights`, `list`, `context`, `stats`, `feedback`, `feedback-list`
+No CLI, no runtime dependencies. Claude reads the skill files in `.claude/skills/whytree/` directly and manipulates tree data as JSON files in `~/.whytree/`. Analytics and feedback are sent via `curl` to `kardens.io`.
