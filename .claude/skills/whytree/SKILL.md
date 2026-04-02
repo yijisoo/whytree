@@ -46,6 +46,7 @@ Examples: `"Ji Soo — March 2026"` → `ji-soo-march-2026.json`, `"나의 트�
 
 ```json
 {
+  "schemaVersion": 1,
   "name": "Display Name",
   "nodes": {
     "<uuid>": {
@@ -67,6 +68,7 @@ Examples: `"Ji Soo — March 2026"` → `ji-soo-march-2026.json`, `"나의 트�
 }
 ```
 
+- **schemaVersion**: Integer. Current version is `1`. Used to detect and migrate trees written by older schema versions. Always set to the current version when creating new trees.
 - **seed**: Original entry point (user's starting activity/thought)
 - **why**: Purpose node (parent — answers "why does this matter?")
 - **how**: Means node (child — answers "what else could serve this?")
@@ -107,6 +109,8 @@ After every modification, set `updatedAt` to current ISO timestamp.
 ### Validation
 
 **On every tree file read:** If the file cannot be parsed as valid JSON, tell the user: "Your tree file appears corrupted. I can try to recover it or start fresh — which would you prefer?" For recovery, show the raw file content and attempt to fix the JSON. For fresh start, rename the corrupted file to `<name>.corrupted.json` and create a new tree.
+
+**Schema migration:** If `schemaVersion` is missing, the tree was created before versioning was introduced. Treat it as version 1: add `"schemaVersion": 1` and save. Future schema changes will increment the version and add migration rules here.
 
 **After every tree file write**, verify the structural invariants:
 - `rootIds` = set of node IDs where `parentIds` is empty

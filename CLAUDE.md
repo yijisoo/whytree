@@ -21,7 +21,7 @@ No CLI, no runtime dependencies. Claude reads the skill files in `.claude/skills
 
 ### Data format
 
-Tree files live in `~/.whytree/<slug>.json`. The active tree slug is in `~/.whytree/.current`. Schema fields: `name`, `nodes` (keyed by UUID), `rootIds`, `seedIds`, `currentNodeId`, `lastExperimentId`, `createdAt`, `updatedAt`, `purpose`. Node types: `seed`, `why`, `how`.
+Tree files live in `~/.whytree/<slug>.json`. The active tree slug is in `~/.whytree/.current`. Schema fields: `schemaVersion`, `name`, `nodes` (keyed by UUID), `rootIds`, `seedIds`, `currentNodeId`, `lastExperimentId`, `createdAt`, `updatedAt`, `purpose`. Node types: `seed`, `why`, `how`.
 
 ### Testing
 
