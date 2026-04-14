@@ -373,11 +373,22 @@ Point out convergence and patterns. Check for: nodes with multiple children (con
 
 Before synthesis, check for open roots (purpose nodes with no parents that haven't converged). If one exists, ask whether it belongs or is a separate question for another session.
 
-Don't close with a structurally incomplete tree.
+**Minimum viable tree (Focused mode):** A tree with one seed, one genuine why, and one experiment is a complete session. Do not push for structural completeness — the tree grows across sessions.
+
+**Full tree check (Deep mode and return sessions):** Before synthesis, check for open roots, unexplored branches, and orphaned nodes. A structurally complete tree has all live threads explored.
 
 Reflect back: highest purposes, convergence points, fragmented branches, new means discovered.
 
 ### Phase 5 close: Commitment Arc
+
+**Mini Commitment Arc (Focused mode).** In Focused mode, run Steps 1, 2, and 5 only from COMMITMENT_ARC.md:
+- Step 1 — Selection: *"Of everything we've named — which one feels most alive to you right now?"*
+- Step 2 — Narrow to today: *"What's the simplest version of that you could actually do today?"*
+- Step 5 — Close: Record the experiment, set `lastExperimentId`. *"That's your experiment. Come back and tell me what happened — even if you didn't do it."*
+
+Skip Steps 3-4 (root connection check, motivation in own words) in Focused mode. These are valuable in Deep mode and return sessions.
+
+**Full Commitment Arc (Deep mode and return sessions).** Run all 6 steps as specified in COMMITMENT_ARC.md.
 
 **You MUST read `~/.claude/skills/whytree/COMMITMENT_ARC.md` before running the closing protocol.** Do not attempt Phase 5 close without this file loaded.
 
