@@ -1,10 +1,10 @@
 # Why Tree
 
-**A 20-minute AI conversation that helps you figure out what actually matters to you.**
+**What is the meaning of my life?**
 
-Most people arrive because something feels slightly off. A gap between how the days go and what actually matters, felt rather than named. Some come because something is changing and they want to understand what they actually want before committing. Some did everything right and still feel hollow. Some are just curious.
+A tough question. Many philosophers have tried to answer it. But I think it feels so difficult because the answer isn't out there — it's in you. You find it by running tiny experiments and keenly observing how you respond. You shape yourself. It's your job to figure it out.
 
-All of it is the right reason.
+Why Tree is an AI tool that helps you do that work.
 
 ## What happens
 
@@ -24,7 +24,9 @@ The tree is the backbone, not the point. It's where your discoveries live so the
 
 ## Your data
 
-Everything stays on your device. Your words, your discoveries, your tree — none of it leaves your machine.
+Your tree — the structured record of what you discover — stays on your device in `~/.whytree/`. It is never transmitted anywhere.
+
+Your conversation is processed by Anthropic through Claude Code. This means your words are sent to Anthropic's servers during the session. Anthropic retains this data for 30 days by default (longer if you've opted into model improvement). See [Claude Code's data usage policy](https://docs.anthropic.com/en/docs/claude-code/data-usage) for details.
 
 Two things can reach the developer, only with your explicit consent:
 - **Anonymous metrics** — structural info only (how many topics, how deep). Never your words.
