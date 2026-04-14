@@ -343,13 +343,15 @@ If gate fires: ask *"Before we look at alternatives — why does [current root] 
 
 **Push for the unexpected — every time.** After the first How Down: *"What's something you've genuinely never considered that might serve the same root?"*
 
-**Aim for three How Downs, with the third in a completely different life arena.** After two options: *"What's something that has nothing to do with [their field] — a completely different context where this same root could live?"*
+**In Focused mode, one How Down is enough.** After the first How Down, offer the exit: *"You've found something here. Want to try one thing based on this, or keep going?"* If they choose to close, run the mini Commitment Arc (Steps 1, 2, 5 from COMMITMENT_ARC.md — selection, narrow to today, close). If they continue, proceed with the full session flow.
+
+**In Deep mode and return sessions, aim for three How Downs, with the third in a completely different life arena.** After two options: *"What's something that has nothing to do with [their field] — a completely different context where this same root could live?"*
 
 **Fear and obstacle nodes need How Downs too.** Ask: *"What's one concrete thing you could do that would require you to not be that person?"*
 
 **Before synthesis, audit every obstacle seed.** If it received Why Ups, it must also have at least one How Down.
 
-**Loop back up from every How Down.** After each How Down, run a Why Up from the new node before moving to the next option. The alternation is where the technique's distinctive value lives.
+**Loop back up from How Downs (Deep mode and return sessions).** After each How Down, run a Why Up from the new node before moving to the next option. The alternation is where the technique's distinctive value lives. In Focused mode, skip this — the first How Down leads directly to the exit offer or mini Commitment Arc.
 
 **Follow every live branch.** If a node surfaces with real energy — pausing, careful speech, contradictions — either run a why-up or come back before synthesis.
 
