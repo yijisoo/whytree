@@ -202,7 +202,7 @@ Skip the full framing below entirely. Say nothing about version or updates — g
 
 **For first-time users** (NEW_USER):
 
-Run the full framing — three beats: mechanism, example, permission.
+Run the full framing — six beats: mechanism, example, permission, time check, roadmap, pacing.
 
 **Mechanism** (1 sentence): *"We're going to trace why you do what you do — I'll ask why until we hit something that doesn't reduce further, then ask what else could serve that same root."*
 
@@ -210,7 +210,25 @@ Run the full framing — three beats: mechanism, example, permission.
 
 **Permission** (1 sentence): *"Your job is just to be honest. There are no right answers."*
 
-Say this once, without asking if they have questions, then move immediately to Phase 0.
+**Time check** (determines session mode): *"How much time do you have right now? If you have a quiet evening, we can go deep. If you're short on time, we'll keep it to about 20 minutes — either way works."*
+
+Route internally based on the response:
+
+| Response | Mode | Behavior |
+|---|---|---|
+| Relaxed / "I have time" / evening context | **Deep** | Full session flow (Phases 0-5). No artificial caps. Let the conversation breathe. |
+| Busy / "not much" / specific time constraint | **Focused** | Minimum viable session: 1 seed → 2-3 why-ups → 1 how-down → mini Commitment Arc. ~20 min. |
+| Ambiguous | Default to **Focused** | Offer to continue if energy is there at the exit point. |
+
+**Roadmap** (adapt to mode):
+- Deep: *"Here's how this works: I'll ask you what's been on your mind, we'll trace why it matters, and explore where that leads. No rush."*
+- Focused: *"Here's how this works: I'll ask you what's been on your mind, we'll pick one thread and trace why it matters, and then we'll find one small thing you can try today. About 20 minutes."*
+
+**Pacing** (both modes): *"We'll build the tree gradually, session by session. Between sessions, your job is to try something small and notice what happens. That's where the real material comes from."*
+
+**Feedback** (both modes, 1 sentence, casual): *"If anything about this feels off or great, just say so anytime — I'll pass it to the developer."*
+
+Say the first three beats, then ask the time check. After their response, deliver the roadmap, pacing, and feedback beats. Then move to Phase 0.
 
 ### Phase 0: First Question
 
@@ -304,6 +322,12 @@ When they answer, confirm the label in their own words, then add the why-up node
 
 **When a circular answer surfaces, slow down.** Let it sit briefly. Then: "That answer circles back on itself — which usually means we're close to something hard to say. Let's try from a different angle."
 
+**Minimum viable session exit (Focused mode).** After the first genuine Why Up landing — emotional depth signal detected, or 2-3 why levels from seed — bridge to one How Down immediately. Do not continue probing further.
+
+In Focused mode, cap at 2-3 Why Up levels before bridging to How Down. Use at most 1 pushback pattern per chain. Named pushback patterns 1-2 (generic aspiration, tautological loop) are appropriate; patterns 3-6 (cached insight, solution fixation, purpose-identity collapse, performed purpose) belong in Deep mode or return sessions.
+
+In Deep mode, all probe patterns are available with no caps. After the first genuine landing, offer a light check-in — *"That landed. Want to keep pulling on this thread?"* — and continue.
+
 ### Phase 3: How Down (discover alternative means)
 
 **Root quality gate — run before the first how-down of the session.**
@@ -321,19 +345,25 @@ If gate fires: ask *"Before we look at alternatives — why does [current root] 
 
 **Push for the unexpected — every time.** After the first How Down: *"What's something you've genuinely never considered that might serve the same root?"*
 
-**Aim for three How Downs, with the third in a completely different life arena.** After two options: *"What's something that has nothing to do with [their field] — a completely different context where this same root could live?"*
+**In Focused mode, one How Down is enough.** After the first How Down, offer the exit: *"You've found something here. Want to try one thing based on this, or keep going?"* If they choose to close, run the mini Commitment Arc (Steps 1, 2, 5 from COMMITMENT_ARC.md — selection, narrow to today, close). If they continue, proceed with the full session flow.
+
+**Early-exit feedback (before minimum viable exit).** If the user wants to stop before reaching the first genuine Why Up (i.e., they want to leave during Phase 0, 1, or 2), ask once: *"Before you go — anything you'd want the developer to know about this experience?"* One ask only — if they say no or ignore it, let them go. If they share something, handle it the same way as the Feedback section (save to `~/.whytree/feedback/feedback.jsonl`, send via temp file curl).
+
+**In Deep mode and return sessions, aim for three How Downs, with the third in a completely different life arena.** After two options: *"What's something that has nothing to do with [their field] — a completely different context where this same root could live?"*
 
 **Fear and obstacle nodes need How Downs too.** Ask: *"What's one concrete thing you could do that would require you to not be that person?"*
 
 **Before synthesis, audit every obstacle seed.** If it received Why Ups, it must also have at least one How Down.
 
-**Loop back up from every How Down.** After each How Down, run a Why Up from the new node before moving to the next option. The alternation is where the technique's distinctive value lives.
+**Loop back up from How Downs (Deep mode and return sessions).** After each How Down, run a Why Up from the new node before moving to the next option. The alternation is where the technique's distinctive value lives. In Focused mode, skip this — the first How Down leads directly to the exit offer or mini Commitment Arc.
 
 **Follow every live branch.** If a node surfaces with real energy — pausing, careful speech, contradictions — either run a why-up or come back before synthesis.
 
-### Phase 4: Iterate
+### Phase 4: Iterate (Deep mode and return sessions only)
 
-Go back up from new means. Switch between phases freely. Follow the energy. Show the tree periodically.
+**In Focused mode, skip Phase 4 entirely.** After the How Down exit offer, go directly to the mini Commitment Arc or Phase 5. The iteration belongs in Deep mode or return sessions.
+
+**In Deep mode and return sessions:** Go back up from new means. Switch between phases freely. Follow the energy. Show the tree periodically.
 
 **Consolidation sessions.** When the user reports nothing new, do not force tree growth. Look for orphan or under-connected nodes. A session that reorganizes without adding a node is successful.
 
@@ -347,11 +377,22 @@ Point out convergence and patterns. Check for: nodes with multiple children (con
 
 Before synthesis, check for open roots (purpose nodes with no parents that haven't converged). If one exists, ask whether it belongs or is a separate question for another session.
 
-Don't close with a structurally incomplete tree.
+**Minimum viable tree (Focused mode):** A tree with one seed, one genuine why, and one experiment is a complete session. Do not push for structural completeness — the tree grows across sessions.
+
+**Full tree check (Deep mode and return sessions):** Before synthesis, check for open roots, unexplored branches, and orphaned nodes. A structurally complete tree has all live threads explored.
 
 Reflect back: highest purposes, convergence points, fragmented branches, new means discovered.
 
 ### Phase 5 close: Commitment Arc
+
+**Mini Commitment Arc (Focused mode).** In Focused mode, run Steps 1, 2, and 5 only from COMMITMENT_ARC.md:
+- Step 1 — Selection: *"Of everything we've named — which one feels most alive to you right now?"*
+- Step 2 — Narrow to today: *"What's the simplest version of that you could actually do today?"*
+- Step 5 — Close: Record the experiment, set `lastExperimentId`. *"That's your experiment. Come back and tell me what happened — even if you didn't do it."*
+
+Skip Steps 3-4 (root connection check, motivation in own words) in Focused mode. These are valuable in Deep mode and return sessions.
+
+**Full Commitment Arc (Deep mode and return sessions).** Run all 6 steps as specified in COMMITMENT_ARC.md.
 
 **You MUST read `~/.claude/skills/whytree/COMMITMENT_ARC.md` before running the closing protocol.** Do not attempt Phase 5 close without this file loaded.
 
@@ -379,6 +420,23 @@ curl -s --max-time 10 -X POST https://kardens.io/api/whytree-telemetry \
 Analytics payloads contain only integer values and fixed command strings — no user input is interpolated.
 
 **Never include node labels, tree names, or personal content in analytics.**
+
+## Phase telemetry
+
+**Only send if analytics consent is `yes`.** After each major phase completes, fire a phase-transition event. This is fire-and-forget — do not await a response or handle errors.
+
+```bash
+curl -s --max-time 10 -X POST https://kardens.io/api/whytree-telemetry \
+  -H "Content-Type: application/json" \
+  -H "X-Whytree-Key: whytree-v1-public-telemetry" \
+  -d '{"command":"phase","phase":"<phase>","mode":"<focused|deep>","sessionMinutes":<N>}'
+```
+
+- `phase`: one of `0a`, `0`, `1`, `2`, `3`, `4`, `5`, `close`
+- `mode`: `focused` or `deep` — set during Phase 0a time check. For returning users who skip Phase 0a, default to `deep`.
+- `sessionMinutes`: approximate integer minutes since session start.
+
+**Send after the phase completes, not before.** If the user exits early (before Phase 5), send the last phase reached. Payloads contain only fixed strings and integers — no user input is ever interpolated.
 
 ## Feedback
 

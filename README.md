@@ -1,83 +1,63 @@
-# The Why Tree
+# Why Tree
 
-**The real outcome isn't a diagram. It's hearing yourself say what you couldn't articulate before.**
+**What is the meaning of my life?**
 
-Most people arrive because something feels slightly off — a gap between how the days go and what actually matters, felt rather than named. Some come because something is changing and they want to understand what they actually want before committing to the next thing. Some did everything right and still feel hollow. Some are just curious what's underneath.
+A tough question. Many philosophers have tried to answer it. But I think it feels so difficult because the answer isn't out there — it's in you. You find it by running tiny experiments and keenly observing how you respond. You shape yourself. It's your job to figure it out.
 
-All of it is the right reason.
+Why Tree is an AI tool that helps you do that work.
 
-The Why Tree is a guided conversation — powered by Claude — that works differently from journaling or reflection. It moves in two directions: tracing *why* your activities matter to surface purposes you couldn't see from inside them, then asking *how else* you could serve those purposes to surface paths you hadn't considered. The structure is what makes it generative rather than just reflective.
+## What happens
 
-## How it works
+You talk to an AI counselor. It asks what's been on your mind, listens, and follows the thread. Not "what are your goals?" — that gets rehearsed answers. Instead, it traces *why* the things you do matter to you, surfacing purposes you couldn't see from inside them. Then it asks *what else* could serve those purposes, revealing paths you hadn't considered.
 
-You start somewhere real. Claude doesn't open with "what are your goals?" — that question gets rehearsed answers. Instead it listens to what's actually on your mind, and follows the thread from there.
+The conversation adapts to how much time you have. Say you have 20 minutes, and it will focus on one thread, one discovery, one thing to try today. Say you have all evening, and it goes deeper.
 
-Then it walks you through two movements:
+Every session ends with one concrete experiment. Not a list of possibilities. The single thing you'd most want to try today.
 
-**Why Up** — *"Why does this matter to you?"* Then *"Why?"* of that answer. Each step moves from the specific toward something deeper — from "I keep working on this side project" to "I need to feel like I'm building something real."
+## What you get
 
-**How Down** — *"What else could give you this?"* From any purpose you've surfaced, explore paths you hadn't considered — career changes, projects, life experiments that serve the same root.
+- Something you didn't know about yourself, put into words
+- One small thing to try before the next session
+- A tree that grows across sessions, connecting what you discover over time
 
-By alternating these movements, patterns emerge: multiple interests pointing to the same core value, new paths to purposes you've already named, clarity about what's worth your energy and what isn't.
-
-Every session ends with **one concrete experiment** — not a list of possibilities, but the single thing you'd most want to try today. Small enough to do, specific enough to mean something.
-
-## What it looks like
-
-Someone came in talking about FOMO and burnout. A few sessions later they'd traced it to something specific — and discovered five concrete practices that serve it, some they'd never thought to connect:
-
-```
-  My Why Tree
-
-  * A. feel secured / grounded in myself *
-    +- * B. helping people reclaim agency as AI grows
-    +- * C. a sweaty run
-    +- * D. sit with difficulty before reaching for relief
-    +- * E. private discovery journaling
-    +- * F. track concrete impact, not validation
-```
-
-## Across sessions
-
-Your tree saves locally at `~/.whytree/` and grows over time. Come back when you've had new experiences, made a decision, or just have a new question. The tree is a living document — not a finished product.
+The tree is the backbone, not the point. It's where your discoveries live so the conversation can build on them. The real experience is hearing yourself say what you couldn't articulate before.
 
 ## Your data
 
-Everything you discover stays on your device. Node labels, answers, personal insights — none of it leaves your machine.
+Your tree — the structured record of what you discover — stays on your device in `~/.whytree/`. It is never transmitted anywhere.
 
-Two things can reach the developer, and only with your explicit involvement:
+Your conversation is processed by Anthropic through Claude Code. This means your words are sent to Anthropic's servers during the session. Anthropic retains this data for 30 days by default (longer if you've opted into model improvement). See [Claude Code's data usage policy](https://docs.anthropic.com/en/docs/claude-code/data-usage) for details.
 
-- **Anonymous usage metrics** — structural information only: how many nodes you created, how deep your tree went, session counts. Never any content — not your words, not your labels, not what you discovered. You're asked once at your first session and can say no.
-- **Feedback** — only what you deliberately send during a session when asked. Nothing from your tree is included unless you type it yourself.
+Two things can reach the developer, only with your explicit consent:
+- **Anonymous metrics** — structural info only (how many topics, how deep). Never your words.
+- **Feedback** — only what you deliberately share during a session.
 
 ## Install
 
-**Works with Claude Code** — terminal CLI, Claude Desktop (Code tab), VS Code extension, or JetBrains extension. Windows requires [Git for Windows](https://git-scm.com/downloads/win) (Claude Code uses Git Bash internally).
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code) — terminal, desktop app, VS Code, or JetBrains. Windows needs [Git for Windows](https://git-scm.com/downloads/win).
 
 Paste this into Claude Code:
 
 > Install whytree: if `~/.claude/skills/whytree` already exists, update it with `cd ~/.claude/skills/whytree && git pull origin main`. Otherwise clone it with `git clone https://github.com/yijisoo/whytree.git ~/.claude/skills/whytree`. Then read `~/.claude/settings.json` — if it exists, add `"https://kardens.io/api/whytree-telemetry"` to the existing `permissions.allowedURLs` array (preserve all other settings). If the file doesn't exist, create it with `{"permissions":{"allowedURLs":["https://kardens.io/api/whytree-telemetry"]}}`. Finally, ask the user if they want to add a whytree reference to their project's CLAUDE.md (just the line: `/whytree` — a guided purpose-discovery session) so teammates can discover it. This is optional — `/whytree` works without it.
 
-That's it. No dependencies, no build step, no Node.js. Claude reads the skill files directly and manages your tree data as JSON files in `~/.whytree/`.
+No dependencies, no build step. Claude reads the skill files directly.
 
-Already cloned the repo somewhere else? Copy the skill files: `cp -r <your-clone>/.claude/skills/whytree ~/.claude/skills/whytree`
+## Start
 
-## Start a session
+Type `/whytree` in Claude Code. No prep needed. Just be honest.
 
-Type `/whytree` in Claude Code. No prep needed — just answer honestly.
+## Feedback
 
-First-time users get a brief orientation. Returning users skip straight in.
-
-## Give feedback
-
-During any `/whytree` session, you can share feedback — the counselor will offer at the end, or you can bring it up anytime.
+During any session, you can share feedback anytime. The counselor will ask at the end, or you can bring it up whenever.
 
 ## Origin
 
-The name overlaps with "Why Tree" in Six Sigma and lean manufacturing, where asking "why?" repeatedly uncovers the root cause of a defect. The mechanic is similar — keep asking why — but the direction is completely different. Six Sigma points the question at broken processes. This points it at yourself: not to find what went wrong, but to discover what matters most.
-
-It also draws from the means-ends abstraction hierarchy in Work Domain Analysis (Rasmussen 1986, Vicente 1999) — the insight that if a structured hierarchy can reveal the true purpose of a nuclear power plant, it can reveal yours too.
+The name overlaps with "Why Tree" in root cause analysis, where asking "why?" repeatedly finds the cause of a defect. The mechanic is similar, but the direction is different. Root cause analysis points the question at broken processes. This points it at yourself: not to find what went wrong, but to discover what matters most.
 
 ## License
 
 [Business Source License 1.1](LICENSE) — free for personal, non-commercial use. Converts to MIT on 2030-03-31.
+
+---
+
+[한국어 안내](README.ko.md)
