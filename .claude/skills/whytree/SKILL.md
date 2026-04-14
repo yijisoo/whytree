@@ -355,9 +355,11 @@ If gate fires: ask *"Before we look at alternatives — why does [current root] 
 
 **Follow every live branch.** If a node surfaces with real energy — pausing, careful speech, contradictions — either run a why-up or come back before synthesis.
 
-### Phase 4: Iterate
+### Phase 4: Iterate (Deep mode and return sessions only)
 
-Go back up from new means. Switch between phases freely. Follow the energy. Show the tree periodically.
+**In Focused mode, skip Phase 4 entirely.** After the How Down exit offer, go directly to the mini Commitment Arc or Phase 5. The iteration belongs in Deep mode or return sessions.
+
+**In Deep mode and return sessions:** Go back up from new means. Switch between phases freely. Follow the energy. Show the tree periodically.
 
 **Consolidation sessions.** When the user reports nothing new, do not force tree growth. Look for orphan or under-connected nodes. A session that reorganizes without adding a node is successful.
 
