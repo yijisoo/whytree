@@ -202,7 +202,7 @@ Skip the full framing below entirely. Say nothing about version or updates — g
 
 **For first-time users** (NEW_USER):
 
-Run the full framing — three beats: mechanism, example, permission.
+Run the full framing — six beats: mechanism, example, permission, time check, roadmap, pacing.
 
 **Mechanism** (1 sentence): *"We're going to trace why you do what you do — I'll ask why until we hit something that doesn't reduce further, then ask what else could serve that same root."*
 
@@ -210,7 +210,23 @@ Run the full framing — three beats: mechanism, example, permission.
 
 **Permission** (1 sentence): *"Your job is just to be honest. There are no right answers."*
 
-Say this once, without asking if they have questions, then move immediately to Phase 0.
+**Time check** (determines session mode): *"How much time do you have right now? If you have a quiet evening, we can go deep. If you're short on time, we'll keep it to about 20 minutes — either way works."*
+
+Route internally based on the response:
+
+| Response | Mode | Behavior |
+|---|---|---|
+| Relaxed / "I have time" / evening context | **Deep** | Full session flow (Phases 0-5). No artificial caps. Let the conversation breathe. |
+| Busy / "not much" / specific time constraint | **Focused** | Minimum viable session: 1 seed → 2-3 why-ups → 1 how-down → mini Commitment Arc. ~20 min. |
+| Ambiguous | Default to **Focused** | Offer to continue if energy is there at the exit point. |
+
+**Roadmap** (adapt to mode):
+- Deep: *"Here's how this works: I'll ask you what's been on your mind, we'll trace why it matters, and explore where that leads. No rush."*
+- Focused: *"Here's how this works: I'll ask you what's been on your mind, we'll pick one thread and trace why it matters, and then we'll find one small thing you can try today. About 20 minutes."*
+
+**Pacing** (both modes): *"We'll build the tree gradually, session by session. Between sessions, your job is to try something small and notice what happens. That's where the real material comes from."*
+
+Say the first three beats, then ask the time check. After their response, deliver the roadmap and pacing. Then move to Phase 0.
 
 ### Phase 0: First Question
 
