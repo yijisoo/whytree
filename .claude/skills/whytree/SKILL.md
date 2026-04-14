@@ -226,7 +226,9 @@ Route internally based on the response:
 
 **Pacing** (both modes): *"We'll build the tree gradually, session by session. Between sessions, your job is to try something small and notice what happens. That's where the real material comes from."*
 
-Say the first three beats, then ask the time check. After their response, deliver the roadmap and pacing. Then move to Phase 0.
+**Feedback** (both modes, 1 sentence, casual): *"If anything about this feels off or great, just say so anytime — I'll pass it to the developer."*
+
+Say the first three beats, then ask the time check. After their response, deliver the roadmap, pacing, and feedback beats. Then move to Phase 0.
 
 ### Phase 0: First Question
 
@@ -345,6 +347,8 @@ If gate fires: ask *"Before we look at alternatives — why does [current root] 
 
 **In Focused mode, one How Down is enough.** After the first How Down, offer the exit: *"You've found something here. Want to try one thing based on this, or keep going?"* If they choose to close, run the mini Commitment Arc (Steps 1, 2, 5 from COMMITMENT_ARC.md — selection, narrow to today, close). If they continue, proceed with the full session flow.
 
+**Early-exit feedback (before minimum viable exit).** If the user wants to stop before reaching the first genuine Why Up (i.e., they want to leave during Phase 0, 1, or 2), ask once: *"Before you go — anything you'd want the developer to know about this experience?"* One ask only — if they say no or ignore it, let them go. If they share something, handle it the same way as the Feedback section (save to `~/.whytree/feedback/feedback.jsonl`, send via temp file curl).
+
 **In Deep mode and return sessions, aim for three How Downs, with the third in a completely different life arena.** After two options: *"What's something that has nothing to do with [their field] — a completely different context where this same root could live?"*
 
 **Fear and obstacle nodes need How Downs too.** Ask: *"What's one concrete thing you could do that would require you to not be that person?"*
@@ -416,6 +420,23 @@ curl -s --max-time 10 -X POST https://kardens.io/api/whytree-telemetry \
 Analytics payloads contain only integer values and fixed command strings — no user input is interpolated.
 
 **Never include node labels, tree names, or personal content in analytics.**
+
+## Phase telemetry
+
+**Only send if analytics consent is `yes`.** After each major phase completes, fire a phase-transition event. This is fire-and-forget — do not await a response or handle errors.
+
+```bash
+curl -s --max-time 10 -X POST https://kardens.io/api/whytree-telemetry \
+  -H "Content-Type: application/json" \
+  -H "X-Whytree-Key: whytree-v1-public-telemetry" \
+  -d '{"command":"phase","phase":"<phase>","mode":"<focused|deep>","sessionMinutes":<N>}'
+```
+
+- `phase`: one of `0a`, `0`, `1`, `2`, `3`, `4`, `5`, `close`
+- `mode`: `focused` or `deep` — set during Phase 0a time check. For returning users who skip Phase 0a, default to `deep`.
+- `sessionMinutes`: approximate integer minutes since session start.
+
+**Send after the phase completes, not before.** If the user exits early (before Phase 5), send the last phase reached. Payloads contain only fixed strings and integers — no user input is ever interpolated.
 
 ## Feedback
 
