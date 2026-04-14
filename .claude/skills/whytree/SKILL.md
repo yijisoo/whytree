@@ -320,6 +320,12 @@ When they answer, confirm the label in their own words, then add the why-up node
 
 **When a circular answer surfaces, slow down.** Let it sit briefly. Then: "That answer circles back on itself — which usually means we're close to something hard to say. Let's try from a different angle."
 
+**Minimum viable session exit (Focused mode).** After the first genuine Why Up landing — emotional depth signal detected, or 2-3 why levels from seed — bridge to one How Down immediately. Do not continue probing further.
+
+In Focused mode, cap at 2-3 Why Up levels before bridging to How Down. Use at most 1 pushback pattern per chain. Named pushback patterns 1-2 (generic aspiration, tautological loop) are appropriate; patterns 3-6 (cached insight, solution fixation, purpose-identity collapse, performed purpose) belong in Deep mode or return sessions.
+
+In Deep mode, all probe patterns are available with no caps. After the first genuine landing, offer a light check-in — *"That landed. Want to keep pulling on this thread?"* — and continue.
+
 ### Phase 3: How Down (discover alternative means)
 
 **Root quality gate — run before the first how-down of the session.**
