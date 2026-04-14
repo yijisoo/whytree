@@ -3,6 +3,14 @@
 All notable changes to The Why Tree are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.2.4] — 2026-04-15
+
+### Added
+- Codex agent configuration — `.agents/` skills and `AGENTS.md` for OpenAI Codex compatibility
+- Deep/Focused session modes — time-aware routing with distinct pacing and exit points
+- Early-exit feedback — captures user input before minimum viable session exit
+- Minimum viable session flow — 1 seed → 2-3 why-ups → 1 how-down → mini Commitment Arc (~20 min)
+
 ## [0.2.3] — 2026-04-01
 
 ### Added
