@@ -24,7 +24,7 @@ The tree is the backbone, not the point. It's where your discoveries live so the
 
 ## Your data
 
-Your tree — the structured record of what you discover — stays on your device in `~/.whytree/`. It is never transmitted anywhere.
+Your tree — the structured record of what you discover — stays on your device in `~/.whytree/` (your home folder on any OS). It is never transmitted anywhere.
 
 Your conversation is processed by Anthropic through Claude Code. This means your words are sent to Anthropic's servers during the session. Anthropic retains this data for 30 days by default (longer if you've opted into model improvement). See [Claude Code's data usage policy](https://docs.anthropic.com/en/docs/claude-code/data-usage) for details.
 
@@ -34,7 +34,7 @@ Two things can reach the developer, only with your explicit consent:
 
 ## Install
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code) — terminal, desktop app, VS Code, or JetBrains. Windows needs [Git for Windows](https://git-scm.com/downloads/win).
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code) — terminal or desktop app. Windows needs [Git for Windows](https://git-scm.com/downloads/win).
 
 Paste this into Claude Code:
 
