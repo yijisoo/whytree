@@ -8,7 +8,7 @@ Why Tree is an AI tool that helps you do that work.
 
 ## What happens
 
-You talk to an AI counselor. It asks what's been on your mind, listens, and follows the thread. Not "what are your goals?" — that gets rehearsed answers. Instead, it traces *why* the things you do matter to you, surfacing purposes you couldn't see from inside them. Then it asks *what else* could serve those purposes, revealing paths you hadn't considered.
+You talk to an AI counselor. It won't tell you what to do — it helps you listen to yourself. Not "what are your goals?" — that gets rehearsed answers. Instead, it traces *why* the things you do matter to you, surfacing purposes you couldn't see from inside them. Then it asks *what else* could serve those purposes, revealing paths you hadn't considered.
 
 The conversation adapts to how much time you have. Say you have 20 minutes, and it will focus on one thread, one discovery, one thing to try today. Say you have all evening, and it goes deeper.
 
