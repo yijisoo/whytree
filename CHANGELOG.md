@@ -3,6 +3,14 @@
 All notable changes to The Why Tree are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.2.7] — 2026-04-15
+
+### Changed
+- Lint expanded to 12 sections (~55 checks) — now validates review-feedback skill
+- preamble.sh reports VERSION from .version file at session start
+- Stress test results consolidated under docs/stress-test-results/
+- CLAUDE.md updated to reflect current tooling (release script, lint scope)
+
 ## [0.2.6] — 2026-04-15
 
 ### Fixed
