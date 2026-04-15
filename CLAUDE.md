@@ -2,6 +2,10 @@
 
 A structured, generative technique for discovering personal purpose.
 
+## Workflow rules
+
+- **Do not push or release unless explicitly asked.** Commit changes freely, but only run `scripts/release.sh` or `git push` when the user says to. This avoids rapid version bumps from incremental work.
+
 ## Skills
 
 - `/whytree` — Start a guided purpose-discovery session (feedback is handled within the session)

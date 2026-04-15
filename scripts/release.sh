@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# release.sh — lint, version bump, changelog, push.
-# Usage: ./scripts/release.sh [patch|minor|major] ["changelog summary"]
+# release.sh — lint, version bump, changelog. Push only with --push.
+# Usage: ./scripts/release.sh [patch|minor|major] ["changelog summary"] [--push]
 #
 # Defaults to patch bump if no argument given.
 # Changelog summary is optional — if omitted, auto-generates from git log.
+# --push flag pushes to origin after committing. Without it, commits locally only.
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -139,7 +140,7 @@ info "Changelog updated."
 # --- 7. Update .version ---
 git rev-parse --short HEAD > .version
 
-# --- 8. Commit and push ---
+# --- 8. Commit ---
 info "Committing version bump..."
 git add CHANGELOG.md .version
 git commit -m "$(cat <<EOF
@@ -149,7 +150,11 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 EOF
 )"
 
-info "Pushing to origin..."
-git push origin main
-
-info "Released v$NEW_VERSION"
+# --- 9. Push (only with --push flag) ---
+if [ "${3:-}" = "--push" ] || [ "${2:-}" = "--push" ] || [ "${1:-}" = "--push" ]; then
+  info "Pushing to origin..."
+  git push origin main
+  info "Released and pushed v$NEW_VERSION"
+else
+  info "v$NEW_VERSION committed locally. Push when ready: git push origin main"
+fi
