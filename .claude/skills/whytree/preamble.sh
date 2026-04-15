@@ -4,6 +4,14 @@
 
 echo "=== WHYTREE PREAMBLE ==="
 
+# 0. Version
+SKILL_DIR=~/.claude/skills/whytree
+if [ -f "$SKILL_DIR/.version" ]; then
+  echo "VERSION=$(cat "$SKILL_DIR/.version")"
+else
+  echo "VERSION=unknown"
+fi
+
 # 1. User status + session gap
 if [ ! -d ~/.whytree ] || [ -z "$(ls ~/.whytree/*.json 2>/dev/null)" ]; then
   echo "USER_STATUS=NEW_USER"

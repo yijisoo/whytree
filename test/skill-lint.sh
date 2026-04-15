@@ -203,6 +203,40 @@ else
   fail "No YAML frontmatter (missing opening ---)"
 fi
 
+# --- 12. Review-feedback skill ---
+echo
+echo "12. Review-feedback skill"
+REVIEW_SKILL="$REPO_ROOT/.claude/skills/whytree-review-feedback/SKILL.md"
+if [ -f "$REVIEW_SKILL" ]; then
+  pass "whytree-review-feedback/SKILL.md exists"
+  # Check frontmatter
+  if head -1 "$REVIEW_SKILL" | grep -q "^---$"; then
+    pass "Review-feedback has YAML frontmatter"
+  else
+    fail "Review-feedback missing YAML frontmatter"
+  fi
+  # Check it references the correct feedback file path
+  if grep -q 'feedback/feedback.jsonl' "$REVIEW_SKILL"; then
+    pass "Review-feedback references feedback.jsonl"
+  else
+    fail "Review-feedback missing feedback.jsonl reference"
+  fi
+  # Check required sections
+  if grep -q 'Filter out noise' "$REVIEW_SKILL"; then
+    pass "Review-feedback has noise filter step"
+  else
+    fail "Review-feedback missing noise filter step"
+  fi
+  # Check it has verbatim quote rule
+  if grep -q 'verbatim' "$REVIEW_SKILL"; then
+    pass "Review-feedback has verbatim quote rule"
+  else
+    fail "Review-feedback missing verbatim quote rule"
+  fi
+else
+  fail "whytree-review-feedback/SKILL.md missing"
+fi
+
 # --- Summary ---
 echo
 echo "=== Results ==="
