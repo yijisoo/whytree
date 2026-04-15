@@ -3,6 +3,20 @@
 All notable changes to The Why Tree are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.2.5] — 2026-04-15
+
+### Added
+- Release automation — `scripts/release.sh` with lint gate, version bump, changelog, push
+- Lint section 6 — validates deviceId in all curl payloads (analytics, phase, feedback)
+- Stress test D13 — feedback end-to-end flow scenario
+
+### Fixed
+- All telemetry curl payloads now include required deviceId field
+- Feedback framing: 'helps the next person' instead of 'send to developer'
+
+### Removed
+- Codex agent support (.agents/, AGENTS.md) — cannot be tested reliably
+
 ## [0.2.4] — 2026-04-15
 
 ### Added

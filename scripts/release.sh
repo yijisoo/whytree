@@ -114,17 +114,25 @@ fi
 
 # --- 6. Update CHANGELOG.md ---
 info "Updating CHANGELOG.md..."
-ENTRY="## [$NEW_VERSION] — $TODAY\n\n$(echo -e "$CHANGELOG_BODY")"
 
-# Insert new entry after the header lines
-awk -v entry="$ENTRY" '
-  /^## \[/ && !inserted {
-    print entry
-    print ""
-    inserted=1
-  }
-  { print }
-' CHANGELOG.md > CHANGELOG.tmp && mv CHANGELOG.tmp CHANGELOG.md
+# Write changelog entry to a temp file, then splice it in
+ENTRY_FILE=$(mktemp)
+echo "## [$NEW_VERSION] — $TODAY" > "$ENTRY_FILE"
+echo "" >> "$ENTRY_FILE"
+echo -e "$CHANGELOG_BODY" >> "$ENTRY_FILE"
+echo "" >> "$ENTRY_FILE"
+
+# Find the line number of the first version heading and insert before it
+FIRST_VERSION_LINE=$(grep -n '^## \[' CHANGELOG.md | head -1 | cut -d: -f1)
+if [ -n "$FIRST_VERSION_LINE" ]; then
+  head -n $((FIRST_VERSION_LINE - 1)) CHANGELOG.md > CHANGELOG.tmp
+  cat "$ENTRY_FILE" >> CHANGELOG.tmp
+  tail -n +$FIRST_VERSION_LINE CHANGELOG.md >> CHANGELOG.tmp
+  mv CHANGELOG.tmp CHANGELOG.md
+else
+  error "Could not find version heading in CHANGELOG.md"
+fi
+rm -f "$ENTRY_FILE"
 
 info "Changelog updated."
 
