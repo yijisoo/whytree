@@ -3,6 +3,11 @@
 All notable changes to The Why Tree are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.2.6] — 2026-04-15
+
+### Fixed
+- Release script: changelog insertion and em dash encoding
+
 ## [0.2.5] — 2026-04-15
 
 ### Added
