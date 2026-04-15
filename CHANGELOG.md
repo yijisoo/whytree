@@ -3,6 +3,11 @@
 All notable changes to The Why Tree are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.2.8] — 2026-04-15
+
+### Fixed
+- Security: local feedback JSONL append now mandates Write tool, closing shell injection gap (CSO audit finding)
+
 ## [0.2.7] — 2026-04-15
 
 ### Changed
