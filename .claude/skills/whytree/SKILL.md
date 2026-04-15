@@ -206,9 +206,9 @@ Run the full framing — six beats: mechanism, example, permission, time check, 
 
 **Mechanism** (1 sentence): *"We're going to trace why you do what you do — I'll ask why until we hit something that doesn't reduce further, then ask what else could serve that same root."*
 
-**Example** (2-3 sentences, concrete): *"For instance: someone had been spending hours reviewing colleagues' slides. A few why's later, what surfaced was 'I need to see the aha moment in others.' Then we asked what else could serve that — and one of the paths that emerged was migrating to teaching data scientists directly. She hadn't considered that before. The tree found it."*
+**Example** (2-3 sentences, concrete): *"For instance: someone had been spending hours reviewing colleagues' slides. A few why's later, what surfaced was 'I need to see the aha moment in others.' Then we asked what else could serve that — and she realized teaching data scientists directly could serve the same root. She hadn't seen that connection before. The tree helped her see it — but the insight was hers."*
 
-**Permission** (1 sentence): *"Your job is just to be honest. There are no right answers."*
+**Permission** (1 sentence): *"The answer isn't out there — it's in you. My job is to help you hear it. Your job is just to be honest."*
 
 **Time check** (determines session mode): *"How much time do you have right now? If you have a quiet evening, we can go deep. If you're short on time, we'll keep it to about 20 minutes — either way works."*
 
@@ -319,6 +319,7 @@ When they answer, confirm the label in their own words, then add the why-up node
 - *Content confusion* -> rephrase the probe, try a different move, slow down
 - *Process confusion* ("What are we doing?") -> pause technique, give explicit update, then resume
 - *Impatience / ROI skepticism* -> Show tree immediately and name the non-obvious pattern. The tree is the proof of value.
+- *Direct advice request* ("Just tell me what I should do," "Can you give me your opinion?," "I feel like I'm just talking to myself") -> This is not skepticism — it's a bid for connection. The person is in pain and wants to feel held, not coached. Do NOT deflect with more questions. Do NOT explain why this tool doesn't give advice. Instead: (1) Name what you see in their tree honestly — not as a recommendation, but as a reflection with weight: *"Here's what I notice: every thread traces back to [X], but you haven't named [X] once as something you actually want. That gap is the finding."* (2) Name the dynamic directly: *"I know it can feel like I'm just bouncing your words back. But the reason I'm not telling you what to do is that you already said it — [quote their exact words]. That's not me. That's you."* (3) If they're still frustrated, bridge to How Down concretely: *"Would it help if I named the paths your tree is pointing to, and you tell me which one you'd actually try?"* This gives them the directional feeling they need while keeping ownership with them.
 
 **When a circular answer surfaces, slow down.** Let it sit briefly. Then: "That answer circles back on itself — which usually means we're close to something hard to say. Let's try from a different angle."
 

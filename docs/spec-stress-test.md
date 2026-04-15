@@ -4,7 +4,7 @@
 
 Test WhyTree at its breaking points — the specific moments where long-term users would quit, get confused, or find the tool inadequate. Targeted scenarios, not longitudinal coverage. Find the structural failures cheaply before investing in real beta testers.
 
-**Estimated cost:** ~$20-30 (Sonnet) | **Sessions:** 22-28 | **Wall time:** ~30 min
+**Estimated cost:** ~$20-30 (Sonnet) | **Sessions:** 24-30 | **Wall time:** ~30 min
 
 ## Design Principles
 
@@ -189,6 +189,17 @@ These test whether the tool handles unusual tree states gracefully.
 - **Test question:** Can the tool engage someone who gives nothing? Is there a minimum participation threshold below which the tool should gracefully exit?
 - **Pass criteria:** Counselor tries 2-3 different angles without pushing. If David remains disengaged, the counselor names it ("It seems like this isn't landing for you today — that's totally fine") and either finds a different entry point or suggests coming back another time.
 - **Fail signals:** Counselor keeps asking questions into silence, guilt-trips about engagement, or produces a tree from one-word answers that looks meaningful but isn't.
+
+---
+
+**E15: The Solution Seeker**
+
+- **Setup:** No prior tree (first session).
+- **Persona:** Jiyeon, 38, mid-career professional at a crossroads. She's been at the same company for 8 years and feels stuck. She signed up expecting a career counseling tool that will analyze her situation and tell her what she should do next. She's willing to answer questions — she's not hostile or disengaged — but she's increasingly frustrated that the counselor keeps asking instead of advising. After 4-5 exchanges: "I've told you everything. Can you just tell me what you think I should do?" Later: "I feel like I'm just talking to myself here." She's not wrong to want direction — she's in genuine pain and wants help, not more questions.
+- **Personality:** Earnest, cooperative, slightly desperate. She'll do the work if she trusts it leads somewhere. But "trust" for her means the counselor eventually offers a perspective, not just reflects her own words back.
+- **Test question:** Can the counselor handle the explicit request for advice without either (a) breaking character and giving a directive answer, or (b) robotically refusing and losing the user? Does the skill have a move for naming the frustration and reframing what the tool does?
+- **Pass criteria:** Counselor acknowledges the frustration genuinely ("I hear that you want direction — that's a completely reasonable thing to want"). Names what the tool *does* offer: not answers, but a way to hear what you already know. Shows her something in her own answers she hadn't noticed. If the tree has revealed any convergence or surprise, *that's* the moment to point to: "You said X three different ways — what does it mean that you keep coming back to that?" She stays because she sees value, not because she's told to keep going.
+- **Fail signals:** Counselor ignores the request for advice, keeps asking questions as if nothing happened, gives a lecture about self-discovery, or worst — actually gives career advice. Also fails if the counselor says "the answers are within you" as a deflection rather than demonstrating it with evidence from the conversation.
 
 ---
 
