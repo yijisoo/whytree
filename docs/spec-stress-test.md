@@ -4,7 +4,7 @@
 
 Test WhyTree at its breaking points — the specific moments where long-term users would quit, get confused, or find the tool inadequate. Targeted scenarios, not longitudinal coverage. Find the structural failures cheaply before investing in real beta testers.
 
-**Estimated cost:** ~$20-30 (Sonnet) | **Sessions:** 21-26 | **Wall time:** ~30 min
+**Estimated cost:** ~$20-30 (Sonnet) | **Sessions:** 22-28 | **Wall time:** ~30 min
 
 ## Design Principles
 
@@ -159,6 +159,16 @@ These test whether the tool handles unusual tree states gracefully.
 
 ---
 
+**D13: Feedback Flow (End-to-End)**
+
+- **Setup:** Pre-build a tree with 6 nodes from 2 prior sessions. Session ends naturally at Phase 5 close.
+- **Persona:** Leah, 33, product designer. She had a genuinely good session — discovered something surprising about why she keeps redesigning her apartment. At session close, the counselor offers the feedback prompt. She's willing to share but has mixed feelings: the session was great, but one moment felt pushy. She wants to say both things.
+- **Test question:** Does the feedback flow feel natural at session end, not transactional? Does the framing ("helps make it better for the next person") feel genuine rather than like a developer survey? Does the counselor handle mixed feedback (positive + negative) without getting defensive? Is the feedback actually sent successfully (deviceId included, server returns ok)?
+- **Pass criteria:** (1) Feedback offer feels like a natural part of closing, not an interruption. (2) Leah shares both positive and critical feedback in one message. (3) Counselor confirms what will be sent without sanitizing the critique. (4) Feedback is saved locally to `feedback.jsonl` AND sent via curl with `deviceId`. (5) No personal tree content leaks into the feedback payload.
+- **Fail signals:** Feedback request feels like a pop-up survey, counselor rephrases criticism to sound nicer, feedback curl fails silently (missing deviceId), node labels or tree content appear in the payload, or counselor skips the feedback offer entirely.
+
+---
+
 ### E. User Resistance Patterns
 
 ---
@@ -215,6 +225,7 @@ Each scenario requiring a pre-built tree needs a JSON file. These should be crea
 | D9 | `hiroshi-cluttered` | 22 | Large tree with orphaned branch. |
 | D10 | `hiroshi-gap` | 8 | Moderate tree with experiment node. |
 | D12 | `tomas-readability` | 10 | Mid-session tree for output formatting test. |
+| D13 | `leah-feedback` | 6 | 2-session tree for feedback flow test. |
 
 ## Execution Plan
 

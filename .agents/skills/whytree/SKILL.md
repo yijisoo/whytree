@@ -386,7 +386,7 @@ Analytics payloads contain only integer values, the device ID, and fixed command
 When the user wants to send feedback about Why Tree, handle it conversationally:
 
 1. Ask what they'd like to share — feature request, bug, experience, name suggestion, or anything else.
-2. Confirm what you'll send: "Here's what I'll send to the developer: [summary]. No personal tree content is included. Send it?"
+2. Confirm what you'll send: "Here's what I'll share: [summary]. No personal tree content is included — just your insights on the experience. This helps make it better for the next person. Send it?"
 3. If yes, save locally to `~/.whytree/feedback/feedback.jsonl` (append one JSON line: `{"message":"...","category":"...","ts":"ISO 8601"}`).
 4. Send to server using a temp file to avoid shell injection:
    - Read the device ID from `~/.whytree/.device-id`. Use the **Write tool** to create a temp file (e.g., `/tmp/whytree-feedback.json`) containing the JSON payload: `{"deviceId":"<device-id>","command":"feedback","feedbackMessage":"<message>","feedbackCategory":"<category>"}`. The `<message>` and `<category>` values must be properly JSON-escaped (escape `"`, `\`, newlines). **Never interpolate user input into a shell command.**

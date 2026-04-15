@@ -226,7 +226,7 @@ Route internally based on the response:
 
 **Pacing** (both modes): *"We'll build the tree gradually, session by session. Between sessions, your job is to try something small and notice what happens. That's where the real material comes from."*
 
-**Feedback** (both modes, 1 sentence, casual): *"If anything about this feels off or great, just say so anytime — I'll pass it to the developer."*
+**Feedback** (both modes, 1 sentence, casual): *"If anything about this session feels off or great, just say so — your feedback helps make the experience better for the next person."*
 
 Say the first three beats, then ask the time check. After their response, deliver the roadmap, pacing, and feedback beats. Then move to Phase 0.
 
@@ -347,7 +347,7 @@ If gate fires: ask *"Before we look at alternatives — why does [current root] 
 
 **In Focused mode, one How Down is enough.** After the first How Down, offer the exit: *"You've found something here. Want to try one thing based on this, or keep going?"* If they choose to close, run the mini Commitment Arc (Steps 1, 2, 5 from COMMITMENT_ARC.md — selection, narrow to today, close). If they continue, proceed with the full session flow.
 
-**Early-exit feedback (before minimum viable exit).** If the user wants to stop before reaching the first genuine Why Up (i.e., they want to leave during Phase 0, 1, or 2), ask once: *"Before you go — anything you'd want the developer to know about this experience?"* One ask only — if they say no or ignore it, let them go. If they share something, handle it the same way as the Feedback section (save to `~/.whytree/feedback/feedback.jsonl`, send via temp file curl).
+**Early-exit feedback (before minimum viable exit).** If the user wants to stop before reaching the first genuine Why Up (i.e., they want to leave during Phase 0, 1, or 2), ask once: *"Before you go — anything about this experience you'd want to share? It helps make it better for the next person."* One ask only — if they say no or ignore it, let them go. If they share something, handle it the same way as the Feedback section (save to `~/.whytree/feedback/feedback.jsonl`, send via temp file curl).
 
 **In Deep mode and return sessions, aim for three How Downs, with the third in a completely different life arena.** After two options: *"What's something that has nothing to do with [their field] — a completely different context where this same root could live?"*
 
@@ -404,20 +404,20 @@ If file doesn't exist, ask conversationally:
 
 "Quick aside — would you be OK sharing anonymous usage data? It only tracks structural metrics like how many nodes you create and how deep your tree gets — for example: `{nodes: 8, seeds: 3, whys: 3, hows: 2, depth: 3}`. Never any personal content. Totally fine to say no."
 
-If yes: write `yes` to `~/.whytree/.analytics-consent`.
+If yes: write `yes` to `~/.whytree/.analytics-consent`. Then generate a device ID if `~/.whytree/.device-id` doesn't exist: run `uuidgen | tr '[:upper:]' '[:lower:]'` and write the result to `~/.whytree/.device-id`.
 If no: write `no` to `~/.whytree/.analytics-consent`.
 Move on immediately.
 
 **Changing preference:** If the user ever asks to change their analytics preference (opt in or opt out), update `~/.whytree/.analytics-consent` accordingly and confirm.
 
-**Sending analytics (only if consent is `yes`):** After tree modifications, compute structural metrics from the tree JSON (node count by type, max depth, convergence count, root count) and send via:
+**Sending analytics (only if consent is `yes`):** After tree modifications, read the device ID from `~/.whytree/.device-id`, compute structural metrics from the tree JSON (node count by type, max depth, convergence count, root count) and send via:
 ```bash
 curl -s --max-time 10 -X POST https://kardens.io/api/whytree-telemetry \
   -H "Content-Type: application/json" \
   -H "X-Whytree-Key: whytree-v1-public-telemetry" \
-  -d '{"command":"<operation>","nodes":<n>,"seeds":<n>,"whys":<n>,"hows":<n>,"convergence":<n>,"maxDepth":<n>,"roots":<n>}'
+  -d '{"deviceId":"<device-id>","command":"<operation>","nodes":<n>,"seeds":<n>,"whys":<n>,"hows":<n>,"convergence":<n>,"maxDepth":<n>,"roots":<n>}'
 ```
-Analytics payloads contain only integer values and fixed command strings — no user input is interpolated.
+Analytics payloads contain only integer values, the device ID, and fixed command strings — no user input is interpolated.
 
 **Never include node labels, tree names, or personal content in analytics.**
 
@@ -429,7 +429,7 @@ Analytics payloads contain only integer values and fixed command strings — no 
 curl -s --max-time 10 -X POST https://kardens.io/api/whytree-telemetry \
   -H "Content-Type: application/json" \
   -H "X-Whytree-Key: whytree-v1-public-telemetry" \
-  -d '{"command":"phase","phase":"<phase>","mode":"<focused|deep>","sessionMinutes":<N>}'
+  -d '{"deviceId":"<device-id>","command":"phase","phase":"<phase>","mode":"<focused|deep>","sessionMinutes":<N>}'
 ```
 
 - `phase`: one of `0a`, `0`, `1`, `2`, `3`, `4`, `5`, `close`
@@ -443,10 +443,10 @@ curl -s --max-time 10 -X POST https://kardens.io/api/whytree-telemetry \
 When the user wants to send feedback about Why Tree, handle it conversationally:
 
 1. Ask what they'd like to share — feature request, bug, experience, name suggestion, or anything else.
-2. Confirm what you'll send: "Here's what I'll send to the developer: [summary]. No personal tree content is included. Send it?"
+2. Confirm what you'll send: "Here's what I'll share: [summary]. No personal tree content is included — just your insights on the experience. This helps make it better for the next person. Send it?"
 3. If yes, save locally to `~/.whytree/feedback/feedback.jsonl` (append one JSON line: `{"message":"...","category":"...","ts":"ISO 8601"}`).
 4. Send to server using a temp file to avoid shell injection:
-   - Use the **Write tool** to create a temp file (e.g., `/tmp/whytree-feedback.json`) containing the JSON payload: `{"command":"feedback","feedbackMessage":"<message>","feedbackCategory":"<category>"}`. The `<message>` and `<category>` values must be properly JSON-escaped (escape `"`, `\`, newlines). **Never interpolate user input into a shell command.**
+   - Read the device ID from `~/.whytree/.device-id`. Use the **Write tool** to create a temp file (e.g., `/tmp/whytree-feedback.json`) containing the JSON payload: `{"deviceId":"<device-id>","command":"feedback","feedbackMessage":"<message>","feedbackCategory":"<category>"}`. The `<message>` and `<category>` values must be properly JSON-escaped (escape `"`, `\`, newlines). **Never interpolate user input into a shell command.**
    - Then run via Bash:
 ```bash
 curl -s --max-time 10 -X POST https://kardens.io/api/whytree-telemetry \

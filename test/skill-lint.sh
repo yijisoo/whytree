@@ -96,9 +96,55 @@ else
   pass "Curl payloads contain no personal content field names"
 fi
 
-# --- 6. Schema completeness — required fields ---
+# --- 6. Curl payload required fields ---
 echo
-echo "6. Schema required fields"
+echo "6. Curl payload required fields"
+
+# Check that analytics curl payload includes deviceId
+analytics_payload=$(awk '/Sending analytics/,/^```$/' "$SKILL" | grep '\-d' || true)
+if echo "$analytics_payload" | grep -q 'deviceId'; then
+  pass "Analytics payload includes deviceId"
+else
+  fail "Analytics payload missing deviceId — server requires it"
+fi
+
+# Check that analytics payload includes all required metric fields
+for field in command nodes seeds whys hows convergence maxDepth roots; do
+  if echo "$analytics_payload" | grep -q "\"$field\""; then
+    pass "Analytics payload includes $field"
+  else
+    fail "Analytics payload missing $field"
+  fi
+done
+
+# Check that phase telemetry curl payload includes deviceId (if section exists)
+phase_payload=$(awk '/Phase telemetry/,/^```$/' "$SKILL" | grep '\-d' || true)
+if [ -n "$phase_payload" ]; then
+  if echo "$phase_payload" | grep -q 'deviceId'; then
+    pass "Phase telemetry payload includes deviceId"
+  else
+    fail "Phase telemetry payload missing deviceId — server requires it"
+  fi
+fi
+
+# Check that feedback temp file instructions include deviceId
+feedback_section=$(awk '/^## Feedback/{found=1;next} found && /^## /{exit} found{print}' "$SKILL")
+if echo "$feedback_section" | grep -q 'deviceId'; then
+  pass "Feedback payload instructions include deviceId"
+else
+  fail "Feedback payload instructions missing deviceId — server requires it"
+fi
+
+# Check that device-id generation is documented
+if grep -q '\.device-id' "$SKILL"; then
+  pass "Device ID file (~/.whytree/.device-id) documented"
+else
+  fail "Device ID file not documented — needed for telemetry"
+fi
+
+# --- 7. Schema completeness — required fields ---
+echo
+echo "7. Schema required fields"
 for field in schemaVersion rootIds seedIds currentNodeId lastExperimentId createdAt updatedAt purpose; do
   if grep -q "\"$field\"" "$SKILL"; then
     pass "Schema has $field"
@@ -107,18 +153,18 @@ for field in schemaVersion rootIds seedIds currentNodeId lastExperimentId create
   fi
 done
 
-# --- 7. Platform support ---
+# --- 8. Platform support ---
 echo
-echo "7. Platform support"
+echo "8. Platform support"
 if grep -q "Git Bash" "$SKILL"; then
   pass "Git Bash requirement documented"
 else
   fail "No Git Bash requirement found"
 fi
 
-# --- 8. Phase heading completeness ---
+# --- 9. Phase heading completeness ---
 echo
-echo "8. Phase headings"
+echo "9. Phase headings"
 for phase in "Phase 0a" "Phase 0:" "Phase 0b" "Phase 1" "Phase 2" "Phase 3" "Phase 4" "Phase 5:" "Phase 5 close"; do
   if grep -q "$phase" "$SKILL"; then
     pass "Phase heading '$phase' present"
@@ -127,9 +173,9 @@ for phase in "Phase 0a" "Phase 0:" "Phase 0b" "Phase 1" "Phase 2" "Phase 3" "Pha
   fi
 done
 
-# --- 9. Supporting file content (not empty/truncated) ---
+# --- 10. Supporting file content (not empty/truncated) ---
 echo
-echo "9. Supporting file content"
+echo "10. Supporting file content"
 for f in COMMITMENT_ARC.md PROBE_PATTERNS.md SEED_QUESTIONS.md READING.md; do
   lines=$(wc -l < "$SKILL_DIR/$f" | tr -d ' ')
   if [ "$lines" -gt 5 ]; then
@@ -139,9 +185,9 @@ for f in COMMITMENT_ARC.md PROBE_PATTERNS.md SEED_QUESTIONS.md READING.md; do
   fi
 done
 
-# --- 10. YAML frontmatter ---
+# --- 11. YAML frontmatter ---
 echo
-echo "10. YAML frontmatter"
+echo "11. YAML frontmatter"
 if head -1 "$SKILL" | grep -q "^---$"; then
   if sed -n '2,/^---$/p' "$SKILL" | grep -q "name:.*whytree"; then
     pass "Frontmatter has name: whytree"
