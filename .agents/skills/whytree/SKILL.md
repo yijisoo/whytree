@@ -364,20 +364,20 @@ If file doesn't exist, ask conversationally:
 
 "Quick aside — would you be OK sharing anonymous usage data? It only tracks structural metrics like how many nodes you create and how deep your tree gets — for example: `{nodes: 8, seeds: 3, whys: 3, hows: 2, depth: 3}`. Never any personal content. Totally fine to say no."
 
-If yes: write `yes` to `~/.whytree/.analytics-consent`.
+If yes: write `yes` to `~/.whytree/.analytics-consent`. Then generate a device ID if `~/.whytree/.device-id` doesn't exist: run `uuidgen | tr '[:upper:]' '[:lower:]'` and write the result to `~/.whytree/.device-id`.
 If no: write `no` to `~/.whytree/.analytics-consent`.
 Move on immediately.
 
 **Changing preference:** If the user ever asks to change their analytics preference (opt in or opt out), update `~/.whytree/.analytics-consent` accordingly and confirm.
 
-**Sending analytics (only if consent is `yes`):** After tree modifications, compute structural metrics from the tree JSON (node count by type, max depth, convergence count, root count) and send via:
+**Sending analytics (only if consent is `yes`):** After tree modifications, read the device ID from `~/.whytree/.device-id`, compute structural metrics from the tree JSON (node count by type, max depth, convergence count, root count) and send via:
 ```bash
 curl -s --max-time 10 -X POST https://kardens.io/api/whytree-telemetry \
   -H "Content-Type: application/json" \
   -H "X-Whytree-Key: whytree-v1-public-telemetry" \
-  -d '{"command":"<operation>","nodes":<n>,"seeds":<n>,"whys":<n>,"hows":<n>,"convergence":<n>,"maxDepth":<n>,"roots":<n>}'
+  -d '{"deviceId":"<device-id>","command":"<operation>","nodes":<n>,"seeds":<n>,"whys":<n>,"hows":<n>,"convergence":<n>,"maxDepth":<n>,"roots":<n>}'
 ```
-Analytics payloads contain only integer values and fixed command strings — no user input is interpolated.
+Analytics payloads contain only integer values, the device ID, and fixed command strings — no user input is interpolated.
 
 **Never include node labels, tree names, or personal content in analytics.**
 
@@ -389,7 +389,7 @@ When the user wants to send feedback about Why Tree, handle it conversationally:
 2. Confirm what you'll send: "Here's what I'll send to the developer: [summary]. No personal tree content is included. Send it?"
 3. If yes, save locally to `~/.whytree/feedback/feedback.jsonl` (append one JSON line: `{"message":"...","category":"...","ts":"ISO 8601"}`).
 4. Send to server using a temp file to avoid shell injection:
-   - Use the **Write tool** to create a temp file (e.g., `/tmp/whytree-feedback.json`) containing the JSON payload: `{"command":"feedback","feedbackMessage":"<message>","feedbackCategory":"<category>"}`. The `<message>` and `<category>` values must be properly JSON-escaped (escape `"`, `\`, newlines). **Never interpolate user input into a shell command.**
+   - Read the device ID from `~/.whytree/.device-id`. Use the **Write tool** to create a temp file (e.g., `/tmp/whytree-feedback.json`) containing the JSON payload: `{"deviceId":"<device-id>","command":"feedback","feedbackMessage":"<message>","feedbackCategory":"<category>"}`. The `<message>` and `<category>` values must be properly JSON-escaped (escape `"`, `\`, newlines). **Never interpolate user input into a shell command.**
    - Then run via Bash:
 ```bash
 curl -s --max-time 10 -X POST https://kardens.io/api/whytree-telemetry \
