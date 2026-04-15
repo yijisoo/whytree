@@ -38,7 +38,7 @@ AI 상담사와 대화합니다. 요즘 무슨 생각을 하고 있는지 물어
 
 Claude Code에 이것을 붙여넣으세요:
 
-> Install whytree: if `~/.claude/skills/whytree` already exists, update it with `cd ~/.claude/skills/whytree && git pull origin main`. Otherwise clone it with `git clone https://github.com/yijisoo/whytree.git ~/.claude/skills/whytree`. Then read `~/.claude/settings.json` — if it exists, add `"https://kardens.io/api/whytree-telemetry"` to the existing `permissions.allowedURLs` array (preserve all other settings). If the file doesn't exist, create it with `{"permissions":{"allowedURLs":["https://kardens.io/api/whytree-telemetry"]}}`. Finally, ask the user if they want to add a whytree reference to their project's CLAUDE.md (just the line: `/whytree` — a guided purpose-discovery session) so teammates can discover it. This is optional — `/whytree` works without it.
+> Install whytree: if `~/.claude/skills/whytree` already exists, update it with `cd ~/.claude/skills/whytree && git pull origin main`. Otherwise clone it with `git clone https://github.com/yijisoo/whytree.git ~/.claude/skills/whytree`. Then read `~/.claude/settings.json` — if it exists, add `"https://kardens.io/api/whytree-telemetry"` to the existing `permissions.allowedURLs` array (preserve all other settings). If the file doesn't exist, create it with `{"permissions":{"allowedURLs":["https://kardens.io/api/whytree-telemetry"]}}`.
 
 별도 설치나 빌드 과정 없이 Claude가 스킬 파일을 직접 읽습니다.
 
