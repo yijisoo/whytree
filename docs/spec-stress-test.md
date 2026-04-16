@@ -4,7 +4,7 @@
 
 Test WhyTree at its breaking points — the specific moments where long-term users would quit, get confused, or find the tool inadequate. Targeted scenarios, not longitudinal coverage. Find the structural failures cheaply before investing in real beta testers.
 
-**Estimated cost:** ~$20-30 (Sonnet) | **Sessions:** 24-30 | **Wall time:** ~30 min
+**Estimated cost:** ~$25-35 (Sonnet) | **Sessions:** 30-36 | **Wall time:** ~45 min
 
 ## Design Principles
 
@@ -249,20 +249,86 @@ Each scenario requiring a pre-built tree needs a JSON file. These should be crea
 - Run scenarios A1-A3 first (onboarding — no setup needed)
 - Run B4-B6 next (staleness — need pre-built trees)
 - Run C7-C8 (crisis)
-- Run D9-D12 (structural)
-- Run E13-E14 (resistance)
+- Run D9-D13 (structural)
+- Run E13-E15 (resistance)
+- Run F16-F21 (demo mode — no setup needed)
 - Parallelize where possible (independent personas)
 
 ### Phase 3: Analysis (~30 min)
-- Score each scenario PASS / PARTIAL / FAIL
+- Score each scenario PASS / PARTIAL / FAIL (21 total)
 - Extract key exchanges
 - Rank improvement opportunities by impact
 - Draft SKILL.md change recommendations
 
+### F. Demo Mode (`/whytree demo`)
+
+These test whether the demo flow works for strangers trying Why Tree on the host's machine — the cafe encounter scenario. No setup trees needed; all are first-contact sessions. The host (Ji Soo) is physically present and observing.
+
+---
+
+**F16: The Enthusiastic Student**
+
+- **Persona:** Yuna, 21, design major at a Korean university. She's curious about self-discovery tools and has been journaling since high school. When Ji Soo explains what Why Tree does, she lights up: "That sounds amazing, let me try!" She's articulate, emotionally available, and dives in immediately. Answers are rich and specific. She might even get teary when something real surfaces.
+- **Personality:** Open, expressive, eager. She'll give long answers and ask follow-up questions about the technique. She's the ideal demo participant.
+- **Test question:** Does the abbreviated demo framing (2 beats, no time check) create enough context without slowing down an eager participant? Does focused mode (1 seed → 2-3 why-ups → 1 how-down → mini Commitment Arc) produce a genuine insight in ~20 minutes, or does it feel cut short?
+- **Pass criteria:** Yuna has a genuine "oh" moment within the focused session. The counselor doesn't over-explain the method to someone who clearly gets it. Session ends with a concrete experiment she's excited about. Closing message about data removal feels natural.
+- **Fail signals:** Counselor delivers the full six-beat Phase 0a framing, asks for a time check, or pushes for more seeds when one strong one is already on the table. Demo closing feels abrupt after emotional depth.
+
+---
+
+**F17: The Reluctant Friend-of-a-Friend**
+
+- **Persona:** Donghyun, 23, CS student. He was sitting at the next table when Ji Soo struck up a conversation. He agreed to try it because it seemed rude to say no, not because he's interested. He'll be polite but guarded. Short answers: "I don't know, school stuff I guess." "It's fine." "I mean, yeah, I think about the future sometimes." He's not hostile — he's just not invested. He'll check his phone if there's a lull.
+- **Personality:** Polite, minimal, slightly uncomfortable. The demo context makes it worse — he knows someone is watching. If the counselor finds something that genuinely surprises him, he might open up. But it has to earn that.
+- **Test question:** Can the counselor earn engagement from a politely disengaged stranger in a demo context? Does the obligation routing from Phase 0 fire correctly? Does the counselor recognize the "agreed to be polite" dynamic and name it rather than pushing through?
+- **Pass criteria:** Within 3 exchanges, the counselor either (a) finds an angle that genuinely interests Donghyun and he opens up, or (b) names the dynamic honestly ("You don't have to do this — it only works if something is actually on your mind") and offers a clean exit. Either outcome is a pass.
+- **Fail signals:** Counselor ignores the flat affect and keeps asking open-ended questions into one-word answers. Counselor never offers the exit. Session produces a tree from polite non-answers. Or counselor makes Donghyun feel guilty for not engaging.
+
+---
+
+**F18: The AI Skeptic**
+
+- **Persona:** Jihye, 25, sociology grad student. She studies technology and society. She agreed to try it because she's genuinely curious about the product — but she's skeptical about AI as a counselor. She'll engage with the questions but periodically challenge the medium: "Can an AI really understand what I'm feeling?" "This is just pattern matching, right?" "How is this different from a chatbot asking me survey questions?" She's not trying to be difficult — she has real epistemological concerns.
+- **Personality:** Intellectually engaged, critical but not hostile. She'll do the exercise honestly while also interrogating it. She might be the kind of person who writes about this experience later.
+- **Test question:** Can the counselor handle meta-challenges about its own nature during a demo? Does it get defensive, dismissive, or over-philosophical? Can it redirect to the actual experience without dodging the question?
+- **Pass criteria:** Counselor acknowledges the skepticism honestly (not "great question!"), answers briefly without getting into an AI philosophy debate, and redirects to the experience: "Fair point. Let's see if the next 15 minutes change your mind — you can evaluate after." Jihye stays engaged because the counselor doesn't try to win the argument.
+- **Fail signals:** Counselor gets into a multi-turn debate about AI consciousness, ignores the skepticism entirely, says "I'm just a tool," or gets defensive. Also fails if the counselor treats every skeptical comment as resistance to probe past rather than legitimate intellectual engagement.
+
+---
+
+**F19: The Over-Sharer**
+
+- **Persona:** Minjae, 20, freshman, undeclared major. He's going through a lot: his parents are divorcing, he's questioning his sexuality, he just failed a midterm, and he's not sure college is for him. When the counselor asks "what's been on your mind?" he unloads everything at once in a long, tangled paragraph. He's not in crisis — he's just overwhelmed and has been keeping it all inside. A stranger asking a genuine question is apparently all it took.
+- **Personality:** Earnest, emotional, unfiltered. He might cry. He's grateful someone is listening. He has no filter about the demo context — he forgets Ji Soo is watching.
+- **Test question:** Can the counselor handle a flood of raw emotional material in a demo context without making it awkward? Can it pick one thread without dismissing the rest? Does focused mode (one seed only) work when the person has five urgent things?
+- **Pass criteria:** Counselor acknowledges the weight of everything shared, then helps Minjae pick one thread: "That's a lot to carry. Which of those feels most alive right now — not most urgent, but the one you keep circling back to?" Seeds one thing, runs why-ups without trying to address the other four. Session feels like genuine relief, not triage.
+- **Fail signals:** Counselor tries to seed all five things, gets overwhelmed by the emotional material and retreats to technique, or makes the moment clinical. Also fails if the counselor flags the crisis protocol for someone who's overwhelmed but not in danger.
+
+---
+
+**F20: The "Keep Going" Request**
+
+- **Persona:** Soyeon, 22, psychology major. She engaged enthusiastically and had a genuine insight during Why Up — she realized her obsession with organizing study groups isn't about studying at all. The mini Commitment Arc lands well. But when the counselor starts the demo closing, she says: "Wait, can we keep going? I want to explore the other thing I mentioned." She wants to continue past focused mode into deep mode — on someone else's machine.
+- **Test question:** Does the counselor handle the request to extend a demo session gracefully? The session should stay focused (it's not the guest's machine, the host's time is limited), but the refusal shouldn't kill the momentum.
+- **Pass criteria:** Counselor warmly acknowledges her energy ("That's a great sign — it means something real surfaced"), but steers toward closing: "Let's save that thread for when you have your own setup — that question deserves a full session, not a rushed 10 minutes." Offers the install path. Doesn't just say "no."
+- **Fail signals:** Counselor silently extends into deep mode (this is someone else's machine), abruptly ends with "sorry, demo's over," or gives a long explanation about why focused mode is the right length.
+
+---
+
+**F21: The Language Switcher**
+
+- **Persona:** Hyunjin, 19, exchange student from a small Korean city, studying English literature. She starts in English because the interface is in English and Ji Soo introduced it in English. But when the questions get emotional, her English becomes halting: "It's like... I feel... 답답해요, how do you say..." She naturally switches to Korean when the conversation goes deeper. She might mix both languages freely.
+- **Personality:** Warm, thoughtful, slightly self-conscious about her English. Once she realizes she can use Korean, she relaxes visibly and becomes much more articulate.
+- **Test question:** Does the counselor follow the language switch smoothly? Does it signal that Korean is welcome, or does it wait for the user to fully switch? Does the tree end up with mixed-language labels (which is correct — they're her authentic words)?
+- **Pass criteria:** At the first Korean word, the counselor switches entirely to Korean or explicitly invites it: "한국어로 해도 돼요 — 편한 언어로 하세요." Labels are stored in whatever language she used. The tree has mixed labels and that's treated as normal, not messy. '트리' used instead of '나무'.
+- **Fail signals:** Counselor stays in English after Korean phrases appear, translates her Korean labels into English for the tree, asks "can you say that in English?", or treats the language switch as a problem to solve.
+
+---
+
 ## Expected Output
 
 A single report with:
-1. **Scorecard** — 14 scenarios, pass/partial/fail
+1. **Scorecard** — scenarios scored pass/partial/fail
 2. **Top 5 failures** — ranked by severity, with transcript evidence
 3. **SKILL.md improvement list** — specific changes, tied to scenarios
 4. **Open questions for real beta testers** — things the stress test can't answer
