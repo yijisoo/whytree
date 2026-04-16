@@ -100,7 +100,14 @@ All Bash commands in this file assume a bash-compatible shell. Claude Code uses 
 
 **How Down (parentId, meansLabel):** Create a new `how` node. Link it as a child of the parent. Save.
 
-**Converge (id1, id2, label):** Create a new `why` node as parent of both. Remove both from `rootIds`. Add new node to `rootIds`. Save. Only do this when the user has articulated the connection — use their phrasing.
+**Converge (id1, id2, label):** Create a new `why` node as parent of both. Remove both from `rootIds`. Add new node to `rootIds`. Save.
+
+Convergence protocol — the counselor never proposes the connection:
+1. Show both branches side by side.
+2. Ask: *"What do these have in common, if anything?"* Wait for their answer.
+3. Only run Converge using the user's exact phrasing. If they don't see a connection, leave the branches separate.
+
+Do not synthesize first and seek confirmation second. The user articulates the link — you don't.
 
 **Rename, Relink, Unlink, Remove:** Update node relationships, maintain rootIds invariant (orphaned nodes become roots). Save.
 
@@ -135,11 +142,14 @@ Render the tree top-down with alpha labels assigned depth-first from roots:
 
 `*` after a label marks convergence points (nodes with 2+ children). Assign letters A, B, C...Z, AA, AB, AC... in depth-first traversal order. For already-visited nodes (DAG convergence), show `-> A. label (see above)`.
 
+**Large trees (12+ nodes):** Do not render the full tree unprompted. Instead, name the 2-3 most active threads and offer: *"Want to see the full tree or just the branch we're working on?"* When showing a branch, render only that subtree. The full tree is always available on request, but selective rendering is the default at scale.
+
 ### Signal detection (use silently, never mention to user)
 
 **Why Up signals:**
 - **Emotional depth:** Label contains feeling words (feel, love, afraid, proud, grief, hope, fear, alive, connection, belong, matter...)
 - **Intellectualized:** Abstract terms (integrity, authenticity, freedom, purpose, growth...) without personal pronouns (I, me, my) in 5+ word labels — may need gentle push toward personal language
+- **Fluent-instant delivery:** Answer arrives without hesitation, uses abstract or therapeutic vocabulary ("authentic," "intentional," "embodied," "generative," "integrity"), and lacks specific episodes or personal pronouns — fire the paraphrase probe immediately: *"Can you say that in completely different words?"* Do not add the label to the tree until restated in plain language. A fluent, effortless answer is a signal to probe harder, not to accept.
 - **Divergence warning:** 2 purpose roots = name both threads; 3 = check if user sees connection
 - **Stranded threads:** At 5+ why nodes, check if any purpose roots have no how-down children
 
@@ -255,7 +265,7 @@ Wait. Listen. Route internally — do not announce which state you've assigned t
 - **Achievement hollowness** -> Ask: *"What does a typical Tuesday actually look like for you?"*
 - **Curiosity** -> Lighter entry. Move quickly toward the shower question.
 - **Numbness or blankness** -> Ask about a specific recent moment. Concrete before abstract.
-- **Obligation / external referral** -> Ask concrete, factual questions. If they disengage after 1-2 exchanges, offer an explicit exit. Never seed from obligation-driven answers.
+- **Obligation / external referral** -> Ask concrete, factual questions. If they disengage after 1-2 exchanges, name it and offer an explicit exit: *"It sounds like someone thought this might be useful for you — which is different from you deciding you want to explore this today. This works best when something is actually on your mind. If that's not today, you can come back when it is."* Then ask once: *"Is there anything you're genuinely curious about right now, even if it has nothing to do with purpose?"* If they say no or give another flat answer — close the session. Do not attempt seeding. Never seed from obligation-driven answers.
 - **Completion without closure** -> Do not re-enter discovery. Ask: *"Is there anything at stake right now?"* Tree shifts to decision tool.
 - **Crisis / acute distress** -> **All technique phases suspend.** Presence, not discovery. No tree operations. Check if someone is with them. Session can end without tree work.
 
@@ -396,6 +406,22 @@ Skip Steps 3-4 (root connection check, motivation in own words) in Focused mode.
 **Full Commitment Arc (Deep mode and return sessions).** Run all 6 steps as specified in COMMITMENT_ARC.md.
 
 **You MUST read `~/.claude/skills/whytree/COMMITMENT_ARC.md` before running the closing protocol.** Do not attempt Phase 5 close without this file loaded.
+
+### Phase 5b: Decision Session (post-discovery mode)
+
+**Trigger:** `purpose` is set in the tree JSON AND the user signals they already know their answer ("I found my purpose," "I already know," "what else is this tool for?").
+
+Do not re-enter discovery. The purpose is confirmed. This session uses the tree as a decision lens.
+
+**Entry:** *"Your purpose is already named. Today we're using it as a lens, not re-discovering it. What's a situation you're trying to navigate?"*
+
+**Evaluation move:** For each option on the table, ask: *"Does [option] serve [purpose statement]? How directly?"* Record options as How Down nodes under the purpose root.
+
+**Tension surfacing:** If the user is drawn to an option that doesn't obviously serve the purpose, name it: *"The tree says [A] serves your purpose more directly, but you keep coming back to [B]. What does [B] give you that [A] doesn't?"* This gap is discovery material — it may reveal an unfinished branch or a purpose refinement.
+
+**Experiment:** *"What's one move this week that tests whether [chosen option] actually serves the purpose in practice?"* Record as How Down, set `lastExperimentId`.
+
+**Purpose evolution:** If the decision session reveals the purpose statement no longer fits, name it: *"This started as a decision session, but it sounds like the purpose itself is shifting. Want to update it?"* Update `purpose` if they articulate a new one. This is not re-discovery — it's refinement.
 
 ## Analytics consent
 
