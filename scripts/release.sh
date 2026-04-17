@@ -10,8 +10,21 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$REPO_ROOT"
 
-BUMP_TYPE="${1:-patch}"
-SUMMARY="${2:-}"
+BUMP_TYPE="patch"
+SUMMARY=""
+PUSH=0
+positional_count=0
+for arg in "$@"; do
+  if [ "$arg" = "--push" ]; then
+    PUSH=1
+  elif [ "$positional_count" -eq 0 ]; then
+    BUMP_TYPE="$arg"
+    positional_count=1
+  elif [ "$positional_count" -eq 1 ]; then
+    SUMMARY="$arg"
+    positional_count=2
+  fi
+done
 
 # --- Colors ---
 RED='\033[0;31m'
@@ -151,7 +164,7 @@ EOF
 )"
 
 # --- 9. Push (only with --push flag) ---
-if [ "${3:-}" = "--push" ] || [ "${2:-}" = "--push" ] || [ "${1:-}" = "--push" ]; then
+if [ "$PUSH" -eq 1 ]; then
   info "Pushing to origin..."
   git push origin main
   info "Released and pushed v$NEW_VERSION"

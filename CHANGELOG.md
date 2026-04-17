@@ -5,7 +5,39 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [0.2.9] — 2026-04-17
 
---push
+### Added
+- Demo mode (`/whytree demo`) — streamlined session for trying Why Tree on a host's machine; cleans up the demo tree and restores the host's previous session at the end
+- Solution-seeker pattern handling — Phase 2 now names what the tree shows and quotes the user's own words back when they ask for advice instead of deflecting with more questions
+- Phase 5b decision session — post-discovery mode for users who already found their purpose
+- 12+ node selective rendering — large trees no longer dump every branch
+- Proactive feedback — counselor watches for tool misfires or design-relevant insights, drafts a depersonalized note (no labels, no quoted words, no purpose statements), and asks the user to confirm with a yes; max one offer per session
+- Versioned consent (`yes-v2`) and longitudinal usage ping — one event per session (anonymous device ID, session number, days since first session, tree age) replaces the old structural metrics
+- Permission beat sets expectation upfront — "the answer isn't out there — it's in you; my job is to help you hear it"
+- 7 new stress test scenarios — 6 demo personas (F16–F21) and 1 solution-seeker (E15)
+
+### Fixed
+- Premature convergence — Converge now requires the user to articulate the connection first
+- Fluent-insight trap detected proactively — blocks tree entry until restated plainly
+- Obligation exit now has explicit closing language with one last genuine question
+- Install instruction no longer touches project-level CLAUDE.md, reducing the compound permission surface
+- Device-ID Q&A and session-counter clarification — counselor can answer "what is the anonymous device ID?" verbatim and won't re-run preamble mid-session
+- Canonical `feedbackCategory` table — categories no longer drift across sessions
+
+### Changed
+- Phase telemetry folded into the single session ping
+- Legacy `yes` users are re-prompted once because the prior consent did not cover linking sessions across time; `no` users are respected silently
+- README + README.ko: privacy section now explicit about longitudinal scope and the legacy re-prompt; feedback section reframed as "shape the tool for the next person"
+- Both READMEs lead with "it won't tell you what to do — it helps you listen to yourself"
+- Cross-platform support clarified; untested IDE mentions removed
+- `release.sh` push is now opt-in via `--push`; default is local commit only
+- CLAUDE.md adds a workflow rule: no push/release unless explicitly asked
+
+### Removed
+- Structural-metric analytics (node counts, depth, convergence) — replaced by the usage ping above
+- End-of-session feedback ask in the Commitment Arc — replaced by the proactive flow
+
+### Notes
+- The kardens.io endpoint is unchanged. Removed payload fields silently drop server-side; new fields are additive. Any kardens dashboards that relied on structural metrics will go quiet — verify before relying on the new shape.
 
 ## [0.2.8] — 2026-04-15
 
