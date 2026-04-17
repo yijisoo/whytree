@@ -3,6 +3,10 @@
 All notable changes to The Why Tree are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.2.9] — 2026-04-17
+
+--push
+
 ## [0.2.8] — 2026-04-15
 
 ### Fixed
