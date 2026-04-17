@@ -29,7 +29,8 @@ else
   if [ -f "$LAST_SESSION" ]; then
     MTIME=$(stat -f%m "$LAST_SESSION" 2>/dev/null || stat -c%Y "$LAST_SESSION" 2>/dev/null || echo 0)
   else
-    # Fall back to newest tree file for first run after upgrade
+    # First run after upgrading from a pre-.last-session version: estimate gap from the
+    # newest tree file's mtime. Subsequent runs use .last-session (touched at line 44).
     NEWEST=$(ls -t ~/.whytree/*.json 2>/dev/null | head -1)
     MTIME=$(stat -f%m "$NEWEST" 2>/dev/null || stat -c%Y "$NEWEST" 2>/dev/null || echo 0)
   fi
@@ -79,12 +80,19 @@ if [ "$CONSENT_VAL" = "yes-v2" ] && [ "$DEMO_MODE" -eq 0 ]; then
   COUNT_FILE=~/.whytree/.session-count
   TODAY_EPOCH=$(date +%s)
 
-  # Initialize first-session if missing (yes-v2 just granted but file not yet created)
+  # Initialize first-session if missing (yes-v2 just granted but file not yet created).
+  # Source of truth is the ISO timestamp INSIDE the file — survives `touch` or restore-from-backup.
   if [ ! -f "$FIRST_FILE" ]; then
     date -u +"%Y-%m-%dT%H:%M:%SZ" > "$FIRST_FILE"
   fi
-  FIRST_EPOCH=$(stat -f%m "$FIRST_FILE" 2>/dev/null || stat -c%Y "$FIRST_FILE" 2>/dev/null || echo "$TODAY_EPOCH")
+  FIRST_ISO=$(head -1 "$FIRST_FILE" 2>/dev/null | tr -d '[:space:]')
+  # Parse ISO timestamp to epoch (BSD date first, GNU date fallback). On any parse error,
+  # fall through to today so DAYS_SINCE_FIRST=0 instead of a garbage value.
+  FIRST_EPOCH=$(date -u -j -f "%Y-%m-%dT%H:%M:%SZ" "$FIRST_ISO" +%s 2>/dev/null \
+    || date -u -d "$FIRST_ISO" +%s 2>/dev/null \
+    || echo "$TODAY_EPOCH")
   DAYS_SINCE_FIRST=$(( (TODAY_EPOCH - FIRST_EPOCH) / 86400 ))
+  if [ "$DAYS_SINCE_FIRST" -lt 0 ]; then DAYS_SINCE_FIRST=0; fi
 
   # Increment session counter atomically-ish
   if [ -f "$COUNT_FILE" ]; then

@@ -198,7 +198,7 @@ Demo mode lets someone try Why Tree on the host's computer — typically a stran
 
    Wait for their name. Use it naturally from here on.
 
-3. **Create a demo tree.** Read `~/.whytree/.current` first and remember the host's previous slug. Name the tree `[Name] — Demo` (e.g., `"Minjae — Demo"`). Slugify normally. Write the new slug to `~/.whytree/.current`. **At session end, delete the demo tree file and restore `.current` to the host's previous slug.** The guest's tree is temporary — this is someone else's machine.
+3. **Create a demo tree.** Read `~/.whytree/.current` first and remember the host's previous slug — **note explicitly whether the file existed**. Display name is `[Name] — Demo` (e.g., `"Minjae — Demo"`), but the **slug must be generic**: use `demo-<short-id>` where `<short-id>` is the first 8 chars of `uuidgen | tr '[:upper:]' '[:lower:]'`. This keeps the guest's name out of the host's filesystem. Write the slug to `~/.whytree/.current`. **At session end** (success or failure), delete the demo tree file and either restore `.current` to the host's previous slug or, **if `.current` did not exist before the demo**, delete `.current` rather than leaving it pointing at a stale value.
 
 4. **Skip analytics consent entirely.** Do not ask. Do not send the session ping during demo sessions, and do not increment the host's session counter.
 
@@ -214,11 +214,13 @@ Demo mode lets someone try Why Tree on the host's computer — typically a stran
 
 7. **Phase 0b (experiment check-in) is skipped** — demo sessions have no prior experiment.
 
-8. **At session end**, after the mini Commitment Arc, add a brief closing:
+8. **At session end** (success path), after the mini Commitment Arc, add a brief closing:
 
    *"Thanks for trying this! I'll clear your tree from this machine now — your data doesn't stay here. If you want to continue on your own, you can install Claude Code and Why Tree and start fresh."*
 
-   Delete the demo tree file (`~/.whytree/<slug>.json`) and restore `.current` to the host's previous slug (saved at step 3). If the guest asks about installing, briefly explain: `npm install -g @anthropic-ai/claude-code`, then install the skill from GitHub. Keep it to one sentence — the host can help with details.
+   Run cleanup: delete the demo tree file (`~/.whytree/<slug>.json`); if the host had a `.current` before, restore it (`echo "<previous-slug>" > ~/.whytree/.current`); if not, delete `.current` (`rm -f ~/.whytree/.current`). If the guest asks about installing, briefly explain: `npm install -g @anthropic-ai/claude-code`, then install the skill from GitHub. Keep it to one sentence — the host can help with details.
+
+9. **Cleanup is mandatory on every exit path.** If the demo session ends abnormally (the user closes the tab, an error fires, the model has to abort), still attempt the same cleanup as step 8 — delete the demo tree file and restore-or-remove `.current`. The host's machine should not be left with a stranger's tree or a broken `.current`. If you cannot run cleanup, tell the host explicitly: *"Couldn't auto-clean — please remove `~/.whytree/<demo-slug>.json` and check `~/.whytree/.current`."*
 
 ### Demo-specific counselor notes
 
@@ -406,7 +408,7 @@ If gate fires: ask *"Before we look at alternatives — why does [current root] 
 
 **In Focused mode, one How Down is enough.** After the first How Down, offer the exit: *"You've found something here. Want to try one thing based on this, or keep going?"* If they choose to close, run the mini Commitment Arc (Steps 1, 2, 5 from COMMITMENT_ARC.md — selection, narrow to today, close). If they continue, proceed with the full session flow.
 
-**Early-exit feedback (before minimum viable exit).** If the user wants to stop before reaching the first genuine Why Up (i.e., they want to leave during Phase 0, 1, or 2), ask once: *"Before you go — anything about this experience you'd want to share? It helps make it better for the next person."* One ask only — if they say no or ignore it, let them go. If they share something, handle it the same way as the Feedback section (save to `~/.whytree/feedback/feedback.jsonl`, send via temp file curl).
+**Early-exit feedback (before minimum viable exit).** If the user wants to stop before reaching the first genuine Why Up (i.e., they want to leave during Phase 0, 1, or 2), ask once: *"Before you go — anything about this experience you'd want to share? It helps make it better for the next person."* One ask only — if they say no or ignore it, let them go. If they share something, **save it locally only** to `~/.whytree/feedback/feedback.jsonl` (using the Write tool, same JSON-line format as the Feedback section). **Do not send the early-exit reply to the server**: an in-the-moment exit reply often contains personal content ("I'm exhausted, my mom is sick"), and the depersonalization rules in the Feedback section cannot be reliably applied to free-form user voice. The developer reviews local feedback.jsonl manually.
 
 **In Deep mode and return sessions, aim for three How Downs, with the third in a completely different life arena.** After two options: *"What's something that has nothing to do with [their field] — a completely different context where this same root could live?"*
 
@@ -494,7 +496,7 @@ If the user is being re-prompted (legacy `yes`), prefix with one sentence: *"I'm
 
 **If they ask "what is the anonymous device ID?":** *"It's a random UUID generated locally by `uuidgen` and stored in `~/.whytree/.device-id`. It's not your hostname, account, or any hardware identifier — it just lets repeat sessions be counted as one user. Delete that file any time and the link is gone."*
 
-If yes: write `yes-v2` to `~/.whytree/.analytics-consent`. Then generate a device ID if `~/.whytree/.device-id` doesn't exist: run `uuidgen | tr '[:upper:]' '[:lower:]'` and write the result. Also create `~/.whytree/.first-session` (write the current ISO 8601 UTC timestamp) and write `1` to `~/.whytree/.session-count` if these files don't exist. The `1` represents the current in-flight session — no need to re-run preamble. After this, send the session ping below using `sessionNumber: 1`.
+If yes: write `yes-v2` to `~/.whytree/.analytics-consent`. Then generate a device ID if `~/.whytree/.device-id` doesn't exist: run `uuidgen | tr '[:upper:]' '[:lower:]'` and write the result. Also create `~/.whytree/.first-session` (write the current ISO 8601 UTC timestamp) and write `1` to `~/.whytree/.session-count` if these files don't exist. The `1` represents the current in-flight session — no need to re-run preamble. After this, send the session ping below using **`sessionNumber: 1` and `daysSinceFirstSession: 0` directly** — do NOT use the `SESSION_NUMBER` / `DAYS_SINCE_FIRST_SESSION` values from the preamble output, which were `0` because consent had not been granted yet.
 If no: write `no` to `~/.whytree/.analytics-consent`.
 Move on immediately.
 

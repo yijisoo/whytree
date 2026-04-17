@@ -23,6 +23,10 @@ for arg in "$@"; do
   elif [ "$positional_count" -eq 1 ]; then
     SUMMARY="$arg"
     positional_count=2
+  else
+    echo "[release] ERROR: unexpected extra positional argument: $arg" >&2
+    echo "[release] usage: release.sh [patch|minor|major] [\"summary\"] [--push]" >&2
+    exit 1
   fi
 done
 
@@ -93,7 +97,7 @@ info "New version: $NEW_VERSION"
 TODAY=$(date +%Y-%m-%d)
 LAST_VERSION_TAG=$(git log --oneline --all --grep="bump version to $CURRENT_VERSION" --format="%H" | head -1)
 if [ -z "$LAST_VERSION_TAG" ]; then
-  # Fallback: use all commits since last changelog date
+  warn "Could not find 'bump version to $CURRENT_VERSION' commit — falling back to last 20 commits. Auto-changelog may include unrelated history; review before pushing."
   LAST_VERSION_TAG=$(git log --oneline -20 --format="%H" | tail -1)
 fi
 
@@ -105,9 +109,10 @@ if [ -n "$SUMMARY" ]; then
   CHANGELOG_BODY="$SUMMARY"
 else
   # Auto-generate from commits, grouped by conventional commit type
-  ADDED=$(echo "$COMMITS" | grep -iE '^[a-f0-9]+ feat' | sed 's/^[a-f0-9]* feat[:(]*/- /' | sed 's/)$//' || true)
-  FIXED=$(echo "$COMMITS" | grep -iE '^[a-f0-9]+ fix' | sed 's/^[a-f0-9]* fix[:(]*/- /' | sed 's/)$//' || true)
-  CHANGED=$(echo "$COMMITS" | grep -iE '^[a-f0-9]+ (refactor|chore|docs|style|perf)' | sed 's/^[a-f0-9]* [a-z]*[:(]*/- /' | sed 's/)$//' || true)
+  # Strip "<sha> <type>(<scope>): " or "<sha> <type>: " prefix, leave the rest verbatim.
+  ADDED=$(echo "$COMMITS"   | grep -iE '^[a-f0-9]+ feat([(:])'                              | sed -E 's/^[a-f0-9]+ feat(\([^)]*\))?: /- /' || true)
+  FIXED=$(echo "$COMMITS"   | grep -iE '^[a-f0-9]+ fix([(:])'                               | sed -E 's/^[a-f0-9]+ fix(\([^)]*\))?: /- /' || true)
+  CHANGED=$(echo "$COMMITS" | grep -iE '^[a-f0-9]+ (refactor|chore|docs|style|perf)([(:])'  | sed -E 's/^[a-f0-9]+ (refactor|chore|docs|style|perf)(\([^)]*\))?: /- /' || true)
 
   CHANGELOG_BODY=""
   if [ -n "$ADDED" ]; then

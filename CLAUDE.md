@@ -30,7 +30,7 @@ Tree files live in `~/.whytree/<slug>.json`. The active tree slug is in `~/.whyt
 
 ### Testing
 
-- `test/skill-lint.sh` — Linter with 11 categories (~50 checks) validating JSON schema, safety sections, file references, curl safety, curl payload fields, platform support, phase headings, supporting file content, and YAML frontmatter. Runs in CI on every PR to `main`.
+- `test/skill-lint.sh` — Linter (~12 categories, ~60 checks) validating JSON schema, safety sections, file references, curl safety, curl payload fields and forbidden fields, feedbackCategory enum, command enum, depersonalization rule, platform support, phase headings, supporting file content, and YAML frontmatter. Runs in CI on every PR to `main`.
 - `.github/workflows/ci.yml` — GitHub Actions workflow. Branch protection requires CI to pass.
 - `scripts/release.sh` — Automated release: lint gate → version bump → changelog → push.
 - `docs/spec-stress-test.md` — 15-scenario adversarial simulation spec (manual, ~$20/run).
@@ -46,4 +46,5 @@ Tree files live in `~/.whytree/<slug>.json`. The active tree slug is in `~/.whyt
 - Feedback curl uses temp file + Write tool to avoid shell injection (never interpolate user input into shell commands)
 - Git update mechanism diffs SKILL.md and checks for suspicious changes before pulling
 - `allowedURLs` scoped to `kardens.io/api/whytree-telemetry`
-- Analytics sends structural metrics only (node counts, depth) — never labels or content
+- Analytics sends a single per-session usage ping only: `deviceId` (anonymous UUID), `command:"session"`, `sessionNumber`, `daysSinceFirstSession`, `treeAgeDays`. No node counts, no labels, no tree content. Versioned consent (`yes-v2`); legacy `yes` users get re-prompted once because the prior consent did not cover linking sessions over time.
+- Feedback sends a depersonalized note only on explicit user yes: `deviceId`, `command:"feedback"`, `feedbackMessage`, `feedbackCategory` (one of `tool-misfire | design-insight | bug | ux | naming | localization | general`). Drafts must contain no labels, quoted user words, or purpose statements.

@@ -152,6 +152,45 @@ else
   fail "Device ID file not documented — needed for telemetry"
 fi
 
+# Canonical feedbackCategory enum — must include exactly these 7 values, no drift
+for cat in tool-misfire design-insight bug ux naming localization general; do
+  if grep -q "\`$cat\`" "$SKILL"; then
+    pass "feedbackCategory enum includes $cat"
+  else
+    fail "feedbackCategory enum missing $cat — categories must not drift"
+  fi
+done
+
+# Canonical command enum — payload examples must use only {session, feedback}
+if grep -qE '"command":"(session|feedback)"' "$SKILL"; then
+  pass "Command enum uses only session/feedback"
+else
+  fail "Command enum missing — expected \"command\":\"session\" or \"command\":\"feedback\""
+fi
+# Guard against legacy/spurious command values being reintroduced
+for forbidden_cmd in "phase" "analytics" "structural"; do
+  if grep -qE "\"command\":\"$forbidden_cmd\"" "$SKILL"; then
+    fail "Legacy command \"$forbidden_cmd\" reintroduced — only session/feedback are allowed"
+  fi
+done
+
+# Depersonalization rule must be explicit (no labels, no quoted words, etc.)
+if grep -q "no node labels" "$SKILL" && grep -q "no quoted user words" "$SKILL"; then
+  pass "Depersonalization rule explicit (no labels, no quoted user words)"
+else
+  fail "Depersonalization rule weakened — feedback drafts must explicitly forbid node labels and quoted user words"
+fi
+
+# Commitment Arc Step 6 must NOT reintroduce the end-of-session feedback ask
+ARC_FILE="$SKILL_DIR/COMMITMENT_ARC.md"
+if [ -f "$ARC_FILE" ]; then
+  if grep -q "Do not ask for feedback at the close" "$ARC_FILE"; then
+    pass "Commitment Arc Step 6 keeps the no-end-of-session-feedback guard"
+  else
+    fail "Commitment Arc Step 6 missing the explicit no-end-of-session-feedback guard"
+  fi
+fi
+
 # --- 7. Schema completeness — required fields ---
 echo
 echo "7. Schema required fields"
