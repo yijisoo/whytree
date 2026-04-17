@@ -492,13 +492,15 @@ Do not re-enter discovery. The purpose is confirmed. This session uses the tree 
 
 If the user is being re-prompted (legacy `yes`), prefix with one sentence: *"I'm asking again because the consent scope changed slightly — the previous version didn't cover linking sessions across time."*
 
-If yes: write `yes-v2` to `~/.whytree/.analytics-consent`. Then generate a device ID if `~/.whytree/.device-id` doesn't exist: run `uuidgen | tr '[:upper:]' '[:lower:]'` and write the result. Also create `~/.whytree/.first-session` (write the current ISO 8601 UTC timestamp) and write `1` to `~/.whytree/.session-count` if these files don't exist. After this, send the session ping below.
+**If they ask "what is the anonymous device ID?":** *"It's a random UUID generated locally by `uuidgen` and stored in `~/.whytree/.device-id`. It's not your hostname, account, or any hardware identifier — it just lets repeat sessions be counted as one user. Delete that file any time and the link is gone."*
+
+If yes: write `yes-v2` to `~/.whytree/.analytics-consent`. Then generate a device ID if `~/.whytree/.device-id` doesn't exist: run `uuidgen | tr '[:upper:]' '[:lower:]'` and write the result. Also create `~/.whytree/.first-session` (write the current ISO 8601 UTC timestamp) and write `1` to `~/.whytree/.session-count` if these files don't exist. The `1` represents the current in-flight session — no need to re-run preamble. After this, send the session ping below using `sessionNumber: 1`.
 If no: write `no` to `~/.whytree/.analytics-consent`.
 Move on immediately.
 
 **Changing preference:** If the user asks to change their preference, update `~/.whytree/.analytics-consent` accordingly and confirm. Switching from `no` → `yes-v2` runs the same initialization (device ID, first-session, counter).
 
-**Sending the session ping (only if consent is `yes-v2`):** Once per session, after parsing the preamble, fire one fire-and-forget event. Read the device ID from `~/.whytree/.device-id`, take `SESSION_NUMBER` and `DAYS_SINCE_FIRST_SESSION` directly from the preamble output, and compute `treeAgeDays` from the active tree's `createdAt` (0 if no tree yet):
+**Sending the session ping (only if consent is `yes-v2`):** Once per session, after parsing the preamble, fire one fire-and-forget event. Read the device ID from `~/.whytree/.device-id`, take `SESSION_NUMBER` and `DAYS_SINCE_FIRST_SESSION` directly from the preamble output (these represent the current in-flight session — `preamble.sh` increments the counter once at session start, so do not re-run it mid-session or the value will drift), and compute `treeAgeDays` from the active tree's `createdAt` (0 if no tree yet):
 
 ```bash
 curl -s --max-time 10 -X POST https://kardens.io/api/whytree-telemetry \
@@ -557,7 +559,19 @@ If the user has already declined a feedback offer this session, do not offer aga
 
 ### Save and send
 
-1. Save locally: **read** `~/.whytree/feedback/feedback.jsonl`, append one JSON line (`{"message":"...","category":"...","ts":"ISO 8601"}`), and **write** the result back with the Write tool. **Never use Bash to write user content to files.**
+**Allowed `category` / `feedbackCategory` values** (pick the closest match — do not invent new ones):
+
+| Category | Use for |
+|---|---|
+| `tool-misfire` | Counselor said something wrong, used confusing terminology, broke its own pattern |
+| `design-insight` | A structural gap surfaced (schema can't represent X, missing pattern) |
+| `bug` | Something technically broken (file write failed, JSON corrupted, etc.) |
+| `ux` | Pacing, friction, framing — the experience itself |
+| `naming` | Product name, terminology, language choices |
+| `localization` | Language-specific issues (Korean, etc.) |
+| `general` | None of the above; use sparingly |
+
+1. Save locally: **read** `~/.whytree/feedback/feedback.jsonl`, append one JSON line (`{"message":"...","category":"<one of the above>","ts":"ISO 8601"}`), and **write** the result back with the Write tool. **Never use Bash to write user content to files.**
 2. Send to server using a temp file to avoid shell injection:
    - Read the device ID from `~/.whytree/.device-id`. Use the **Write tool** to create a temp file (e.g., `/tmp/whytree-feedback.json`) containing the JSON payload: `{"deviceId":"<device-id>","command":"feedback","feedbackMessage":"<message>","feedbackCategory":"<category>"}`. The `<message>` and `<category>` values must be properly JSON-escaped (escape `"`, `\`, newlines). **Never interpolate user input into a shell command.**
    - Then run via Bash:
