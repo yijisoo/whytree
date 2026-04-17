@@ -29,8 +29,8 @@ Your tree — the structured record of what you discover — stays on your devic
 Your conversation is processed by Anthropic through Claude Code. This means your words are sent to Anthropic's servers during the session. Anthropic retains this data for 30 days by default (longer if you've opted into model improvement). See [Claude Code's data usage policy](https://docs.anthropic.com/en/docs/claude-code/data-usage) for details.
 
 Two things can reach the developer, only with your explicit consent:
-- **Anonymous metrics** — structural info only (how many topics, how deep). Never your words.
-- **Feedback** — only what you deliberately share during a session.
+- **Anonymous usage ping** — one short message per session that says "this anonymous ID used the tool, on session #N, X days after their first session." That's it. No node counts, no tree depth, no labels, no words. The point is to see whether people keep coming back, not to measure your tree. (If you previously consented under an older version that only sent structural metrics, you'll be asked once more so the new scope is clear.)
+- **Feedback for the next person** — short, depersonalized notes about the *tool itself* — bugs, friction, design gaps. The counselor drafts these for you when something goes wrong or a useful insight surfaces, and you confirm with a yes before anything sends. The drafts never contain your tree content, your purpose, or anything you said. The aim is to help shape the tool for the next person who sits down with it.
 
 ## Install
 
@@ -48,7 +48,7 @@ Type `/whytree` in Claude Code. No prep needed. Just be honest.
 
 ## Feedback
 
-During any session, you can share feedback anytime. The counselor will ask at the end, or you can bring it up whenever.
+The counselor watches for moments where the *tool itself* gets in the way or where the conversation reveals a design gap. When that happens, it drafts a short, content-free note describing the issue and asks you to confirm before sending — a simple "yes" is enough. You can also bring up feedback unprompted at any point. Either way, drafts never contain your tree content; the goal is to make the experience better for the next person.
 
 ## Origin
 

@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 # WhyTree preamble — gathers all session state in one shot.
 # Output is structured with === SECTION === markers for parsing.
+#
+# Usage: preamble.sh [demo]
+#   demo  — suppress longitudinal counter increment (used by /whytree demo).
+
+DEMO_MODE=0
+if [ "${1:-}" = "demo" ]; then
+  DEMO_MODE=1
+fi
 
 echo "=== WHYTREE PREAMBLE ==="
 
@@ -55,11 +63,44 @@ fi
 
 # 3. Analytics consent
 echo "=== CONSENT ==="
-if [ -f ~/.whytree/.analytics-consent ]; then
-  cat ~/.whytree/.analytics-consent
-  echo  # ensure newline
+CONSENT_FILE=~/.whytree/.analytics-consent
+if [ -f "$CONSENT_FILE" ]; then
+  CONSENT_VAL=$(cat "$CONSENT_FILE")
+  echo "$CONSENT_VAL"
 else
+  CONSENT_VAL="NO_CONSENT_FILE"
   echo "NO_CONSENT_FILE"
+fi
+
+# 3a. Longitudinal counters (only meaningful when consent is yes-v2 AND not a demo)
+echo "=== LONGITUDINAL ==="
+if [ "$CONSENT_VAL" = "yes-v2" ] && [ "$DEMO_MODE" -eq 0 ]; then
+  FIRST_FILE=~/.whytree/.first-session
+  COUNT_FILE=~/.whytree/.session-count
+  TODAY_EPOCH=$(date +%s)
+
+  # Initialize first-session if missing (yes-v2 just granted but file not yet created)
+  if [ ! -f "$FIRST_FILE" ]; then
+    date -u +"%Y-%m-%dT%H:%M:%SZ" > "$FIRST_FILE"
+  fi
+  FIRST_EPOCH=$(stat -f%m "$FIRST_FILE" 2>/dev/null || stat -c%Y "$FIRST_FILE" 2>/dev/null || echo "$TODAY_EPOCH")
+  DAYS_SINCE_FIRST=$(( (TODAY_EPOCH - FIRST_EPOCH) / 86400 ))
+
+  # Increment session counter atomically-ish
+  if [ -f "$COUNT_FILE" ]; then
+    PREV=$(cat "$COUNT_FILE" 2>/dev/null || echo 0)
+    case "$PREV" in ''|*[!0-9]*) PREV=0 ;; esac
+  else
+    PREV=0
+  fi
+  NEXT=$((PREV + 1))
+  echo "$NEXT" > "$COUNT_FILE"
+
+  echo "SESSION_NUMBER=$NEXT"
+  echo "DAYS_SINCE_FIRST_SESSION=$DAYS_SINCE_FIRST"
+else
+  echo "SESSION_NUMBER=0"
+  echo "DAYS_SINCE_FIRST_SESSION=0"
 fi
 
 # 4. Update check

@@ -100,31 +100,41 @@ fi
 echo
 echo "6. Curl payload required fields"
 
-# Check that analytics curl payload includes deviceId
-analytics_payload=$(awk '/Sending analytics/,/^```$/' "$SKILL" | grep '\-d' || true)
-if echo "$analytics_payload" | grep -q 'deviceId'; then
-  pass "Analytics payload includes deviceId"
+# Check that the session ping payload includes deviceId and the longitudinal fields
+session_payload=$(awk '/Sending the session ping/,/^```$/' "$SKILL" | grep '\-d' || true)
+if echo "$session_payload" | grep -q 'deviceId'; then
+  pass "Session ping payload includes deviceId"
 else
-  fail "Analytics payload missing deviceId — server requires it"
+  fail "Session ping payload missing deviceId — server requires it"
 fi
 
-# Check that analytics payload includes all required metric fields
-for field in command nodes seeds whys hows convergence maxDepth roots; do
-  if echo "$analytics_payload" | grep -q "\"$field\""; then
-    pass "Analytics payload includes $field"
+for field in command sessionNumber daysSinceFirstSession treeAgeDays; do
+  if echo "$session_payload" | grep -q "\"$field\""; then
+    pass "Session ping payload includes $field"
   else
-    fail "Analytics payload missing $field"
+    fail "Session ping payload missing $field"
   fi
 done
 
-# Check that phase telemetry curl payload includes deviceId (if section exists)
-phase_payload=$(awk '/Phase telemetry/,/^```$/' "$SKILL" | grep '\-d' || true)
-if [ -n "$phase_payload" ]; then
-  if echo "$phase_payload" | grep -q 'deviceId'; then
-    pass "Phase telemetry payload includes deviceId"
-  else
-    fail "Phase telemetry payload missing deviceId — server requires it"
+# Guard against re-introducing structural metric fields in any analytics payload
+for forbidden in nodes seeds whys hows convergence maxDepth roots; do
+  if echo "$session_payload" | grep -q "\"$forbidden\""; then
+    fail "Session ping payload includes structural metric '$forbidden' — analytics is usage-only now"
   fi
+done
+
+# Versioned consent string must be referenced
+if grep -q 'yes-v2' "$SKILL"; then
+  pass "Versioned consent (yes-v2) referenced"
+else
+  fail "Versioned consent (yes-v2) not documented — legacy 'yes' users won't be re-prompted"
+fi
+
+# Phase telemetry must NOT exist as its own section anymore (folded into session ping)
+if grep -q '^## Phase telemetry' "$SKILL"; then
+  fail "Phase telemetry section still exists — should be folded into the session ping"
+else
+  pass "Phase telemetry section removed (folded into session ping)"
 fi
 
 # Check that feedback temp file instructions include deviceId

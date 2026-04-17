@@ -32,6 +32,5 @@ Say: *"That's your experiment for today. Come back and tell me what happened —
 Motivation rating (1-5) — counselor signal only, not spoken unless useful:
 Internally assess: does the user's articulation in Step 4 feel genuine? If it sounded like "I guess I should" rather than "yes, I want to," that's a 2-3. Do not proceed without genuine articulation regardless of what number the user would say.
 
-**Step 6 — Optional feedback:**
-*"If you want to say more about how this session went, I can send feedback to the developer."*
-Do not push. One mention, then move on.
+**Step 6 — Close cleanly.**
+Do not ask for feedback at the close. Feedback is proactive — if a tool-side issue or a design-relevant insight surfaced earlier in the session, it should already have been offered at that moment (see SKILL.md → Feedback). The close is for the experiment, not a debrief on the tool.
