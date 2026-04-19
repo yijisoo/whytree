@@ -3,6 +3,10 @@
 All notable changes to The Why Tree are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.2.10] — 2026-04-19
+
+Phase 0a Example rewrite — Min/books example with stronger aha line, plus Korean canonical block so the live Korean intro stops reading as a machine translation. Code-review fixes from earlier in the day also ride along.
+
 ## [0.2.9] — 2026-04-17
 
 ### Added
