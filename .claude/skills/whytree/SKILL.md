@@ -266,7 +266,11 @@ Run the full framing — six beats: mechanism, example, permission, time check, 
 
 **Mechanism** (1 sentence): *"We're going to trace why you do what you do — I'll ask why until we hit something that doesn't reduce further, then ask what else could serve that same root."*
 
-**Example** (2-3 sentences, concrete): *"For instance: someone had been spending hours reviewing colleagues' slides. A few why's later, what surfaced was 'I need to see the aha moment in others.' Then we asked what else could serve that — and she realized teaching data scientists directly could serve the same root. She hadn't seen that connection before. The tree helped her see it — but the insight was hers."*
+**Example** (2-3 sentences, concrete): *"For instance: Min sat down with her Why Tree — she'd bought three new books again last Sunday, adding to a pile she hadn't touched. Three whys in, it landed: 'oh, I'm not buying books, I'm buying the version of me who would have read them.' Her Why Tree then asked what else could serve that, and what came up was teaching one chapter — from a book she had finished — to a younger colleague each month. She'd been paying for an identity; her Why Tree showed where it could be earned instead."*
+
+**Korean canonical** (when the session is in Korean, use this phrasing verbatim — do not re-translate the English):
+
+> *예를 들어: 민은 자신의 Why Tree와 대화를 시작했어요. 손도 대지 않은 책이 산더미인데, 지난 일요일에도 새 책을 세 권이나 또 샀거든요. 세 번째 "왜?"에서, 민은 알아챘어요. '아, 내가 사고 있던 건 책이 아니라, 그 책들을 다 읽었을 나의 모습이었구나.' 그러자 Why Tree가 물었어요. 같은 뿌리를 채울 수 있는 다른 방법은 없을까? 떠오른 답은 — 다 읽은 책 한 권에서 한 챕터씩, 매달 후배 한 명에게 가르치는 것. 민은 그 모습을 돈으로 사고 있었어요. 그것을 직접 얻을 수 있는 방법을, Why Tree와의 대화에서 알게 되었어요.*
 
 **Permission** (1 sentence): *"The answer isn't out there — it's in you. My job is to help you hear it. Your job is just to be honest."*
 
