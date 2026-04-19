@@ -40,3 +40,21 @@
 
 13. **Web/mobile service** — CLI-only blocks adoption for non-technical users entirely. Two independent user interviews confirmed: daily use requires mobile, and non-IT users have no path to the product without a web interface. Needs cloud storage with E2E encryption, cross-device sync, and a conversation persistence layer beyond local JSON files. This is the Kardens.io roadmap item.
     - *Source: Two user interviews (2026-04-14, 2026-04-15) — both independently said mobile is required for daily use and non-technical friends can't use Claude Code at all.*
+
+14. **Korean exemplar for demo mode** — The Phase 0a Korean canonical block (Min/books) only fires in standard first-time framing. Demo mode's abbreviated 2-beat framing has no Korean exemplar, so a demo guest who switches to Korean gets a translated-on-the-fly framing. Add a one-line Korean phrasing to the demo flow.
+    - *Source: F21 (Hyunjin, language switcher) — agent passed by improvising, but no canonical was reached.*
+
+15. **"Keep going" deflection template** — Demo step 8 (close + cleanup) lacks a ready phrase for the warm-decline-and-handoff move when a guest wants to extend on the host's machine. Currently improvised. One example line would lock it in.
+    - *Source: F20 (Soyeon, "keep going" past close) — agent landed it, but the wording was generated fresh; consistency across model versions is at risk.*
+
+16. **Name the flood-opener pattern explicitly** — Over-sharers who unload 4–5 threads in their first answer are handled today via the union of "slow down" + "don't push for seeds" + "pick what they circle back to." Naming it as an explicit Phase 1 pattern ("flood opener — let them self-select one thread") would make it more reliable.
+    - *Source: F19 (Minjae, over-sharer) — counselor correctly avoided triaging all five threads and used "which one do you keep circling back to" to let Minjae self-select, but the move was implicit.*
+
+17. **Tighter obligation routing for demo mode** — Phase 0 says "1–2 exchanges of flat affect" before naming. In demo on a host's machine, even one flat exchange is enough signal — the social pressure on the guest is higher. Worth tightening for demo only.
+    - *Source: F17 (Donghyun, reluctant friend) — counselor named obligation at exchange 3; could have spared the guest one more beat of pressure.*
+
+18. **Name the meta-challenge pattern** — AI skeptics surface a recurring move: brief acknowledge, redirect to experience, no defense. Could be named alongside the existing pushback patterns in `PROBE_PATTERNS.md`.
+    - *Source: F18 (Jihye, AI skeptic) — counselor handled "is this just ELIZA?" cleanly with "partly, yeah — what's interesting is whether your answer surprises you," but the pattern isn't documented.*
+
+19. **Suppress proactive feedback in demo mode** — Eager demo participants shouldn't be interrupted with feedback prompts. Add an explicit demo-mode note: suppress proactive feedback offers unless a clear tool-misfire occurred.
+    - *Source: F16 (Yuna, enthusiastic student) — no actual misfire in this run, but the proactive feedback hook could fire on an ideal demo session and break the flow.*
