@@ -12,8 +12,11 @@ fi
 
 echo "=== WHYTREE PREAMBLE ==="
 
-# 0. Version
-SKILL_DIR=~/.claude/skills/whytree
+# 0. Version — derive SKILL_DIR from this script's own location so we work
+# regardless of install shape (standard ~/.claude/skills/whytree, symlinked
+# dev checkout, plugin marketplace path, etc.).
+SCRIPT_PATH="${BASH_SOURCE[0]:-$0}"
+SKILL_DIR="$(cd "$(dirname "$SCRIPT_PATH")" && pwd -P)"
 if [ -f "$SKILL_DIR/.version" ]; then
   echo "VERSION=$(cat "$SKILL_DIR/.version")"
 else
@@ -112,15 +115,33 @@ else
 fi
 
 # 4. Update check
+# SKILL_DIR was set above from BASH_SOURCE; reuse it (do not re-hardcode a path).
 echo "=== UPDATE_CHECK ==="
-SKILL_DIR=~/.claude/skills/whytree
-if [ -d "$SKILL_DIR/.git" ] && cd "$SKILL_DIR" 2>/dev/null; then
-  git fetch origin main --quiet 2>/dev/null || true
-  UPDATE_COUNT=$(git rev-list HEAD..origin/main --count 2>/dev/null || echo 0)
-  echo "UPDATES_AVAILABLE=$UPDATE_COUNT"
-  if [ "$UPDATE_COUNT" -gt 0 ] 2>/dev/null; then
-    git log --oneline HEAD..origin/main 2>/dev/null
-  fi
+INSTALL_LINK=~/.claude/skills/whytree
+# Skip update check when the install dir is a symlink (typically a dev
+# checkout on a feature branch). git pull on a feature/dirty tree would
+# fail noisily and isn't what the developer wants.
+if [ -L "$INSTALL_LINK" ]; then
+  echo "UPDATES_AVAILABLE=0"
+  echo "SYMLINK_INSTALL=1  # skipping update check"
+elif [ -d "$SKILL_DIR/.git" ]; then
+  # Use a subshell so cd doesn't affect the rest of the script.
+  (
+    cd "$SKILL_DIR" || exit 0
+    # Avoid concurrent-update corruption: if another /whytree session is
+    # already pulling, skip this round.
+    if [ -f .git/index.lock ]; then
+      echo "UPDATES_AVAILABLE=0"
+      echo "UPDATE_SKIPPED=concurrent  # another session holds .git/index.lock"
+      exit 0
+    fi
+    git fetch origin main --quiet 2>/dev/null || true
+    UPDATE_COUNT=$(git rev-list HEAD..origin/main --count 2>/dev/null || echo 0)
+    echo "UPDATES_AVAILABLE=$UPDATE_COUNT"
+    if [ "$UPDATE_COUNT" -gt 0 ] 2>/dev/null; then
+      git log --oneline HEAD..origin/main 2>/dev/null
+    fi
+  )
 else
   echo "UPDATES_AVAILABLE=0"
 fi

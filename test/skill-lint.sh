@@ -4,7 +4,7 @@
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-SKILL_DIR="$REPO_ROOT/.claude/skills/whytree"
+SKILL_DIR="$REPO_ROOT"
 SKILL="$SKILL_DIR/SKILL.md"
 ERRORS=0
 
@@ -24,16 +24,27 @@ for f in SKILL.md COMMITMENT_ARC.md PROBE_PATTERNS.md SEED_QUESTIONS.md READING.
   fi
 done
 
-# --- 2. All file references in SKILL.md resolve ---
+# --- 2. File references use base-directory-relative phrasing, files exist ---
 echo
 echo "2. File references"
-refs=$(grep -oE '~/.claude/skills/whytree/[A-Z_]+\.md' "$SKILL" | sort -u || true)
-for ref in $refs; do
-  filename=$(basename "$ref")
-  if [ -f "$SKILL_DIR/$filename" ]; then
-    pass "Reference $filename resolves"
-  else
-    fail "Reference $filename not found in $SKILL_DIR"
+# After v0.3.0 flatten, supporting *.md files are referenced by bare name
+# (no absolute path). Forbid absolute paths — they were the v0.2.x bug.
+abs_refs=$(grep -nE '~/\.claude/skills/whytree/[A-Z_]+\.md' "$SKILL" || true)
+if [ -z "$abs_refs" ]; then
+  pass "No absolute paths to supporting *.md files in SKILL.md"
+else
+  fail "Found absolute path(s) to supporting *.md files (use bare filename instead):"
+  echo "$abs_refs"
+fi
+
+# Verify each supporting file referenced by name exists
+for f in SEED_QUESTIONS.md PROBE_PATTERNS.md COMMITMENT_ARC.md READING.md; do
+  if grep -qE "\`$f\`" "$SKILL"; then
+    if [ -f "$SKILL_DIR/$f" ]; then
+      pass "Reference $f resolves"
+    else
+      fail "Reference $f mentioned but file missing in $SKILL_DIR"
+    fi
   fi
 done
 

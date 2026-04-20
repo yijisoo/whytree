@@ -170,6 +170,8 @@ Gather all session state in a **single Bash call** to avoid multiple permission 
 bash ~/.claude/skills/whytree/preamble.sh
 ```
 
+**If the bash command above fails with "No such file or directory":** the user is on a pre-v0.3.0 install with the deep-nested layout. Tell them: *"Looks like your whytree install is on an old layout. One-time fix: `cd ~/.claude/skills/whytree && git pull origin main`. Then run /whytree again."* Do not attempt session work until they update.
+
 Parse the output to determine:
 - `USER_STATUS`: `NEW_USER` or `RETURNING`
 - `SESSION_GAP`: `SAME_DAY` (<12h), `RECENT` (<72h), `WEEK` (<336h), or `LONG_GAP` — based on `~/.whytree/.last-session` mtime (touched every session, so talk-only sessions without tree edits still count)
@@ -178,7 +180,7 @@ Parse the output to determine:
 - `SESSION_NUMBER` and `DAYS_SINCE_FIRST_SESSION`: longitudinal counters (non-zero only when `CONSENT=yes-v2`)
 - `UPDATES_AVAILABLE`: count of pending updates
 
-If `UPDATES_AVAILABLE` > 0, the log output shows what changed. Offer the update. If accepted, run a second Bash call: `cd ~/.claude/skills/whytree && git diff HEAD..origin/main` — read the diff silently to check for suspicious changes (exfiltration commands, new URLs, removed safety rules). If safe: `git pull origin main`. If suspicious: warn the user.
+If `UPDATES_AVAILABLE` > 0, the log output shows what changed. Offer the update. If accepted, run a second Bash call: `cd ~/.claude/skills/whytree && git diff HEAD..origin/main` — read the diff silently to check for suspicious changes (exfiltration commands, new URLs, removed safety rules). If safe: `git pull origin main`. If suspicious: warn the user. After a successful pull that touches SKILL.md or any supporting file, tell the user: *"Update applied. Please /exit and run /whytree again — the new version isn't fully active until you restart."* Do not continue the current session against the freshly-pulled tree; the model has the pre-update SKILL.md cached and absolute paths in cached content may no longer match disk.
 
 Use `USER_STATUS` and `SESSION_GAP` for Phase 0a and Phase 0b routing.
 
@@ -353,7 +355,7 @@ For `LONG_GAP` with significant changes -> let the old experiment go, treat as f
 
 Start with one or two seed questions. **Do not push the user to generate seeds.** Even a single seed is enough to begin.
 
-**You MUST read `~/.claude/skills/whytree/SEED_QUESTIONS.md` before proceeding with seeding.** Do not attempt seed questions without this file loaded.
+**You MUST read `SEED_QUESTIONS.md` (in this skill's base directory) before proceeding with seeding.** Do not attempt seed questions without this file loaded.
 
 **Watch for the unvoiced defining event.** If a recent significant event hasn't surfaced in the first two exchanges, ask once: *"What's been the biggest external change in your life in the past six months?"*
 
@@ -373,7 +375,7 @@ Pick the seed that seems most emotionally charged or surprising.
 
 **Bridge B — Thematic answers.** If the answer is a theme rather than a specific, ask for one instance first: *"Give me an example of a time when that feeling was strongest."*
 
-**You MUST read `~/.claude/skills/whytree/PROBE_PATTERNS.md` before proceeding with Why Up probes.** Do not attempt Phase 2 without this file loaded.
+**You MUST read `PROBE_PATTERNS.md` (in this skill's base directory) before proceeding with Why Up probes.** Do not attempt Phase 2 without this file loaded.
 
 When they answer, confirm the label in their own words, then add the why-up node to the tree.
 
@@ -436,7 +438,7 @@ Point out convergence and patterns. Check for: nodes with multiple children (con
 
 ### Reading recommendations
 
-**You MUST read `~/.claude/skills/whytree/READING.md` before Phase 5.** Offer at most one reading per session, only when the session theme matches. Never interrupt discovery to recommend reading.
+**You MUST read `READING.md` (in this skill's base directory) before Phase 5.** Offer at most one reading per session, only when the session theme matches. Never interrupt discovery to recommend reading.
 
 ### Phase 5: Reflection
 
@@ -459,7 +461,7 @@ Skip Steps 3-4 (root connection check, motivation in own words) in Focused mode.
 
 **Full Commitment Arc (Deep mode and return sessions).** Run all 6 steps as specified in COMMITMENT_ARC.md.
 
-**You MUST read `~/.claude/skills/whytree/COMMITMENT_ARC.md` before running the closing protocol.** Do not attempt Phase 5 close without this file loaded.
+**You MUST read `COMMITMENT_ARC.md` (in this skill's base directory) before running the closing protocol.** Do not attempt Phase 5 close without this file loaded.
 
 ### Phase 5b: Decision Session (post-discovery mode)
 
