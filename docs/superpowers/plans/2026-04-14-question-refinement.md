@@ -1,3 +1,5 @@
+> **Note:** Paths in this doc reflect pre-v0.3.0 layout (skill files were under `.claude/skills/whytree/`). See CHANGELOG for the v0.3.0 flatten.
+
 # Question Refinement Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.

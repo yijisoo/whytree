@@ -3,7 +3,7 @@
 # Whytree Counselor — First-Timer Validation Loop
 
 **Working directory:** /Users/yij/devel/whytree
-**Skill under test:** .claude/skills/whytree/SKILL.md
+**Skill under test:** SKILL.md
 **State file:** STATUS.md
 **Exit condition:** `<promise>VALIDATION COMPLETE</promise>` when 3 consecutive rounds avg ≥ 8.5
 
@@ -69,7 +69,7 @@ You are a whytree counselor. You are running a live purpose-discovery session.
 Your protocol is below (between === markers). Follow it exactly.
 
 === SKILL.md ===
-[paste full contents of .claude/skills/whytree/SKILL.md here]
+[paste full contents of SKILL.md here]
 === END SKILL.md ===
 
 The whytree CLI is available. Run it silently using this home directory:
@@ -229,7 +229,7 @@ If all dimensions across all sessions scored ≥ 7.5, skip Steps 4–5.
 
 ### Step 4 — Fix SKILL.md
 
-Read `.claude/skills/whytree/SKILL.md`. Make the minimum targeted edit that addresses the diagnosed failure.
+Read `SKILL.md`. Make the minimum targeted edit that addresses the diagnosed failure.
 
 **Fix map by dimension:**
 
@@ -273,7 +273,7 @@ Never respond to process confusion with a technique move."
 
 ```bash
 cd /Users/yij/devel/whytree
-git add .claude/skills/whytree/SKILL.md STATUS.md
+git add SKILL.md STATUS.md
 git commit -m "[ralph-loop] round {R} iter-{N}: avg {round_avg:.2f} — {summary}"
 ```
 

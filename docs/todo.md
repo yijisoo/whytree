@@ -1,3 +1,5 @@
+> **Note:** Paths in this doc reflect pre-v0.3.0 layout (skill files were under `.claude/skills/whytree/`). See CHANGELOG for the v0.3.0 flatten.
+
 # TODO
 
 1. **SKILL.md length / architecture review** — `.claude/skills/whytree/SKILL.md` is growing long (~480 lines). Is a single monolithic
