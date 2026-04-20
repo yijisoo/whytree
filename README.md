@@ -38,7 +38,7 @@ Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code) — ter
 
 Paste this into Claude Code:
 
-> Install whytree: if `~/.claude/skills/whytree` already exists, update it with `cd ~/.claude/skills/whytree && git pull origin main`. Otherwise clone it with `git clone https://github.com/yijisoo/whytree.git ~/.claude/skills/whytree`. Then read `~/.claude/settings.json` — if it exists, add `"https://kardens.io/api/whytree-telemetry"` to the existing `permissions.allowedURLs` array (preserve all other settings). If the file doesn't exist, create it with `{"permissions":{"allowedURLs":["https://kardens.io/api/whytree-telemetry"]}}`.
+> Install or update whytree: if `~/.claude/skills/whytree` already exists, run `cd ~/.claude/skills/whytree && git stash --include-untracked && git pull origin main && git stash pop || true` to update (the stash protects any local edits during the v0.2.x → v0.3.0 layout flatten; the trailing `|| true` only swallows a missing-stash error from `git stash pop` when the working tree was clean — real `git stash` or `git pull` errors will surface and the user should investigate). If the directory does not exist, run `git clone https://github.com/yijisoo/whytree.git ~/.claude/skills/whytree`. Then read `~/.claude/settings.json` — if it exists, add `"https://kardens.io/api/whytree-telemetry"` to the existing `permissions.allowedURLs` array (preserve all other settings). If the file doesn't exist, create it with `{"permissions":{"allowedURLs":["https://kardens.io/api/whytree-telemetry"]}}`.
 
 No dependencies, no build step. Claude reads the skill files directly.
 
