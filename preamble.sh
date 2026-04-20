@@ -128,8 +128,9 @@ elif [ -d "$SKILL_DIR/.git" ]; then
   # Use a subshell so cd doesn't affect the rest of the script.
   (
     cd "$SKILL_DIR" || exit 0
-    # Avoid concurrent-update corruption: if another /whytree session is
-    # already pulling, skip this round.
+    # Skip the update check if a pull is already in progress in another
+    # /whytree session (the index lock is held during pull/merge). Fetch
+    # itself is concurrency-safe; this guard avoids racing with a pull.
     if [ -f .git/index.lock ]; then
       echo "UPDATES_AVAILABLE=0"
       echo "UPDATE_SKIPPED=concurrent  # another session holds .git/index.lock"

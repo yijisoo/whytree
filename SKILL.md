@@ -170,7 +170,7 @@ Gather all session state in a **single Bash call** to avoid multiple permission 
 bash ~/.claude/skills/whytree/preamble.sh
 ```
 
-**If the bash command above fails with "No such file or directory":** the user is on a pre-v0.3.0 install with the deep-nested layout. Tell them: *"Looks like your whytree install is on an old layout. One-time fix: `cd ~/.claude/skills/whytree && git pull origin main`. Then run /whytree again."* Do not attempt session work until they update.
+**If the bash command above fails (e.g., "No such file or directory" or a broken symlink):** the user's install layout is broken or on a pre-v0.3.0 version. Tell them: *"Looks like your whytree install needs a refresh. One-time fix: `cd ~/.claude/skills/whytree && git pull origin main`. If that path doesn't exist, re-run the README install command. Then run /whytree again."* Do not attempt session work until they update.
 
 Parse the output to determine:
 - `USER_STATUS`: `NEW_USER` or `RETURNING`
@@ -180,7 +180,9 @@ Parse the output to determine:
 - `SESSION_NUMBER` and `DAYS_SINCE_FIRST_SESSION`: longitudinal counters (non-zero only when `CONSENT=yes-v2`)
 - `UPDATES_AVAILABLE`: count of pending updates
 
-If `UPDATES_AVAILABLE` > 0, the log output shows what changed. Offer the update. If accepted, run a second Bash call: `cd ~/.claude/skills/whytree && git diff HEAD..origin/main` — read the diff silently to check for suspicious changes (exfiltration commands, new URLs, removed safety rules). If safe: `git pull origin main`. If suspicious: warn the user. After a successful pull that touches SKILL.md or any supporting file, tell the user: *"Update applied. Please /exit and run /whytree again — the new version isn't fully active until you restart."* Do not continue the current session against the freshly-pulled tree; the model has the pre-update SKILL.md cached and absolute paths in cached content may no longer match disk.
+If `UPDATES_AVAILABLE` > 0, the log output shows what changed. Offer the update. If accepted, run a second Bash call: `cd ~/.claude/skills/whytree && git diff HEAD..origin/main` — read the diff silently to check for suspicious changes (exfiltration commands, new URLs, removed safety rules). If safe: `git pull origin main`. If suspicious: warn the user.
+
+**After a successful pull that touches SKILL.md or any supporting file:** tell the user: *"Update applied. Please /exit and run /whytree again — the new version isn't fully active until you restart."* Do not continue the current session against the freshly-pulled tree; the model has the pre-update SKILL.md cached and absolute paths in cached content may no longer match disk.
 
 Use `USER_STATUS` and `SESSION_GAP` for Phase 0a and Phase 0b routing.
 
