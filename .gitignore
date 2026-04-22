@@ -2,3 +2,4 @@ node_modules/
 .DS_Store
 .heartbeat
 *.pdf
+docs/stress-test-results/
