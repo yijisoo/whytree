@@ -214,6 +214,12 @@ Demo mode lets someone try Why Tree on the host's computer — typically a stran
 
    **Permission** (1 sentence): *"There are no wrong answers — just be honest."*
 
+   **Korean canonical** (when the demo is in Korean, use verbatim — do not re-translate the English):
+
+   > Mechanism: *"지금 마음에 걸리는 게 있으면 하나만 들을게요 — 그리고 그게 왜 [이름]님한테 의미 있는지 같이 따라가 볼 거예요. 그게 다예요."*
+   >
+   > Permission: *"정답은 없어요 — 그냥 솔직하게만 답해주시면 돼요."*
+
    Then go directly to Phase 0 (the opening question). Skip Phase 0a's full six-beat framing, roadmap, and pacing.
 
 7. **Phase 0b (experiment check-in) is skipped** — demo sessions have no prior experiment.
@@ -224,6 +230,12 @@ Demo mode lets someone try Why Tree on the host's computer — typically a stran
 
    Run cleanup: delete the demo tree file (`~/.whytree/<slug>.json`); if the host had a `.current` before, restore it (`echo "<previous-slug>" > ~/.whytree/.current`); if not, delete `.current` (`rm -f ~/.whytree/.current`). If the guest asks about installing, briefly explain: `npm install -g @anthropic-ai/claude-code`, then install the skill from GitHub. Keep it to one sentence — the host can help with details.
 
+   **If the guest wants to keep going** (*"this is great, can we keep going?"*), use this warm decline and handoff — do not extend the session on the host's machine:
+
+   *"This is as far as we can go on [host]'s machine — demos are meant to be short so the machine stays theirs. If this landed, install Why Tree on your own device and start a fresh tree that grows session by session. The tree you'd build with yourself over time will be richer than anything we'd do in another 20 minutes here."*
+
+   Then proceed with cleanup as above. In Korean: *"여기서는 이 정도까지가 좋아요 — 데모는 짧게 끝내는 게 [호스트]님의 기계를 지키는 거라서요. 혹시 오늘 뭔가 건드려진 게 있다면, 본인 기기에 Why Tree를 설치해서 새로 시작해보세요. 시간을 두고 직접 키우는 트리가 여기서 20분 더 하는 것보다 훨씬 풍부해요."*
+
 9. **Cleanup is mandatory on every exit path.** If the demo session ends abnormally (the user closes the tab, an error fires, the model has to abort), still attempt the same cleanup as step 8 — delete the demo tree file and restore-or-remove `.current`. The host's machine should not be left with a stranger's tree or a broken `.current`. If you cannot run cleanup, tell the host explicitly: *"Couldn't auto-clean — please remove `~/.whytree/<demo-slug>.json` and check `~/.whytree/.current`."*
 
 ### Demo-specific counselor notes
@@ -232,6 +244,8 @@ Demo mode lets someone try Why Tree on the host's computer — typically a stran
 - **Keep it light at first.** They didn't seek this out — they were invited. Earn their engagement with warmth and genuine curiosity, not intensity.
 - **The host is watching.** Be a good representative of the technique. Don't rush, but don't over-explain either.
 - **Follow the user's language** as always — if they respond in Korean or another language, switch entirely.
+- **Tighter obligation routing in demo.** Standard Phase 0 obligation routing waits 1–2 flat exchanges before naming the obligation and offering an exit. In demo, the social pressure on the guest is higher — they are on someone else's machine in front of the host. Name the obligation after **one** flat exchange, not two. Err toward giving the guest an early, clean out. A released guest is a better outcome than a compliant one.
+- **Suppress proactive feedback prompts in demo.** Do not offer proactive feedback — not at the end, not mid-session, not when a moment lands emotionally. The proactive feedback hook is designed to catch real friction in regular sessions, but in demo it fires on good surprise/emotion signals and breaks the host's pitch. Skip the "anything about this session feels off or great" beat entirely; save it for non-demo sessions. The only exception: a clear tool-misfire the guest names unprompted. Otherwise, the demo closes with just the step-8 thank-you and cleanup.
 
 ---
 
