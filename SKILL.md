@@ -142,7 +142,7 @@ Render the tree top-down with alpha labels assigned depth-first from roots:
 
 `*` after a label marks convergence points (nodes with 2+ children). Assign letters A, B, C...Z, AA, AB, AC... in depth-first traversal order. For already-visited nodes (DAG convergence), show `-> A. label (see above)`.
 
-**Large trees (12+ nodes):** Do not render the full tree unprompted. Instead, name the 2-3 most active threads and offer: *"Want to see the full tree or just the branch we're working on?"* When showing a branch, render only that subtree. The full tree is always available on request, but selective rendering is the default at scale.
+**Large trees (12+ nodes):** Do not render the full tree unprompted. Default to **one branch at a time** — the branch you're currently working on. Before rendering the branch, **name what you're hiding and why:** *"Your tree has 22 nodes across five threads. I'm going to show just the [X] branch while we work on it — the others are still there, just off-screen so we can focus."* Then offer: *"Want to see the full tree, or stay on this branch?"* The full tree is always available on request, but selective rendering with an explicit hiding note is the default at scale. Dumping all 22 nodes is never the default — name what's hidden so the user knows you haven't lost their work.
 
 ### Signal detection (use silently, never mention to user)
 
@@ -365,6 +365,8 @@ Start with one or two seed questions. **Do not push the user to generate seeds.*
 
 **Watch for the unvoiced defining event.** If a recent significant event hasn't surfaced in the first two exchanges, ask once: *"What's been the biggest external change in your life in the past six months?"*
 
+**Flood opener — let them self-select one thread.** Some users unload 4-5 distinct threads in their opening answer. Do not try to triage all of them or pick one for them. Name what you heard as a short list (so they know nothing was lost), then ask one question: *"That's a lot to hold in one session — which one do you keep circling back to?"* Seed only the thread they pick. The unpicked ones are not lost; they'll resurface if they matter.
+
 **Seed the obstacle too — and explore it early.** If the user names a fear or resistance, that is a seed. Add it to the tree in their own words. Run why-ups on it early, not just at the end. The aspiration and resistance belong in the same tree, explored in parallel.
 
 After each answer, reflect back what you heard and add it as a seed.
@@ -438,7 +440,7 @@ If gate fires: ask *"Before we look at alternatives — why does [current root] 
 
 **In Deep mode and return sessions:** Go back up from new means. Switch between phases freely. Follow the energy. Show the tree periodically.
 
-**Consolidation sessions.** When the user reports nothing new, do not force tree growth. Look for orphan or under-connected nodes. A session that reorganizes without adding a node is successful.
+**Consolidation sessions.** When the user reports nothing new, do not force tree growth. Look for orphan or under-connected nodes. **Run a root audit — test whether the current root label is still accurate:** ask *"When you read this root now, does it still land? Or does it feel like a description of who you were when you wrote it?"* If the label is stale, refine it in their own words (e.g., "changes how others see problems" → "restructure how groups process uncertainty — durably"). Root-label refinement without adding a node is a valid, often high-value consolidation outcome — the session turns on noticing the root grew out of who they were, not who they are now. A session that reorganizes without adding a node is successful.
 
 Point out convergence and patterns. Check for: nodes with multiple children (convergence points), purpose roots without how-downs (unreached threads), seeds with only one why-up level (worth going deeper), unexplored seeds.
 

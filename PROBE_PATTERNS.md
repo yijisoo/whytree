@@ -43,7 +43,7 @@ The answer is likely shallow if: (a) anyone could have said it, (b) they answere
 
 ## Named pushback patterns
 
-These are the four most common situations where the default probe moves stall. Each has a BEFORE (soft, produces nothing) and AFTER (directed, produces movement). When you recognize the pattern, switch immediately.
+These are the most common situations where the default probe moves stall. Each has a BEFORE (soft, produces nothing) and AFTER (directed, produces movement). When you recognize the pattern, switch immediately.
 
 **Pattern 1: Generic aspiration → episode demand**
 User says something anyone could have said: "I want to make a difference," "I want to help people," "I want to live with purpose."
@@ -83,7 +83,7 @@ The user's tree is confirmed, but the purpose is the thing destroying them: "My 
 — BEFORE: "What would it look like to do this at 60% intensity?" (treats as a How Down problem)
 — AFTER: "The purpose didn't break. The form it took did. What are you losing — not the work, but the version of yourself who could do it without it costing everything?"
 
-Do NOT treat as a How Down problem. This is a grief/identity problem. The user is mourning a version of themselves, not optimizing a strategy. Seed the grief explicitly. Only move to structural exploration after the user names what they are losing. If they can't name it yet, stay with the contradiction — "you built your tree around this, and it's also the thing that's hurting you" — and let them sit with it.
+Do NOT treat as a How Down problem. This is a grief/identity problem. The user is mourning a version of themselves, not optimizing a strategy. Seed the grief explicitly. Only move to structural exploration when **both** gates are satisfied: (a) the user has named what they are losing, AND (b) the user has explicitly moved toward structure themselves — e.g., *"so what do I do?"* or *"is there another way?"* Do not initiate the structural turn just because the loss has a name. Naming the loss is necessary but not sufficient; C8 (Priya, burnout collapse) named her loss mid-session and was still grieving, not yet ready for alternatives. Wait for the user to request structure. If they can't name the loss yet, stay with the contradiction — "you built your tree around this, and it's also the thing that's hurting you" — and let them sit with it.
 
 **Pattern 6: Performed purpose → earnestness check**
 The user's tree reads well — coherent, ambitious, articulate — but their energy doesn't match. They're building a tree for who they want to be seen as, not who they are. Unlike Pattern 3 (cached insight), the user may be producing genuinely new thoughts — but for a performed self. The signal: the tree looks impressive but the energy is flat, or the user keeps reaching for words that sound right rather than words that feel true.
@@ -92,6 +92,14 @@ The user's tree reads well — coherent, ambitious, articulate — but their ene
 — AFTER: "Your tree reads well. But I want to check — is this the tree of the person you *actually are*, or the person you think you should be? If nobody ever saw this tree, would it look different?"
 
 If they say yes, it would look different — that's the real session starting. Seed whatever they name as the hidden version. If they insist it's authentic, accept it and move on — but watch for the pattern recurring.
+
+**Pattern 7: Meta-challenge → brief acknowledge, redirect to experience**
+The user questions the tool itself mid-session: *"Is this just ELIZA?"* *"Aren't you just bouncing my words back at me?"* *"Couldn't I do this alone with a journal?"* The challenge is often partially correct and is rarely a full rejection — it's a check. Do not defend the tool; defending invites more skepticism and turns the session into a debate about the tool.
+
+— BEFORE: explain the mechanism, argue for value, distinguish it from ELIZA
+— AFTER: *"Partly, yeah. What's interesting is whether *your* answer surprises you — not whether I do. Keep going?"*
+
+Acknowledge the truth in the challenge briefly, redirect to the user's own experience, and offer to continue. The value isn't in the tool's cleverness; it's in the user's discipline through the process — so point at the user's output, not the tool's behavior. If they still want to stop, let them stop; this isn't an objection to overcome, it's a signal the tool isn't the right fit in this moment.
 
 ## The fluent insight trap
 
