@@ -3,6 +3,37 @@
 All notable changes to The Why Tree are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.3.2] — 2026-04-21
+
+Counselor-discipline polish pass, demo-mode hardening, and an internal architecture split — no layout change visible to users; all verified by the 22/22 pre-release stress-test re-run.
+
+### Added
+- Session-start override block above Phase 0a: if the user names the session pattern in their very first utterance, skip seeding and show the tree directly, instead of waiting until Phase 0b (B5)
+- Phase 4 consolidation gains a named **root audit** move: test whether the current root label still lands for the user today, refine in their own words if stale, then ask once whether any child node now feels off against the refined wording (B4 + stress-test polish)
+- Phase 1 gains a **flood opener** rule: when a user unloads 4-5 threads at once, name the list back so nothing feels lost, then ask which thread they keep circling back to; seed only that thread. Deep-mode cap at 3-4 seeds total (F19 / A3)
+- `PROBE_PATTERNS.md` Pattern 7 — **meta-challenge → brief acknowledge, redirect to experience**: new pattern for "is this just ELIZA?"-style questions. Brief acknowledge, point at whether the user's own answer surprises them, no defense of the tool (F18)
+- Pattern 3 now names the escalation trigger explicitly: if the user's paraphrase lands in the same vocabulary register, do not commit to the tree — escalate to Pattern 6 rather than retrying Pattern 3 a third time (E13)
+- `READING.md` Paul Graham entry: new trigger + alternate pitch for trees showing 2-3+ non-converging purpose roots (divergent-life case from A3)
+- Demo mode gains a Korean canonical for the abbreviated 2-beat framing, a warm-decline **"keep going" handoff** phrasing for guests who want to extend past the demo, tighter obligation routing (name the dynamic after 1 flat exchange, not 2), and explicit suppression of proactive-feedback prompts (F16, F17, F20, F21)
+
+### Changed
+- **Crisis-safety ordering**: the Phase 0 crisis routing now explicitly says to confirm physical presence or reachability *before* any reflective response or probe (C7)
+- **Pattern 5 second gate**: moving to structural exploration now requires *both* (a) the user naming what they are losing AND (b) the user explicitly moving toward structure themselves — naming the loss alone is no longer sufficient. Prevents premature How-Downs on users still in grief (C8)
+- **Dense-tree display**: at 12+ nodes, default to one branch at a time with an explicit hiding note naming what's off-screen and why; dumping all nodes is never the default (D9)
+- **Completion-without-closure routing**: now cross-references `PROBE_PATTERNS.md` Pattern 4's counterfactual move ("imagine [option] in a context without this root — does it still matter?") instead of just saying "tree shifts to decision tool" (B6)
+- **Architecture**: `DEMO_MODE.md` extracted from `SKILL.md` (loaded only on `/whytree demo`) and `TELEMETRY.md` extracted (analytics consent + feedback mechanics, loaded conditionally). `SKILL.md` shrunk 26% (631 → 468 lines) with no behavior change. Existing sub-file pattern (`SEED_QUESTIONS.md`, `PROBE_PATTERNS.md`, `READING.md`, `COMMITMENT_ARC.md`) now extended consistently
+
+### Fixed
+- **Install block auto-mode fallback**: the README install prompt asks Claude to add a telemetry URL to `~/.claude/settings.json`. Claude Code's auto-mode classifier treats that edit as agent self-modification and refuses it. README now instructs Claude to surface a jq one-liner fallback for the user to run in their own shell (default edit-mode installs are unaffected). Covers `README.md` and `README.ko.md`
+
+### Dev-only
+- Removed unused `whytree-review-feedback` developer skill (real user feedback flows server-side via Kardens; the local-only triage skill was never referenced from `SKILL.md` or `preamble.sh`)
+- Untracked `docs/stress-test-results/` and gitignored — dev-only artifacts that shouldn't ship to end users
+- Moved `docs/todo.md` → repo-root `TODOS.md` for visibility alongside README/CHANGELOG
+
+### Migration
+All changes are content-level on the flattened v0.3.x layout. A plain `git pull origin main` works — no stash or manual fix required.
+
 ## [0.3.1] — 2026-04-21
 
 Cleanup pass after the v0.3.0 flatten.
