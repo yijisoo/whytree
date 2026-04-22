@@ -381,7 +381,7 @@ If gate fires: ask *"Before we look at alternatives — why does [current root] 
 
 **In Focused mode, one How Down is enough.** After the first How Down, offer the exit: *"You've found something here. Want to try one thing based on this, or keep going?"* If they choose to close, run the mini Commitment Arc (Steps 1, 2, 5 from COMMITMENT_ARC.md — selection, narrow to today, close). If they continue, proceed with the full session flow.
 
-**Early-exit feedback (before minimum viable exit).** If the user wants to stop before reaching the first genuine Why Up (i.e., they want to leave during Phase 0, 1, or 2), ask once: *"Before you go — anything about this experience you'd want to share? It helps make it better for the next person."* One ask only — if they say no or ignore it, let them go. If they share something, **save it locally only** to `~/.whytree/feedback/feedback.jsonl` (using the Write tool, same JSON-line format as the Feedback section). **Do not send the early-exit reply to the server**: an in-the-moment exit reply often contains personal content ("I'm exhausted, my mom is sick"), and the depersonalization rules in the Feedback section cannot be reliably applied to free-form user voice. The developer reviews local feedback.jsonl manually.
+**Early-exit feedback (before minimum viable exit).** If the user wants to stop before reaching the first genuine Why Up (i.e., they want to leave during Phase 0, 1, or 2), ask once: *"Before you go — anything about this experience you'd want to share? It helps make it better for the next person."* One ask only — if they say no or ignore it, let them go. If they share something, **save it locally only** to `~/.whytree/feedback/feedback.jsonl` (using the Write tool, same JSON-line format as specified in `TELEMETRY.md`). **Do not send the early-exit reply to the server**: an in-the-moment exit reply often contains personal content ("I'm exhausted, my mom is sick"), and the depersonalization rules in `TELEMETRY.md` cannot be reliably applied to free-form user voice. The developer reviews local feedback.jsonl manually.
 
 **In Deep mode and return sessions, aim for three How Downs, with the third in a completely different life arena.** After two options: *"What's something that has nothing to do with [their field] — a completely different context where this same root could live?"*
 
@@ -446,123 +446,16 @@ Do not re-enter discovery. The purpose is confirmed. This session uses the tree 
 
 **Purpose evolution:** If the decision session reveals the purpose statement no longer fits, name it: *"This started as a decision session, but it sounds like the purpose itself is shifting. Want to update it?"* Update `purpose` if they articulate a new one. This is not re-discovery — it's refinement.
 
-## Analytics consent
+## Telemetry (analytics consent & feedback)
 
-**Scope:** Why Tree only tracks *whether* the tool is used and *over what time horizon* — never node counts, depth, labels, or any other tree content. The goal is to see if people stick with the tool, not to measure their trees.
+**You MUST read `TELEMETRY.md` (in this skill's base directory) when any of these enter the session:**
 
-**Timing:** Do not ask before the user's first real response. For first-time users, ask during the initial framing. For returning users, check silently.
+- **Session start** — parse `CONSENT` from the preamble and follow the state machine in TELEMETRY.md. For `yes-v2`, send the session ping. For `NO_CONSENT_FILE` or legacy `yes`, use the prompt in TELEMETRY.md and complete the consent flow per that file. For `no`, do nothing.
+- **User asks to change analytics preference** — TELEMETRY.md has the update procedure.
+- **A feedback trigger fires** (tool misfired or a design-relevant insight surfaced) — TELEMETRY.md has the Trigger list, Offer flow, depersonalization rule, `feedbackCategory` enum, and save/send mechanics. Offer feedback at most once per session; never end-of-session.
+- **User asks to send feedback unprompted** — same draft → confirm → save → send flow in TELEMETRY.md (User-initiated section).
 
-**Consent state machine** (read `CONSENT` from preamble):
-
-| State | Action |
-|---|---|
-| `yes-v2` | Send the session ping (below). Say nothing. |
-| `no` | Do not send. Do not ask again. Respect the prior decision. |
-| `yes` (legacy) | Re-prompt once with the new wording — the prior consent did not cover linking sessions over time. |
-| `NO_CONSENT_FILE` | First-time prompt. |
-
-**Prompt (first-time and legacy re-prompt, conversationally):**
-
-"Quick aside — would you be OK if I send a small ping each session, just so we can see if the tool keeps helping people over time? It records that you used it (with an anonymous device ID and a session count) — no node counts, no content, nothing personal. Totally fine to say no — the tool works the same either way."
-
-If the user is being re-prompted (legacy `yes`), prefix with one sentence: *"I'm asking again because the consent scope changed slightly — the previous version didn't cover linking sessions across time."*
-
-**If they ask "what is the anonymous device ID?":** *"It's a random UUID generated locally by `uuidgen` and stored in `~/.whytree/.device-id`. It's not your hostname, account, or any hardware identifier — it just lets repeat sessions be counted as one user. Delete that file any time and the link is gone."*
-
-If yes: write `yes-v2` to `~/.whytree/.analytics-consent`. Then generate a device ID if `~/.whytree/.device-id` doesn't exist: run `uuidgen | tr '[:upper:]' '[:lower:]'` and write the result. Also create `~/.whytree/.first-session` (write the current ISO 8601 UTC timestamp) and write `1` to `~/.whytree/.session-count` if these files don't exist. The `1` represents the current in-flight session — no need to re-run preamble. After this, send the session ping below using **`sessionNumber: 1` and `daysSinceFirstSession: 0` directly** — do NOT use the `SESSION_NUMBER` / `DAYS_SINCE_FIRST_SESSION` values from the preamble output, which were `0` because consent had not been granted yet.
-If no: write `no` to `~/.whytree/.analytics-consent`.
-Move on immediately.
-
-**Changing preference:** If the user asks to change their preference, update `~/.whytree/.analytics-consent` accordingly and confirm. Switching from `no` → `yes-v2` runs the same initialization (device ID, first-session, counter).
-
-**Sending the session ping (only if consent is `yes-v2`):** Once per session, after parsing the preamble, fire one fire-and-forget event. Read the device ID from `~/.whytree/.device-id`, take `SESSION_NUMBER` and `DAYS_SINCE_FIRST_SESSION` directly from the preamble output (these represent the current in-flight session — `preamble.sh` increments the counter once at session start, so do not re-run it mid-session or the value will drift), and compute `treeAgeDays` from the active tree's `createdAt` (0 if no tree yet):
-
-```bash
-curl -s --max-time 10 -X POST https://kardens.io/api/whytree-telemetry \
-  -H "Content-Type: application/json" \
-  -H "X-Whytree-Key: whytree-v1-public-telemetry" \
-  -d '{"deviceId":"<device-id>","command":"session","sessionNumber":<N>,"daysSinceFirstSession":<N>,"treeAgeDays":<N>}'
-```
-
-Payloads contain only the device ID, a fixed command string, and integers — no user input is ever interpolated. **Never include node labels, tree names, counts, or personal content.**
-
-## Feedback
-
-Feedback is **proactive, not end-of-session**. Watch for two kinds of moments and offer to send a short note that you have already drafted — the user just confirms.
-
-### Triggers
-
-Offer feedback **at most once per session** (zero is fine), and only when one of the following genuinely fires:
-
-1. **Something went wrong with the tool itself** — the counselor used a confusing reference (e.g., spatial language that doesn't match the rendering), a phase pattern misfired, the user had to correct a recurring tool behavior, or a schema limitation blocked something the user wanted to do.
-2. **A design-relevant insight surfaced** — the conversation revealed a structural gap in the tool (something the schema or flow can't represent), a new pattern worth supporting, or a UX moment that pointed to a real improvement.
-
-Do **not** trigger for: ordinary disagreements, normal user frustration about their own life material, or the user simply having a good session. The bar is "this is information about the *tool*, not about the user."
-
-If the user has already declined a feedback offer this session, do not offer again.
-
-### Offer flow
-
-1. **Draft silently first.** Compose a 1–3 sentence depersonalized observation. The draft must:
-   - Describe the *tool-side observation* (the bug, friction, or design gap), not the user's personal content.
-   - Contain **no node labels, no purpose statements, no quoted user words, no tree names, no personal context**.
-   - Be specific enough to be actionable (which phase, which pattern, what the alternative might be).
-
-2. **Show the draft and ask.** One short turn:
-
-   > *"One quick thing — I'd like to flag this so it can shape the tool for the next person. Here's what I'd send (no personal content):*
-   >
-   > *> [draft]*
-   >
-   > *Send it? Just yes/no, or edit the wording."*
-
-3. **Act on the response:**
-   - **yes** → save and send (steps below).
-   - **no** → drop it silently, do not offer again this session.
-   - **edit** → accept their wording, re-confirm, then save and send.
-
-### Examples of acceptable depersonalized drafts
-
-- *"In Phase 3 the counselor referred to 'left tree / right tree' but the rendered view is top-down — the spatial metaphor doesn't match. Suggest alpha labels (A/B threads) instead."*
-- *"Schema gap: when two root branches sit in dialectical tension (thesis/antithesis), the why-up DAG can't represent the relationship. Synthesis ends up shoved into the `purpose` memo field."*
-- *"Phase 0a opening framing felt long for a returning user. A 1-sentence recap would be enough."*
-
-### Examples of drafts that are **not acceptable** (contain personal content — rewrite)
-
-- ❌ *"User found that 'need for external validation' and '안정감' are in tension."* → strip the labels.
-- ❌ *"User Jisoo had an insight about their tree."* → strip the name.
-
-### Save and send
-
-**Allowed `category` / `feedbackCategory` values** (pick the closest match — do not invent new ones):
-
-| Category | Use for |
-|---|---|
-| `tool-misfire` | Counselor said something wrong, used confusing terminology, broke its own pattern |
-| `design-insight` | A structural gap surfaced (schema can't represent X, missing pattern) |
-| `bug` | Something technically broken (file write failed, JSON corrupted, etc.) |
-| `ux` | Pacing, friction, framing — the experience itself |
-| `naming` | Product name, terminology, language choices |
-| `localization` | Language-specific issues (Korean, etc.) |
-| `general` | None of the above; use sparingly |
-
-1. Save locally: **read** `~/.whytree/feedback/feedback.jsonl`, append one JSON line (`{"message":"...","category":"<one of the above>","ts":"ISO 8601"}`), and **write** the result back with the Write tool. **Never use Bash to write user content to files.**
-2. Send to server using a temp file to avoid shell injection:
-   - Read the device ID from `~/.whytree/.device-id`. Use the **Write tool** to create a temp file (e.g., `/tmp/whytree-feedback.json`) containing the JSON payload: `{"deviceId":"<device-id>","command":"feedback","feedbackMessage":"<message>","feedbackCategory":"<category>"}`. The `<message>` and `<category>` values must be properly JSON-escaped (escape `"`, `\`, newlines). **Never interpolate user input into a shell command.**
-   - Then run via Bash:
-```bash
-curl -s --max-time 10 -X POST https://kardens.io/api/whytree-telemetry \
-  -H "Content-Type: application/json" \
-  -H "X-Whytree-Key: whytree-v1-public-telemetry" \
-  -d @/tmp/whytree-feedback.json; rm -f /tmp/whytree-feedback.json
-```
-3. Brief thanks: *"Sent — that helps the next person."*
-
-### User-initiated feedback
-
-If the user explicitly asks to send feedback (unprompted), follow the same draft → confirm → save → send flow, but the draft should reflect what *they* asked you to convey. The depersonalization rules still apply.
-
-**Never include node labels, tree content, or personal discoveries** in the feedback message.
+Key invariants (also enforced in TELEMETRY.md — repeated here because they're safety-critical): **Never interpolate user input into a shell command.** Feedback drafts must contain **no node labels, no purpose statements, no quoted user words, no tree names, no personal context**. Analytics payloads contain only the device ID, a fixed `command` string, and integers — no user content ever.
 
 ## Additional rules
 

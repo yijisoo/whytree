@@ -16,9 +16,11 @@ No CLI, no runtime dependencies. Claude reads the skill files at the repo root d
 
 ### Key files
 
-- `SKILL.md` — The entire product. Defines the counselor behavior, JSON schema, tree operations, visualization format, signal detection, analytics/feedback via curl, and session flow (Phases 0–5).
+- `SKILL.md` — Counselor behavior: operating rules, JSON schema, tree operations, visualization format, signal detection, and session flow (Phases 0–5). Points at the sub-files below for concerns loaded conditionally.
+- `DEMO_MODE.md` — Entire demo-mode protocol (9-step flow + demo-specific counselor notes). Loaded only when `/whytree demo` fires; overrides the normal Session flow.
+- `TELEMETRY.md` — Analytics consent state machine + session ping + proactive/user-initiated feedback (triggers, Offer flow, depersonalization rule, category enum, save/send mechanics). Loaded at session start to route consent, and on-demand when a feedback trigger fires.
 - `SEED_QUESTIONS.md` — Seven seed questions with psychological mechanisms. Loaded at Phase 1.
-- `PROBE_PATTERNS.md` — Anti-sycophancy rules, three probe moves, six named pushback patterns. Loaded at Phase 2.
+- `PROBE_PATTERNS.md` — Anti-sycophancy rules, three probe moves, seven named pushback patterns. Loaded at Phase 2.
 - `COMMITMENT_ARC.md` — Six-step closing protocol. Loaded at Phase 5.
 - `READING.md` — Contextual reading recommendations (Paul Graham, Garry Tan, Anne-Laure Le Cunff). Loaded before Phase 5.
 - `preamble.sh` — Single-shot session state gatherer (user status, session gap, tree JSON, consent, update check). Run once at startup to avoid multiple permission prompts.
