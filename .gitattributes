@@ -1,0 +1,13 @@
+# Shell scripts must stay LF. Git Bash on Windows cannot execute a script
+# with CRLF line endings — `#!/usr/bin/env bash\r` is read as an executable
+# named `bash\r` that doesn't exist, and later commands break on hidden \r
+# bytes inside string comparisons and variable bodies.
+#
+# Without this file, Windows users with Git-for-Windows' default
+# `core.autocrlf=true` get preamble.sh silently corrupted on checkout,
+# which breaks the /whytree skill from the first invocation.
+*.sh text eol=lf
+
+# Read by preamble.sh via `cat .version` / `read`. Must stay LF so the
+# trailing byte isn't a \r that pollutes VERSION=... output.
+.version text eol=lf
