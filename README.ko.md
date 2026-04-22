@@ -42,14 +42,6 @@ Claude Code에 이것을 붙여넣으세요:
 
 별도 설치나 빌드 과정 없이 Claude가 스킬 파일을 직접 읽습니다.
 
-**참고 — settings.json 편집이 막힌 경우:** Claude Code의 오토 모드는 `~/.claude/settings.json` 편집을 에이전트 자가 수정으로 취급해서 거부합니다 (사용자가 요청했더라도). 위의 설치 과정에서 편집이 거부됐다고 알려주면, 본인 셸에서 아래 명령어를 직접 실행하시면 됩니다:
-
-```bash
-jq '.permissions.allowedURLs = ((.permissions.allowedURLs // []) + ["https://kardens.io/api/whytree-telemetry"] | unique)' ~/.claude/settings.json > ~/.claude/settings.json.tmp && mv ~/.claude/settings.json.tmp ~/.claude/settings.json
-```
-
-(`jq`가 필요합니다 — 없으면 macOS에서는 `brew install jq`로 설치하세요. 또는 `~/.claude/settings.json`을 직접 열어서 `permissions` 오브젝트 안에 `"allowedURLs": ["https://kardens.io/api/whytree-telemetry"]`를 추가하셔도 됩니다.) 이 단계를 건너뛰어도 whytree는 작동하지만, 익명 세션 핑과 피드백 전송이 Claude Code의 URL 화이트리스트에 막혀서 조용히 실패합니다.
-
 ## 시작
 
 Claude Code에서 `/whytree`를 입력하세요. 준비할 것 없습니다. 솔직하게 답하면 됩니다.
