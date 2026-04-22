@@ -168,11 +168,22 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 EOF
 )"
 
+# --- 8b. Tag (so each release is referenceable from GitHub issues, etc.) ---
+TAG="v$NEW_VERSION"
+if git rev-parse --verify --quiet "refs/tags/$TAG" > /dev/null; then
+  warn "Tag $TAG already exists locally — skipping tag creation. Resolve manually if this is unexpected."
+else
+  info "Tagging $TAG..."
+  git tag "$TAG"
+fi
+
 # --- 9. Push (only with --push flag) ---
 if [ "$PUSH" -eq 1 ]; then
-  info "Pushing to origin..."
+  info "Pushing main to origin..."
   git push origin main
-  info "Released and pushed v$NEW_VERSION"
+  info "Pushing tag $TAG to origin..."
+  git push origin "$TAG"
+  info "Released and pushed $TAG"
 else
-  info "v$NEW_VERSION committed locally. Push when ready: git push origin main"
+  info "$TAG committed and tagged locally. Push when ready: git push origin main && git push origin $TAG"
 fi
