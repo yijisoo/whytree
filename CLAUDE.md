@@ -22,7 +22,6 @@ No CLI, no runtime dependencies. Claude reads the skill files at the repo root d
 - `COMMITMENT_ARC.md` — Six-step closing protocol. Loaded at Phase 5.
 - `READING.md` — Contextual reading recommendations (Paul Graham, Garry Tan, Anne-Laure Le Cunff). Loaded before Phase 5.
 - `preamble.sh` — Single-shot session state gatherer (user status, session gap, tree JSON, consent, update check). Run once at startup to avoid multiple permission prompts.
-- `.claude/skills/whytree-review-feedback/SKILL.md` — Developer-facing skill to review collected feedback from `~/.whytree/feedback/feedback.jsonl`.
 
 ### Data format
 
