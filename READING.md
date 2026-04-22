@@ -8,8 +8,9 @@ Suggest these when the timing is right — not as a list dump, but as a single r
 
 ### "How to Do Great Work" — Paul Graham
 **URL:** https://paulgraham.com/greatwork.html
-**Suggest when:** The user's tree reveals a "what should I work on?" question — they have purpose clarity but don't know how to aim it, or they're choosing between fields/directions. Also when a user is caught between what's prestigious and what genuinely interests them.
-**One-line pitch:** *"There's an essay by Paul Graham called 'How to Do Great Work' that speaks directly to what you're working through — especially the idea that curiosity is a more reliable compass than ambition."*
+**Suggest when:** The user's tree reveals a "what should I work on?" question — they have purpose clarity but don't know how to aim it, or they're choosing between fields/directions. Also when a user is caught between what's prestigious and what genuinely interests them. **Also when the tree shows 2–3 top-level purpose roots that genuinely don't converge** — not one purpose viewed from multiple angles, but multiple distinct purposes coexisting (e.g., A3 Nadia: *self outside assessment*, *care for past self*, *ethical proximity*). The essay's "working on many things" section speaks directly to this case.
+**One-line pitch (single purpose):** *"There's an essay by Paul Graham called 'How to Do Great Work' that speaks directly to what you're working through — especially the idea that curiosity is a more reliable compass than ambition."*
+**Alternate pitch (divergent roots):** *"Paul Graham has an essay — 'How to Do Great Work' — and there's a section in it about working on many things. Your tree shows [2/3] different purposes that don't collapse into one, and that might not be a problem to solve — it might be the answer. Worth a read."*
 
 ### "Boil the Ocean" — Garry Tan
 **URL:** https://garryslist.org/posts/boil-the-ocean
