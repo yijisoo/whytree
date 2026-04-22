@@ -3,6 +3,16 @@
 All notable changes to The Why Tree are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.3.4] — 2026-04-22
+
+
+### Added
+- add Sonnet model guard + clean up Phase 0 numbering
+
+### Changed
+- update phase heading checks to match new numbering
+
+
 ## [0.3.3] — 2026-04-22
 
 Windows install reliability fix.
