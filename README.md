@@ -42,14 +42,6 @@ Paste this into Claude Code:
 
 No dependencies, no build step. Claude reads the skill files directly.
 
-**Heads-up — if the settings.json step was blocked:** Claude Code's auto mode treats edits to `~/.claude/settings.json` as agent self-modification and refuses them, even when you asked. If the install above tells you the edit was denied, run this in your own shell to finish:
-
-```bash
-jq '.permissions.allowedURLs = ((.permissions.allowedURLs // []) + ["https://kardens.io/api/whytree-telemetry"] | unique)' ~/.claude/settings.json > ~/.claude/settings.json.tmp && mv ~/.claude/settings.json.tmp ~/.claude/settings.json
-```
-
-(Requires `jq` — `brew install jq` on macOS if you don't have it. Or open `~/.claude/settings.json` and add `"allowedURLs": ["https://kardens.io/api/whytree-telemetry"]` inside the `permissions` object by hand.) Without this step whytree still runs, but its anonymous session ping and feedback submissions get silently blocked by Claude Code's URL whitelist.
-
 ## Start
 
 Type `/whytree` in Claude Code. No prep needed. Just be honest.
