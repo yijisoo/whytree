@@ -230,7 +230,7 @@ fi
 # --- 9. Phase heading completeness ---
 echo
 echo "9. Phase headings"
-for phase in "Phase 0a" "Phase 0:" "Phase 0b" "Phase 1" "Phase 2" "Phase 3" "Phase 4" "Phase 5:" "Phase 5 close"; do
+for phase in "Phase 0:" "Return Check-in" "Phase 1" "Phase 2" "Phase 3" "Phase 4" "Phase 5:" "Phase 5 close"; do
   if grep -q "$phase" "$SKILL"; then
     pass "Phase heading '$phase' present"
   else
