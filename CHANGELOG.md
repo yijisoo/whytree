@@ -3,6 +3,20 @@
 All notable changes to The Why Tree are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.3.0] — 2026-04-21
+
+Install layout flattened — the repo root is now the Claude Code skill directory. Fixes `Unknown command: /whytree` that occurred after a plain `git clone … ~/.claude/skills/whytree` install.
+
+### Changed
+- Skill files (`SKILL.md`, `SEED_QUESTIONS.md`, `PROBE_PATTERNS.md`, `COMMITMENT_ARC.md`, `READING.md`, `preamble.sh`) moved from `.claude/skills/whytree/` to the repo root so Claude Code discovers the skill at `~/.claude/skills/whytree/SKILL.md`
+- `preamble.sh` now self-locates via `BASH_SOURCE`, working in any install shape (standard path, symlinked dev checkout, plugin marketplace)
+- README install block stashes local edits before pulling so users upgrading from v0.2.x do not lose workaround symlinks or edits
+- `docs/stress-test-results/` untracked and gitignored — dev-only artifacts that shouldn't ship to end users
+
+### Migration
+- **Standard installs:** rerun the install block in README.md — `git stash --include-untracked` protects local edits through the flatten
+- **Symlinked dev checkouts** (repo elsewhere, symlink placed at `~/.claude/skills/whytree`): after pulling, re-point the symlink at the repo root itself rather than the old nested `.claude/skills/whytree` subdirectory
+
 ## [0.2.10] — 2026-04-19
 
 Phase 0a Example rewrite — Min/books example with stronger aha line, plus Korean canonical block so the live Korean intro stops reading as a machine translation. Code-review fixes from earlier in the day also ride along.
