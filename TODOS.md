@@ -1,10 +1,6 @@
-> **Note:** Paths in this doc reflect pre-v0.3.0 layout (skill files were under `.claude/skills/whytree/`). See CHANGELOG for the v0.3.0 flatten.
-
 # TODO
 
-1. **SKILL.md length / architecture review** — `.claude/skills/whytree/SKILL.md` is growing long (~480 lines). Is a single monolithic
-    prompt the right architecture, or should it be split (e.g., separate files for phase routing, anti-sycophancy patterns, crisis protocol)
-     with a compose step?
+1. **SKILL.md length / architecture review** — `SKILL.md` keeps growing (610 lines as of v0.3.0). Is a single monolithic prompt the right architecture, or should it be split (e.g., separate files for phase routing, anti-sycophancy patterns, crisis protocol) with a compose step?
 
 2. **Regression testing mechanism** — What's the proper way to ensure later SKILL.md changes don't break previously passing scenarios?
     Need a repeatable, automated stress test suite that can be re-run after each edit and compared against prior results (e.g.,
@@ -34,29 +30,26 @@
 10. **Phase 0a framing density** — The three-beat framing (mechanism + example + permission) may be too dense for confused first-time users. Consider making the example optional or delivering it after the user's first response, grounded in their situation.
     - *Source: A1 (Jake, clueless user) — Jake asked "what is this?" immediately after the framing. He went along because he's friendly, but a more impatient first-timer might disengage before the first question lands.*
 
-11. **Exit offer example for obligation routing** — The obligation routing says "offer an explicit exit" but doesn't show what one sounds like. Add an example line to prevent passive/ambiguous "non-pushes" that still read as pressure.
-    - *Source: E14 (David, obligation resentment) — the exit offer ("this works best when someone actually wants to be here... that's completely fine") converted a minimal compliance session into a genuine one. Without an example, a counselor might produce a hedged version that doesn't give real permission to leave.*
-
-12. **READING.md divergent-life pitch** — Add a trigger note for users whose trees show multiple genuine non-converging roots. The Paul Graham essay's section on "working on many things" is relevant but the current pitch is written for single-direction users.
+11. **READING.md divergent-life pitch** — Add a trigger note for users whose trees show multiple genuine non-converging roots. The Paul Graham essay's section on "working on many things" is relevant but the current pitch is written for single-direction users.
     - *Source: A3 (Nadia, divergent life) — tree produced three separate root systems (self outside assessment, care for past self, ethical proximity). The PG essay is relevant but the current trigger condition ("purpose clarity but don't know how to aim it") doesn't quite match.*
 
-13. **Web/mobile service** — CLI-only blocks adoption for non-technical users entirely. Two independent user interviews confirmed: daily use requires mobile, and non-IT users have no path to the product without a web interface. Needs cloud storage with E2E encryption, cross-device sync, and a conversation persistence layer beyond local JSON files. This is the Kardens.io roadmap item.
+12. **Web/mobile service** — CLI-only blocks adoption for non-technical users entirely. Two independent user interviews confirmed: daily use requires mobile, and non-IT users have no path to the product without a web interface. Needs cloud storage with E2E encryption, cross-device sync, and a conversation persistence layer beyond local JSON files. This is the Kardens.io roadmap item.
     - *Source: Two user interviews (2026-04-14, 2026-04-15) — both independently said mobile is required for daily use and non-technical friends can't use Claude Code at all.*
 
-14. **Korean exemplar for demo mode** — The Phase 0a Korean canonical block (Min/books) only fires in standard first-time framing. Demo mode's abbreviated 2-beat framing has no Korean exemplar, so a demo guest who switches to Korean gets a translated-on-the-fly framing. Add a one-line Korean phrasing to the demo flow.
+13. **Korean exemplar for demo mode** — The Phase 0a Korean canonical block (Min/books) only fires in standard first-time framing. Demo mode's abbreviated 2-beat framing has no Korean exemplar, so a demo guest who switches to Korean gets a translated-on-the-fly framing. Add a one-line Korean phrasing to the demo flow.
     - *Source: F21 (Hyunjin, language switcher) — agent passed by improvising, but no canonical was reached.*
 
-15. **"Keep going" deflection template** — Demo step 8 (close + cleanup) lacks a ready phrase for the warm-decline-and-handoff move when a guest wants to extend on the host's machine. Currently improvised. One example line would lock it in.
+14. **"Keep going" deflection template** — Demo step 8 (close + cleanup) lacks a ready phrase for the warm-decline-and-handoff move when a guest wants to extend on the host's machine. Currently improvised. One example line would lock it in.
     - *Source: F20 (Soyeon, "keep going" past close) — agent landed it, but the wording was generated fresh; consistency across model versions is at risk.*
 
-16. **Name the flood-opener pattern explicitly** — Over-sharers who unload 4–5 threads in their first answer are handled today via the union of "slow down" + "don't push for seeds" + "pick what they circle back to." Naming it as an explicit Phase 1 pattern ("flood opener — let them self-select one thread") would make it more reliable.
+15. **Name the flood-opener pattern explicitly** — Over-sharers who unload 4–5 threads in their first answer are handled today via the union of "slow down" + "don't push for seeds" + "pick what they circle back to." Naming it as an explicit Phase 1 pattern ("flood opener — let them self-select one thread") would make it more reliable.
     - *Source: F19 (Minjae, over-sharer) — counselor correctly avoided triaging all five threads and used "which one do you keep circling back to" to let Minjae self-select, but the move was implicit.*
 
-17. **Tighter obligation routing for demo mode** — Phase 0 says "1–2 exchanges of flat affect" before naming. In demo on a host's machine, even one flat exchange is enough signal — the social pressure on the guest is higher. Worth tightening for demo only.
+16. **Tighter obligation routing for demo mode** — Phase 0 says "1–2 exchanges of flat affect" before naming. In demo on a host's machine, even one flat exchange is enough signal — the social pressure on the guest is higher. Worth tightening for demo only.
     - *Source: F17 (Donghyun, reluctant friend) — counselor named obligation at exchange 3; could have spared the guest one more beat of pressure.*
 
-18. **Name the meta-challenge pattern** — AI skeptics surface a recurring move: brief acknowledge, redirect to experience, no defense. Could be named alongside the existing pushback patterns in `PROBE_PATTERNS.md`.
+17. **Name the meta-challenge pattern** — AI skeptics surface a recurring move: brief acknowledge, redirect to experience, no defense. Could be named alongside the existing pushback patterns in `PROBE_PATTERNS.md`.
     - *Source: F18 (Jihye, AI skeptic) — counselor handled "is this just ELIZA?" cleanly with "partly, yeah — what's interesting is whether your answer surprises you," but the pattern isn't documented.*
 
-19. **Suppress proactive feedback in demo mode** — Eager demo participants shouldn't be interrupted with feedback prompts. Add an explicit demo-mode note: suppress proactive feedback offers unless a clear tool-misfire occurred.
+18. **Suppress proactive feedback in demo mode** — Eager demo participants shouldn't be interrupted with feedback prompts. Add an explicit demo-mode note: suppress proactive feedback offers unless a clear tool-misfire occurred.
     - *Source: F16 (Yuna, enthusiastic student) — no actual misfire in this run, but the proactive feedback hook could fire on an ideal demo session and break the flow.*
