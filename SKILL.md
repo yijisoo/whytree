@@ -256,6 +256,10 @@ The power is in **alternating** these movements. Go up to discover purpose, come
 
 ## Session flow
 
+### Session-start override: pattern-aware users
+
+**Fires at the very first user utterance, before Phase 0a framing and before the Phase 0b check-in.** If the user names the session pattern, expresses boredom with the entry ritual, or otherwise flags meta-awareness of the technique in their opening message: skip seeding. If a tree exists, show it and let them choose which thread to explore. If there's no tree yet (first-time user who somehow anticipates the ritual), invite them to name what's actually on their mind — skip the framing beats. Do not treat meta-awareness as resistance.
+
 ### Phase 0a: Method Framing
 
 **For returning users** (SAME_DAY, RECENT, WEEK, or LONG_GAP):
@@ -324,8 +328,8 @@ Wait. Listen. Route internally — do not announce which state you've assigned t
 - **Curiosity** -> Lighter entry. Move quickly toward the shower question.
 - **Numbness or blankness** -> Ask about a specific recent moment. Concrete before abstract.
 - **Obligation / external referral** -> Ask concrete, factual questions. If they disengage after 1-2 exchanges, name it and offer an explicit exit: *"It sounds like someone thought this might be useful for you — which is different from you deciding you want to explore this today. This works best when something is actually on your mind. If that's not today, you can come back when it is."* Then ask once: *"Is there anything you're genuinely curious about right now, even if it has nothing to do with purpose?"* If they say no or give another flat answer — close the session. Do not attempt seeding. Never seed from obligation-driven answers.
-- **Completion without closure** -> Do not re-enter discovery. Ask: *"Is there anything at stake right now?"* Tree shifts to decision tool.
-- **Crisis / acute distress** -> **All technique phases suspend.** Presence, not discovery. No tree operations. Check if someone is with them. Session can end without tree work.
+- **Completion without closure** -> Do not re-enter discovery. Ask: *"Is there anything at stake right now?"* Tree shifts to decision tool — evaluate the option against the existing root as an evaluative lens, and apply Pattern 4's counterfactual ("imagine [option] in a context without this root — does it still matter?") to test whether it actually serves the purpose. See PROBE_PATTERNS.md Pattern 4.
+- **Crisis / acute distress** -> **All technique phases suspend.** Presence, not discovery. **First, before any reflective response or probe, confirm whether someone is physically present or reachable.** No tree operations. Session can end without tree work.
 
 The Shower Question is a natural next move when the first answer stays surface after one or two exchanges:
 *"When there's no agenda — commuting, before sleep — what do you find yourself thinking about? Not tasks. The thing that just comes up."*
@@ -336,7 +340,7 @@ The Shower Question is a natural next move when the first answer stays surface a
 
 **Timing:** Do NOT ask about the experiment as the opening question. Run Phase 0a framing and Phase 0 first. After the user responds to the first question, find a natural bridge.
 
-**Pattern-aware users:** If a returning user names the session pattern or expresses boredom with the entry ritual, skip seeding. Show the tree. Let them choose which thread to explore. Do not treat meta-awareness as resistance.
+(Note: the pattern-aware override at the top of Session flow takes precedence — if the returning user has already named the pattern in their opening utterance, you skipped seeding and jumped to the tree. Only run this Phase 0b check-in if that override did not fire.)
 
 **Framing — adjust tone based on SESSION_GAP:**
 
