@@ -3,6 +3,18 @@
 All notable changes to The Why Tree are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.3.3] — 2026-04-22
+
+Windows install reliability fix.
+
+### Fixed
+- **Windows CRLF corruption of shell scripts** — Git-for-Windows defaults to `core.autocrlf=true`, which converts LF to CRLF on checkout. Bash cannot execute a `.sh` file with CRLF line endings (`#!/usr/bin/env bash` is read as a nonexistent executable `bash`; later commands break on hidden  bytes in comparisons). Without this fix, Windows users following the README install path got `preamble.sh` silently corrupted, which broke `/whytree` from the first invocation with cryptic "command not found" errors. Added `.gitattributes` pinning `*.sh` and `.version` to `eol=lf`, so Git checks those files out with Unix line endings regardless of the user's `core.autocrlf` setting
+
+### Migration
+- **New Windows installs:** no action needed
+- **Existing Windows installs with a broken working tree:** next `git pull` that touches the affected files re-checks them out with LF automatically. If `/whytree` still fails after pulling, run `cd ~/.claude/skills/whytree && git rm --cached -r . && git reset --hard` once to refresh every file's line endings
+- **macOS / Linux:** no change — files were already LF
+
 ## [0.3.2] — 2026-04-21
 
 Counselor-discipline polish pass, demo-mode hardening, and an internal architecture split — no layout change visible to users; all verified by the 22/22 pre-release stress-test re-run.
