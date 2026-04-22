@@ -16,7 +16,7 @@ echo
 
 # --- 1. Required files exist ---
 echo "1. Required files"
-for f in SKILL.md COMMITMENT_ARC.md PROBE_PATTERNS.md SEED_QUESTIONS.md READING.md preamble.sh; do
+for f in SKILL.md COMMITMENT_ARC.md PROBE_PATTERNS.md SEED_QUESTIONS.md READING.md DEMO_MODE.md preamble.sh; do
   if [ -f "$SKILL_DIR/$f" ]; then
     pass "$f exists"
   else
@@ -38,7 +38,7 @@ else
 fi
 
 # Verify each supporting file referenced by name exists
-for f in SEED_QUESTIONS.md PROBE_PATTERNS.md COMMITMENT_ARC.md READING.md; do
+for f in SEED_QUESTIONS.md PROBE_PATTERNS.md COMMITMENT_ARC.md READING.md DEMO_MODE.md; do
   if grep -qE "\`$f\`" "$SKILL"; then
     if [ -f "$SKILL_DIR/$f" ]; then
       pass "Reference $f resolves"
@@ -236,7 +236,7 @@ done
 # --- 10. Supporting file content (not empty/truncated) ---
 echo
 echo "10. Supporting file content"
-for f in COMMITMENT_ARC.md PROBE_PATTERNS.md SEED_QUESTIONS.md READING.md; do
+for f in COMMITMENT_ARC.md PROBE_PATTERNS.md SEED_QUESTIONS.md READING.md DEMO_MODE.md; do
   lines=$(wc -l < "$SKILL_DIR/$f" | tr -d ' ')
   if [ "$lines" -gt 5 ]; then
     pass "$f has content ($lines lines)"
