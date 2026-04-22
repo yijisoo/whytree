@@ -184,7 +184,13 @@ If `UPDATES_AVAILABLE` > 0, the log output shows what changed. Offer the update.
 
 **After a successful pull that touches SKILL.md or any supporting file:** tell the user: *"Update applied. Please /exit and run /whytree again — the new version isn't fully active until you restart."* Do not continue the current session against the freshly-pulled tree; the model has the pre-update SKILL.md cached and absolute paths in cached content may no longer match disk.
 
-Use `USER_STATUS` and `SESSION_GAP` for Phase 0a and Phase 0b routing.
+Use `USER_STATUS` and `SESSION_GAP` for Phase 0 and Return Check-in routing.
+
+**Model check (after preamble, before session flow).** Check your own model ID from your system context. If the model ID does **not** contain `sonnet`, pause and tell the user:
+
+> "Hey — I noticed you're running on [model name]. Why Tree sessions work best on Sonnet (faster, more conversational). You can switch with `/model claude-sonnet-4-6` (or any newer Sonnet). Want to switch before we start?"
+
+Wait for their reply. If they switch, proceed normally. If they decline or say to continue anyway, note it and proceed — do not ask again.
 
 ## Demo mode
 
@@ -217,13 +223,13 @@ The power is in **alternating** these movements. Go up to discover purpose, come
 
 ### Session-start override: pattern-aware users
 
-**Fires at the very first user utterance, before Phase 0a framing and before the Phase 0b check-in.** If the user names the session pattern, expresses boredom with the entry ritual, or otherwise flags meta-awareness of the technique in their opening message: skip seeding. If a tree exists, show it and let them choose which thread to explore. If there's no tree yet (first-time user who somehow anticipates the ritual), invite them to name what's actually on their mind — skip the framing beats. Do not treat meta-awareness as resistance.
+**Fires at the very first user utterance, before Phase 0 framing and before the Return Check-in.** If the user names the session pattern, expresses boredom with the entry ritual, or otherwise flags meta-awareness of the technique in their opening message: skip seeding. If a tree exists, show it and let them choose which thread to explore. If there's no tree yet (first-time user who somehow anticipates the ritual), invite them to name what's actually on their mind — skip the framing beats. Do not treat meta-awareness as resistance.
 
-### Phase 0a: Method Framing
+### Phase 0: Session Start
 
 **For returning users** (SAME_DAY, RECENT, WEEK, or LONG_GAP):
 
-Skip the full framing below entirely. Say nothing about version or updates — go directly to Phase 0.
+Skip the full framing below entirely. Say nothing about version or updates — go directly to the Opening Question.
 
 ---
 
@@ -247,7 +253,7 @@ Route internally based on the response:
 
 | Response | Mode | Behavior |
 |---|---|---|
-| Relaxed / "I have time" / evening context | **Deep** | Full session flow (Phases 0-5). No artificial caps. Let the conversation breathe. |
+| Relaxed / "I have time" / evening context | **Deep** | Full session flow (all phases). No artificial caps. Let the conversation breathe. |
 | Busy / "not much" / specific time constraint | **Focused** | Minimum viable session: 1 seed → 2-3 why-ups → 1 how-down → mini Commitment Arc. ~20 min. |
 | Ambiguous | Default to **Focused** | Offer to continue if energy is there at the exit point. |
 
@@ -259,9 +265,9 @@ Route internally based on the response:
 
 **Feedback** (both modes, 1 sentence, casual): *"If anything about this session feels off or great, just say so — your feedback helps make the experience better for the next person."*
 
-Say the first three beats, then ask the time check. After their response, deliver the roadmap, pacing, and feedback beats. Then move to Phase 0.
+Say the first three beats, then ask the time check. After their response, deliver the roadmap, pacing, and feedback beats. Then move to the Opening Question.
 
-### Phase 0: First Question
+#### Opening Question
 
 **For SAME_DAY returning users:** Skip the shower question entirely. Open casually:
 *"What's up? You came back quickly — anything on your mind before tomorrow's session?"*
@@ -293,13 +299,13 @@ Wait. Listen. Route internally — do not announce which state you've assigned t
 The Shower Question is a natural next move when the first answer stays surface after one or two exchanges:
 *"When there's no agenda — commuting, before sleep — what do you find yourself thinking about? Not tasks. The thing that just comes up."*
 
-### Phase 0b: Session Return Check-in (returning users only)
+### Return Check-in (returning users only)
 
-**Trigger:** At session start, read the tree silently. If `lastExperimentId` is set and the referenced node exists in `nodes`, that is the prior experiment. If `lastExperimentId` is null, missing, or points to a node that no longer exists (clear it to null and save), skip this phase.
+**Trigger:** At session start, read the tree silently. If `lastExperimentId` is set and the referenced node exists in `nodes`, that is the prior experiment. If `lastExperimentId` is null, missing, or points to a node that no longer exists (clear it to null and save), skip this section.
 
-**Timing:** Do NOT ask about the experiment as the opening question. Run Phase 0a framing and Phase 0 first. After the user responds to the first question, find a natural bridge.
+**Timing:** Do NOT ask about the experiment as the opening question. Run Phase 0 framing and the Opening Question first. After the user responds to the first question, find a natural bridge.
 
-(Note: the pattern-aware override at the top of Session flow takes precedence — if the returning user has already named the pattern in their opening utterance, you skipped seeding and jumped to the tree. Only run this Phase 0b check-in if that override did not fire.)
+(Note: the pattern-aware override at the top of Session flow takes precedence — if the returning user has already named the pattern in their opening utterance, you skipped seeding and jumped to the tree. Only run this Return Check-in if that override did not fire.)
 
 **Framing — adjust tone based on SESSION_GAP:**
 
@@ -381,7 +387,7 @@ If gate fires: ask *"Before we look at alternatives — why does [current root] 
 
 **In Focused mode, one How Down is enough.** After the first How Down, offer the exit: *"You've found something here. Want to try one thing based on this, or keep going?"* If they choose to close, run the mini Commitment Arc (Steps 1, 2, 5 from COMMITMENT_ARC.md — selection, narrow to today, close). If they continue, proceed with the full session flow.
 
-**Early-exit feedback (before minimum viable exit).** If the user wants to stop before reaching the first genuine Why Up (i.e., they want to leave during Phase 0, 1, or 2), ask once: *"Before you go — anything about this experience you'd want to share? It helps make it better for the next person."* One ask only — if they say no or ignore it, let them go. If they share something, **save it locally only** to `~/.whytree/feedback/feedback.jsonl` (using the Write tool, same JSON-line format as specified in `TELEMETRY.md`). **Do not send the early-exit reply to the server**: an in-the-moment exit reply often contains personal content ("I'm exhausted, my mom is sick"), and the depersonalization rules in `TELEMETRY.md` cannot be reliably applied to free-form user voice. The developer reviews local feedback.jsonl manually.
+**Early-exit feedback (before minimum viable exit).** If the user wants to stop before reaching the first genuine Why Up (i.e., they want to leave during Phase 0, Phase 1, or Phase 2), ask once: *"Before you go — anything about this experience you'd want to share? It helps make it better for the next person."* One ask only — if they say no or ignore it, let them go. If they share something, **save it locally only** to `~/.whytree/feedback/feedback.jsonl` (using the Write tool, same JSON-line format as specified in `TELEMETRY.md`). **Do not send the early-exit reply to the server**: an in-the-moment exit reply often contains personal content ("I'm exhausted, my mom is sick"), and the depersonalization rules in `TELEMETRY.md` cannot be reliably applied to free-form user voice. The developer reviews local feedback.jsonl manually.
 
 **In Deep mode and return sessions, aim for three How Downs, with the third in a completely different life arena.** After two options: *"What's something that has nothing to do with [their field] — a completely different context where this same root could live?"*
 
