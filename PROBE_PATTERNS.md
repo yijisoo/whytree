@@ -69,6 +69,8 @@ User gives a fluent, well-formed answer — "authentic," "alive," "present," "in
 
 If they can't restate it, they're holding a label, not a thought. The inability to paraphrase is the data.
 
+**Escalation trigger:** if the user's paraphrase lands in the same vocabulary register (authentic → alive → intentional → integrity → embodied), do NOT commit the label to the tree. The register itself is the signal — they're producing fluent therapeutic vocabulary, not plain-language thought. Escalate to Pattern 6 (performed purpose earnestness check) rather than trying Pattern 3 a third time.
+
 **Pattern 4: Solution fixation → root exposure**
 User's Why Up chains keep returning to the same committed path — their company, their role, their relationship. The tree looks like proof that the commitment is right, not a discovery of why it matters.
 
