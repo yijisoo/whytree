@@ -8,8 +8,53 @@ on:
 
 jobs:
   skill-lint:
-    runs-on: ubuntu-latest
+    # Matrix runs the same checks on Ubuntu (primary dev platform) and Windows
+    # (Git Bash under windows-latest). The Windows leg catches:
+    #   - CRLF corruption of *.sh if .gitattributes is ever removed or weakened
+    #   - platform-incompatible commands in preamble.sh or scripts/release.sh
+    #     (e.g., a bare `stat -f` without the `-c` fallback)
+    #   - any shell feature that works in Linux bash but not Git Bash
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    # `shell: bash` on windows-latest invokes Git Bash (bundled with the
+    # pre-installed Git for Windows). This is exactly the shell real Windows
+    # users run under Claude Code, so parity is high.
+    defaults:
+      run:
+        shell: bash
+
     steps:
       - uses: actions/checkout@v4
+
+      - name: Verify LF line endings on shell scripts
+        # If .gitattributes is missing or broken, Windows checkouts will have
+        # CRLF on *.sh. Catch that explicitly with a clear error message
+        # rather than letting preamble.sh fail cryptically.
+        run: |
+          for f in preamble.sh scripts/release.sh test/skill-lint.sh; do
+            if file "$f" | grep -q CRLF; then
+              echo "FAIL: $f has CRLF line endings — check .gitattributes" >&2
+              exit 1
+            fi
+          done
+          echo "OK: all shell scripts are LF"
+
       - name: Run skill linter
         run: ./test/skill-lint.sh
+
+      - name: Smoke-test preamble.sh
+        # Runs preamble.sh in an empty ~/.whytree environment and verifies it
+        # exits 0 and emits the canonical header. Catches platform-specific
+        # breakage (bad stat flags, missing commands) without needing a real
+        # session.
+        run: |
+          mkdir -p ~/.whytree
+          bash preamble.sh > /tmp/preamble-output.txt
+          grep -q "=== WHYTREE PREAMBLE ===" /tmp/preamble-output.txt
+          grep -q "=== TREE_JSON ===" /tmp/preamble-output.txt
+          grep -q "=== CONSENT ===" /tmp/preamble-output.txt
+          echo "OK: preamble.sh ran cleanly and emitted all expected sections"
