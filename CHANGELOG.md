@@ -3,6 +3,15 @@
 All notable changes to The Why Tree are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.3.1] — 2026-04-21
+
+Cleanup pass after the v0.3.0 flatten.
+
+### Changed
+- Removed unused `whytree-review-feedback` developer skill — never referenced from `SKILL.md` or `preamble.sh`; real user feedback already flows server-side via the depersonalized curl path, so the local-only triage skill was dead weight and risked confusing anyone browsing the repo
+- Moved `docs/todo.md` → `TODOS.md` at the repo root for visibility alongside README/CHANGELOG; dropped the fixed item about the obligation-routing exit-offer example (now codified in SKILL.md) and renumbered the remaining 18 items
+- Dropped the now-obsolete section 12 of `test/skill-lint.sh` that validated the removed review-feedback skill
+
 ## [0.3.0] — 2026-04-21
 
 Install layout flattened — the repo root is now the Claude Code skill directory. Fixes `Unknown command: /whytree` that occurred after a plain `git clone … ~/.claude/skills/whytree` install.
