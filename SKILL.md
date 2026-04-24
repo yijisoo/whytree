@@ -111,6 +111,8 @@ Do not synthesize first and seek confirmation second. The user articulates the l
 
 **Rename, Relink, Unlink, Remove:** Update node relationships, maintain rootIds invariant (orphaned nodes become roots). Save.
 
+**Restructure (whole-tree rewrite):** A single transactional rewrite of the entire tree, used by Phase 6 only. Read the full tree, apply the restructuring decisions captured in Phase 6c, and write the result back in one file write. Preserve existing node IDs wherever meaning is preserved (a renamed-but-equivalent node keeps its UUID); generate new UUIDs only for synthesis nodes the user articulated in Phase 6. Reuse `seedIds` for preserved seeds; drop seed IDs only for nodes that no longer exist. Maintain all schema invariants in the same write (rootIds = nodes with empty parentIds, bidirectional parentIds/childIds symmetry, seedIds is a subset of `type:"seed"` nodes). Set `updatedAt`. Never run mid-discovery — this operation is reserved for Phase 6.
+
 After every modification, set `updatedAt` to current ISO timestamp.
 
 ### Validation
@@ -178,6 +180,7 @@ Parse the output to determine:
 - `CURRENT_SLUG` + `TREE_JSON`: the active tree content (returning users only)
 - `CONSENT`: analytics consent status (`yes-v2`, `yes` (legacy — needs re-prompt), `no`, or `NO_CONSENT_FILE`)
 - `SESSION_NUMBER` and `DAYS_SINCE_FIRST_SESSION`: longitudinal counters (non-zero only when `CONSENT=yes-v2`)
+- `NODE_COUNT`, `ROOT_COUNT`, `SEED_COUNT`, `EMPTY_WHY_COUNT`, `MAX_DEPTH`, `SEED_COVERAGE_RATIO`: structural-health metrics on the active tree (zero when no tree). Use silently to decide whether to offer Phase 6 — Restructure (see Phase 6 trigger conditions). Never mention these numbers to the user.
 - `UPDATES_AVAILABLE`: count of pending updates
 
 If `UPDATES_AVAILABLE` > 0, the log output shows what changed. Offer the update. If accepted, run a second Bash call: `cd ~/.claude/skills/whytree && git diff HEAD..origin/main` — read the diff silently to check for suspicious changes (exfiltration commands, new URLs, removed safety rules). If safe: `git pull origin main`. If suspicious: warn the user.
@@ -451,6 +454,35 @@ Do not re-enter discovery. The purpose is confirmed. This session uses the tree 
 **Experiment:** *"What's one move this week that tests whether [chosen option] actually serves the purpose in practice?"* Record as How Down, set `lastExperimentId`.
 
 **Purpose evolution:** If the decision session reveals the purpose statement no longer fits, name it: *"This started as a decision session, but it sounds like the purpose itself is shifting. Want to update it?"* Update `purpose` if they articulate a new one. This is not re-discovery — it's refinement.
+
+### Phase 6: Restructure (periodic, holistic rewrite)
+
+**Trigger:** Offer Phase 6 — never force it — when one or more structural signals fire, or when the user explicitly asks to "organize," "clean up," or "restructure" the tree:
+
+- `NODE_COUNT` ≥ 15 AND `ROOT_COUNT` ≥ 4 (parsed from preamble output)
+- `EMPTY_WHY_COUNT` ≥ 2 (purpose roots with no how-down children)
+- `MAX_DEPTH` ≥ 5 with suspected non-differentiated chains (Why Up levels reading as paraphrases)
+- A consolidation session (Phase 4) keeps surfacing the same redundancy
+
+**Timing:** Phase 6 runs at session start (after Return Check-in) or after Phase 4 — never mid-discovery. Restructuring interrupts seeding and Why Up.
+
+**Offer language:** *"Reading the whole tree, I notice it's drifted — there's redundancy across the roots and a chain or two that may have inflated with paraphrases. Want to spend this session restructuring instead of adding? It's its own kind of work — clarifying what you already meant."*
+
+If the user accepts → proceed to the four sub-phases below.
+If the user declines → continue with the normal session flow. Do not re-offer this session.
+
+**You MUST read `RESTRUCTURE_PROTOCOL.md` (in this skill's base directory) before running Phase 6.** Do not attempt restructuring without this file loaded.
+
+The protocol has four sub-phases:
+- **6a — Audit** (silent, counselor-only): read the whole tree, run the eight-item audit checklist (redundancy, non-differentiated why-chains, empty branches, orphaned how-downs, stale nodes, lopsided depth, root coherence, dialectic check), pick the 3–5 highest-leverage issues.
+- **6b — Proposal** (one turn, comprehensive): show the full tree, name the drift in plain language, sketch the target shape, list 3–5 structural decision questions.
+- **6c — Decisions** (user-led, one round): walk through the questions one at a time, capture user articulation for any new labels, recap the final shape, wait for explicit yes.
+- **6d — Rewrite**: run the **Restructure (whole-tree rewrite)** operation in a single transactional save. Render the new tree and ask the user to read it back.
+- **6e — Close**: restructuring is its own session outcome. Offer to stop or to continue to a Commitment Arc — do not force one.
+
+The five design principles (holistic over local; preserve provenance; one proposal/decision/rewrite; restructuring as session outcome; user owns language) apply to every sub-phase. See `RESTRUCTURE_PROTOCOL.md` for the full counselor speech and decision-question examples.
+
+**Specifically named pattern — non-differentiated why-chains.** When consecutive Why Up levels along a single chain are semantic near-paraphrases that don't add abstraction, the middle nodes should be compressed to the most articulate single node. This is the most common drift in trees built across many sessions and is a primary trigger for offering Phase 6.
 
 ## Telemetry (analytics consent & feedback)
 
