@@ -17,7 +17,7 @@ echo
 
 # --- 1. Required files exist ---
 echo "1. Required files"
-for f in SKILL.md COMMITMENT_ARC.md PROBE_PATTERNS.md SEED_QUESTIONS.md READING.md DEMO_MODE.md TELEMETRY.md RESTRUCTURE_PROTOCOL.md preamble.sh; do
+for f in SKILL.md COMMITMENT_ARC.md PROBE_PATTERNS.md SEED_QUESTIONS.md READING.md DEMO_MODE.md TELEMETRY.md preamble.sh; do
   if [ -f "$SKILL_DIR/$f" ]; then
     pass "$f exists"
   else
@@ -39,7 +39,7 @@ else
 fi
 
 # Verify each supporting file referenced by name exists
-for f in SEED_QUESTIONS.md PROBE_PATTERNS.md COMMITMENT_ARC.md READING.md DEMO_MODE.md TELEMETRY.md RESTRUCTURE_PROTOCOL.md; do
+for f in SEED_QUESTIONS.md PROBE_PATTERNS.md COMMITMENT_ARC.md READING.md DEMO_MODE.md TELEMETRY.md; do
   if grep -qE "\`$f\`" "$SKILL"; then
     if [ -f "$SKILL_DIR/$f" ]; then
       pass "Reference $f resolves"
@@ -230,7 +230,7 @@ fi
 # --- 9. Phase heading completeness ---
 echo
 echo "9. Phase headings"
-for phase in "Phase 0:" "Return Check-in" "Phase 1" "Phase 2" "Phase 3" "Phase 4" "Phase 5:" "Phase 5 close" "Phase 6:"; do
+for phase in "Phase 0:" "Return Check-in" "Phase 1" "Phase 2" "Phase 3" "Phase 4" "Phase 5:" "Phase 5 close"; do
   if grep -q "$phase" "$SKILL"; then
     pass "Phase heading '$phase' present"
   else
@@ -241,7 +241,7 @@ done
 # --- 10. Supporting file content (not empty/truncated) ---
 echo
 echo "10. Supporting file content"
-for f in COMMITMENT_ARC.md PROBE_PATTERNS.md SEED_QUESTIONS.md READING.md DEMO_MODE.md TELEMETRY.md RESTRUCTURE_PROTOCOL.md; do
+for f in COMMITMENT_ARC.md PROBE_PATTERNS.md SEED_QUESTIONS.md READING.md DEMO_MODE.md TELEMETRY.md; do
   lines=$(wc -l < "$SKILL_DIR/$f" | tr -d ' ')
   if [ "$lines" -gt 5 ]; then
     pass "$f has content ($lines lines)"
@@ -249,31 +249,6 @@ for f in COMMITMENT_ARC.md PROBE_PATTERNS.md SEED_QUESTIONS.md READING.md DEMO_M
     fail "$f appears empty or truncated ($lines lines)"
   fi
 done
-
-# --- 11b. Restructure protocol integration ---
-echo
-echo "11b. Restructure protocol"
-RESTRUCTURE_FILE="$SKILL_DIR/RESTRUCTURE_PROTOCOL.md"
-if grep -q "Restructure (whole-tree rewrite)" "$SKILL"; then
-  pass "Restructure (whole-tree rewrite) operation documented in SKILL.md"
-else
-  fail "Restructure (whole-tree rewrite) operation missing from SKILL.md Operations"
-fi
-if grep -q "RESTRUCTURE_PROTOCOL.md" "$SKILL"; then
-  pass "SKILL.md references RESTRUCTURE_PROTOCOL.md"
-else
-  fail "SKILL.md does not reference RESTRUCTURE_PROTOCOL.md"
-fi
-if grep -qi "non-differentiated" "$RESTRUCTURE_FILE" "$SKILL"; then
-  pass "Non-differentiated why-chain pattern documented"
-else
-  fail "Non-differentiated why-chain pattern missing — this is a primary restructure trigger"
-fi
-if grep -q "NODE_COUNT" preamble.sh 2>/dev/null || grep -q "NODE_COUNT" "$SKILL_DIR/preamble.sh"; then
-  pass "preamble.sh emits structural-health metrics"
-else
-  fail "preamble.sh missing structural-health metrics (NODE_COUNT etc.)"
-fi
 
 # --- 11. YAML frontmatter ---
 echo

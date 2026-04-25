@@ -54,95 +54,9 @@ else
     SLUG=$(cat ~/.whytree/.current)
     echo "CURRENT_SLUG=$SLUG"
     echo "=== TREE_JSON ==="
-    TREE_FILE=~/.whytree/"$SLUG".json
-    if [ -f "$TREE_FILE" ]; then
-      cat "$TREE_FILE"
+    if [ -f ~/.whytree/"$SLUG".json ]; then
+      cat ~/.whytree/"$SLUG".json
       echo  # ensure newline after JSON
-
-      # 2a. Structural health metrics — surfaced as signals for Phase 6 (Restructure).
-      # Computed in Python because parsing JSON in pure bash is fragile. All failures
-      # fall through to zero so the preamble never errors out on a malformed tree.
-      echo "=== STRUCTURE ==="
-      if command -v python3 >/dev/null 2>&1; then
-        PYBIN=python3
-      elif command -v python >/dev/null 2>&1; then
-        PYBIN=python
-      else
-        PYBIN=""
-      fi
-      if [ -n "$PYBIN" ]; then
-      "$PYBIN" - "$TREE_FILE" <<'PY'
-import json, sys
-try:
-    with open(sys.argv[1]) as f:
-        tree = json.load(f)
-    nodes = tree.get("nodes", {}) or {}
-    roots = tree.get("rootIds", []) or []
-    seeds = tree.get("seedIds", []) or []
-    node_count = len(nodes)
-    root_count = len(roots)
-    seed_count = len(seeds)
-
-    # Empty why branches: a root of type "why" with no descendants of type "how"
-    def has_how_descendant(nid, seen):
-        if nid in seen: return False
-        seen.add(nid)
-        n = nodes.get(nid)
-        if not n: return False
-        for cid in n.get("childIds", []) or []:
-            c = nodes.get(cid)
-            if c and c.get("type") == "how": return True
-            if has_how_descendant(cid, seen): return True
-        return False
-
-    empty_why = 0
-    for rid in roots:
-        r = nodes.get(rid)
-        if r and r.get("type") == "why" and not has_how_descendant(rid, set()):
-            empty_why += 1
-
-    # Max depth (longest path from any root, by childIds)
-    def depth(nid, seen):
-        if nid in seen: return 0
-        seen = seen | {nid}
-        n = nodes.get(nid)
-        if not n: return 0
-        kids = n.get("childIds", []) or []
-        if not kids: return 1
-        return 1 + max((depth(c, seen) for c in kids), default=0)
-
-    max_depth = max((depth(r, set()) for r in roots), default=0)
-
-    # Seed coverage: fraction of seeds that have at least one why-up parent chain
-    covered = 0
-    for sid in seeds:
-        s = nodes.get(sid)
-        if s and (s.get("parentIds") or []):
-            covered += 1
-    ratio = (covered * 100 // seed_count) if seed_count else 0
-
-    print(f"NODE_COUNT={node_count}")
-    print(f"ROOT_COUNT={root_count}")
-    print(f"SEED_COUNT={seed_count}")
-    print(f"EMPTY_WHY_COUNT={empty_why}")
-    print(f"MAX_DEPTH={max_depth}")
-    print(f"SEED_COVERAGE_RATIO={ratio}")
-except Exception:
-    print("NODE_COUNT=0")
-    print("ROOT_COUNT=0")
-    print("SEED_COUNT=0")
-    print("EMPTY_WHY_COUNT=0")
-    print("MAX_DEPTH=0")
-    print("SEED_COVERAGE_RATIO=0")
-PY
-      else
-        echo "NODE_COUNT=0"
-        echo "ROOT_COUNT=0"
-        echo "SEED_COUNT=0"
-        echo "EMPTY_WHY_COUNT=0"
-        echo "MAX_DEPTH=0"
-        echo "SEED_COVERAGE_RATIO=0"
-      fi
     else
       echo "TREE_FILE_MISSING"
     fi
