@@ -1,0 +1,15 @@
+# layer  relative-path
+core      core/operating-rules.md
+core      core/role-and-technique.md
+core      core/tree-format.md
+core      core/operations.md
+core      core/visualization.md
+core      core/signals.md
+core      core/phases.md
+core      core/PROBE_PATTERNS.md
+core      core/COMMITMENT_ARC.md
+domain    domains/{domain}/framing.md
+domain    domains/{domain}/SEED_QUESTIONS.md
+domain    domains/{domain}/READING.md
+domain    domains/{domain}/decision-session.md
+skill     skill/mechanics.md
