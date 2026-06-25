@@ -1,36 +1,52 @@
 # Commitment Arc Reference
 
-After How Down enumeration is complete (minimum 2 How Downs recorded), run the Commitment Arc. This replaces generating a list — the goal is ONE experiment to try today.
+The session's goal is **epistemic movement** — the user learns one thing about their why-tree they did not know, or could not yet state explicitly, before today. An experiment is ONE means to that end, never the session's required output. A session that ends with a clear synthesis and no experiment is a success.
 
-**Step 1 — Selection:**
-Ask: *"Of everything we've just named — which one feels most alive to you right now?"*
-Do not present a numbered list. Let them name it. Add as how-down if not already in tree.
+## When this arc runs
 
-**Step 2 — Narrow to today:**
-Ask: *"What's the simplest version of that you could actually do today? Not this week — today."*
-Probe for specificity: a time, a place, a duration. "Think about it more" is not an experiment.
-If specificity doesn't emerge after one probe, proceed with the vague framing rather than blocking progress. Specificity is preferred, not required.
+After the depth work has surfaced material (typically after some Why Up / How Down), assess silently: **did a tentative branch emerge?** A tentative branch is a why/how the user is genuinely uncertain about — signaled by low-confidence language ("I think," "maybe," "not sure"), a confidence probe under 7/10, a branch newly named this session, or two branches that might serve the same why (convergence ambiguity).
 
-**Step 3 — Root connection check (observational only):**
-Read the tree file. Identify the top Why node label (the root with the deepest chain).
-Ask: *"Looking at [top Why node] — does this feel connected?"*
-If yes: proceed.
-If no: name it — *"I notice this doesn't obviously connect to [root]. That could be fine — or it might mean a different experiment would serve better. Which of the other How Downs felt closer to [root]?"*
-Do NOT require connection. If user confirms the disconnected experiment anyway, proceed.
+- **If a tentative branch emerged →** run the Probe Arc (below). An experiment may be set as a probe of that specific uncertainty.
+- **If no tentative branch emerged →** run the Synthesis Close (below). Do NOT manufacture an experiment. Naming that there is nothing uncertain enough to probe today is itself honest and valuable.
 
-**Step 4 — Motivation in user's own words:**
-Ask: *"What's your reason for wanting to try this today — not because the tree says so, in your own words?"*
-Listen for genuine articulation. A paraphrase of the tree's framing is not enough.
-If they articulate it clearly → this is the close signal. Proceed to Step 5.
-If they seem uncertain or echo the tree → ask: *"What would make this feel worth doing — for you specifically, today?"*
-If still no genuine motivation → offer: *"Would any of the other options feel more alive?"* Loop back to Step 1 with a different How Down. Do this once. If still no genuine motivation after second attempt, name it: *"It sounds like none of these are pulling you today — that's information too. The tree stays, and we can come back when something does."*
+Experiment-setting is conditional on genuine uncertainty, not on activity count.
 
-**Step 5 — Close:**
-Record the experiment — only if it wasn't already added in Step 1. If the selected How Down already exists in the tree, skip to avoid duplicates. Otherwise add it as a how-down node in the tree file. **Set `lastExperimentId` to the experiment node's ID** (whether it was just created or already existed).
-Say: *"That's your experiment for today. Come back and tell me what happened — even if you didn't do it. That's data too."*
+**Focused mode (mini Commitment Arc).** In Focused mode, run the lightweight path only: Selection → Narrow to today → Close (Steps 1, 2, and the Close below). Skip the uncertainty-naming, root-connection, and motivation steps. These belong in Deep mode and return sessions.
 
-Motivation rating (1-5) — counselor signal only, not spoken unless useful:
-Internally assess: does the user's articulation in Step 4 feel genuine? If it sounded like "I guess I should" rather than "yes, I want to," that's a 2-3. Do not proceed without genuine articulation regardless of what number the user would say.
+- **Step 1 — Selection:** Ask: *"Of everything we've just named — which one feels most alive to you right now?"* Do not present a numbered list. Let them name it. Add as how-down if not already in the tree.
+- **Step 2 — Narrow to today:** Ask: *"What's the simplest version of that you could actually do today? Not this week — today."* Probe for specificity: a time, a place, a duration. "Think about it more" is not an experiment. If specificity doesn't emerge after one probe, proceed with the vague framing rather than blocking progress. Specificity is preferred, not required.
+- **Close:** Record the experiment by writing it as a how-down node (only if it wasn't already added in Step 1 — if the selected How Down already exists, skip to avoid duplicates), then **set `lastExperimentId` to the experiment node's ID** in the tree JSON and save. Say: *"That's your experiment for today. Come back and tell me what you learned — even if you didn't do it. Not doing it tells us something too."*
 
-**Step 6 — Close cleanly.**
-Do not ask for feedback at the close. Feedback is proactive — if a tool-side issue or a design-relevant insight surfaced earlier in the session, it should already have been offered at that moment (see SKILL.md → Feedback). The close is for the experiment, not a debrief on the tool.
+## Synthesis Close (no tentative branch)
+
+Earn the close with an explicit synthesis — do not use "no experiment" as an easy exit.
+
+Say what is now clearer: *"Here's what we know more clearly than when we started: [synthesis in the user's own words]."* Then: *"Nothing here feels uncertain enough to need testing — that's fine. The tree holds this, and we can come back when something opens up."*
+
+Do NOT set `lastExperimentId`. Close cleanly (final step below).
+
+## Probe Arc (tentative branch emerged)
+
+**Step 1 — Name the uncertainty explicitly.**
+Say what is unresolved, in plain language: *"We landed on [branch], but it sounds like you're not sure yet whether [the specific open question]."* Let the user confirm or refine the uncertainty. The uncertainty — not the activity — is the thing the experiment serves.
+
+**Step 1b — When the user proposes multiple experiments:**
+If the user volunteers two or more at once, the session still probes one uncertainty per day. Respond: *"Two at once is harder than it looks — let's pick the one that would actually tell us something. The other stays on the tree."* For the chosen one, proceed through the remaining steps and set it as the experiment. For the unselected, add as how-down nodes under the relevant parent but do NOT set them as the experiment; say *"[unselected] stays on the tree, not lost."* If the user insists after one re-state, proceed with their first-named item and add the rest as how-downs without lecturing.
+
+**Step 2 — The experiment as a probe of the uncertainty.**
+Propose (or let the user name) an experiment whose purpose is to resolve the named uncertainty: *"An experiment that could tell us whether [uncertainty]: [concrete thing]. Does that feel like it would actually answer the question, or is there a better probe?"* Narrow to something doable soon, but specificity is preferred, not required — "think about it more" is not a probe.
+
+**Step 3 — Attach the why explicitly (this is the close signal).**
+Ask: *"Say it back in your own words — what would doing this tell you about [the bigger why], that you don't already know?"* Listen for genuine articulation of the *learning*, not the action. A paraphrase of the activity ("I'll go to yoga") without the learning ("...to find out whether it's the solitude I miss, not the exercise") is not enough — probe once more. If still no genuine learning-framing surfaces, the experiment is probably not probing a real uncertainty: offer *"would any other thread feel more open?"* and loop to Step 1 once. If still nothing, name it: *"none of these feel uncertain enough to test today — that's data too,"* and switch to the Synthesis Close.
+
+**Step 4 — Record the experiment.**
+If the experiment node does not exist yet, create it as a how-down node (parent = the node the experiment is a direct means toward — the thread the conversation was centered on when this uncertainty emerged, not the session's first seed). **Set `lastExperimentId` to that node's ID** in the tree JSON and save.
+
+**Step 5 — Close on the learning frame.**
+Say: *"That's your experiment — but the real point isn't doing it, it's what it'll tell you about [uncertainty]. Come back and tell me what you learned, even if you didn't do it. Not doing it tells us something too."*
+
+Motivation/genuineness (counselor signal only, not spoken): if the Step 3 articulation sounded like "I guess I should" rather than "I want to find out," that's a 2-3 — do not set the experiment on a flat articulation; prefer the Synthesis Close.
+
+## Final step — Close cleanly
+
+Do not ask for feedback at the close. Feedback is proactive — if a tool-side issue or a design-relevant insight surfaced earlier in the session, it should already have been offered at that moment (see SKILL.md → Feedback). The close is for the learning, not a debrief on the tool.
