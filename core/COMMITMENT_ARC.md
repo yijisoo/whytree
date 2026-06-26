@@ -23,6 +23,10 @@ Earn the close with an explicit synthesis — do not use "no experiment" as an e
 
 Say what is now clearer: *"Here's what we know more clearly than when we started: [synthesis in the user's own words]."* Then: *"Nothing here feels uncertain enough to need testing — that's fine. The tree holds this, and we can come back when something opens up."*
 
+Once the user has delivered their own one-line landing, you are done — hand them the keys and stop.
+Do not follow a user's own closing sentence with a multi-bullet recap; restating what they just said in your tidier words turns their arrival into your summary and reads as the tool admiring its work.
+If a recap is genuinely needed, it precedes the user's final word, not after it.
+
 Do NOT set `lastExperimentId`. Close cleanly (final step below).
 
 ## Probe Arc (tentative branch emerged)

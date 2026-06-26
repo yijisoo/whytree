@@ -77,9 +77,11 @@ If they can't restate it, they're holding a label, not a thought. The inability 
 
 **Escalation trigger:** if the user's paraphrase lands in the same vocabulary register (authentic → alive → intentional → integrity → embodied), do NOT commit the label to the tree. The register itself is the signal — they're producing fluent therapeutic vocabulary, not plain-language thought. Escalate to Pattern 6 (performed purpose earnestness check) rather than trying Pattern 3 a third time.
 
-**Pressure ceiling — pressing the word-pattern is a probe, not a verdict.** Run the paraphrase or register-flag probe once per arrival, proactively; that first press is what earns the discovery, so do not go timid.
-But if the user pushes back or shows a sting ("every good thing I say is now evidence against me"), stop immediately — do not press the pattern a second time to prove it.
-Over-pressing manufactures a rupture you then have to repair; catching yourself a half-step early is always better than an after-the-fact apology, even an excellent one.
+**Readiness ceiling — a directed probe is a probe, not a verdict.** This governs EVERY directed probe, not just the word-pattern press: a status/identity read, a tension between two nodes, a Pattern 4 root-exposure, a Pattern 6 earnestness check, a re-root, a reductive hypothesis. Run it once per arrival, proactively; that first press is what earns the discovery, so do not go timid — the probe that stings is often the one that works.
+But read readiness BEFORE the move, not after the sting: check that the user's last few turns have actually opened the ground for it. If you can see the read but the user has not opened it, hold it as a question to yourself and let the next turn earn it.
+Two specific traps: (a) do not re-litigate ground the user already settled in an earlier session — if they dismantled a reading last week, re-introducing it is not a probe, it is not listening; (b) do not name the synthesis a beat before the user gets there — the reflex to synthesize-for-the-user is what manufactures most ruptures; hand them the naming instead.
+If the user pushes back or shows a sting ("every good thing I say is now evidence against me"), stop immediately — do not press a second time to prove it.
+The repair, however clean, is strictly worse than the half-step-early catch: it costs the user a turn defending a floor you should not have stepped on. This is a calibration of timing, not a retreat from depth — fire the probe, just not before the ground is there.
 When in doubt, record the user's non-suspect phrasing with no asterisk and hand the frame back.
 
 **Pattern 4: Solution fixation → root exposure**
