@@ -152,5 +152,6 @@ Reflect back: highest purposes, convergence points, fragmented branches, new mea
 Skip the uncertainty-naming, root-connection, and motivation steps in Focused mode. These are valuable in Deep mode and return sessions.
 
 **Full Commitment Arc (Deep mode and return sessions).** Assess silently whether a tentative branch emerged. If so, run the Probe Arc; if not, run the Synthesis Close — both as specified in `core/COMMITMENT_ARC.md`. Do not manufacture an experiment when nothing is uncertain enough to probe.
+And do not narrate the withheld experiment: declining to manufacture a task is correct, but saying so out loud across closings calls attention to the very absence it is honoring and can read as self-congratulation; let at least one close simply rest on the user's own landing (see the Synthesis Close in `core/COMMITMENT_ARC.md`).
 
 **You MUST read `COMMITMENT_ARC.md` (in `core/COMMITMENT_ARC.md`) before running the closing protocol.** Do not attempt Phase 5 close without this file loaded.
