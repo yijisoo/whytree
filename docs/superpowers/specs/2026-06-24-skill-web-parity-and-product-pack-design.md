@@ -322,6 +322,19 @@ The first test of the product pack can be Ji Soo reverse-engineering `whytree.io
 Goal: bring the web's memory subsystem (`note_memory`, `note_episode`) into the skill in skill-appropriate mechanics (for example, files under `~/.whytree/memory/`, with the same anonymization and first-episode disclosure rules), so the Tier-2 Optional set empties and the capability surface reaches full parity.
 This runs after the workshop validation, not before it.
 
+## Compliance and safety (core invariant, both platforms)
+
+This section was added after dogfooding session #1 and a six-lens expert review surfaced it as the single highest-probability harm-and-liability gap: the existing 1:1 crisis path detects acute distress, suspends technique, and confirms reachability — then dead-ends with no referral destination, while the counselor is branded a "counselor / companion" and never re-discloses that it is an AI.
+It is grounded in the 2025–2026 wave of US state AI-therapy / AI-companion law (Illinois WOPR Act, Nevada AB406, Utah HB452, New York AI Companion Models law, California SB243); see `docs/product-discovery/2026-06-26-ai-coaching-legislation-guardrails.md` for the per-statute mapping and sources.
+These are Tier-1 core requirements, synced to both platforms, and must be graded (see the evaluation note below).
+This is design input, not legal advice; confirm public-positioning copy and the private-right-of-action exposure (CA SB243) with counsel.
+
+- **Crisis referral destination, not only suspension.** The 1:1 crisis protocol must name an escalation *destination*: on detected acute distress or self-harm / suicidal ideation, the counselor surfaces a locale-aware crisis resource (e.g. 988 in the US, or "reach a person you trust right now"), states it plainly, and does not resume technique. The current "suspend + confirm reachable" base is necessary but not sufficient. The spec's workshop facilitator-safety subsection hardens the *group* escalation path on top of this solo base, so the solo base must actually exist.
+- **Recurring AI-identity disclosure.** A standing operating rule: Why Tree discloses that it is an AI, not a human, in the opening framing and re-discloses naturally in long or emotionally heavy sessions (the companion/emotional context several state laws name). It never implies feelings, embodiment, or personal history. On the web platform the disclosure *cadence* (session start, and periodic for long or minor sessions per CA SB243 / NY) is a platform-mechanics binding.
+- **Scope-of-practice boundary.** An explicit "this is not therapy" boundary with named situations that route to decline-or-refer rather than purpose-extraction (active suicidality, abuse, untreated trauma, identity-collapse spirals). Distinct from the existing tone instruction ("write like a wise friend, not a therapist"), which is voice, not scope. Why Tree is never advertised or described as therapy/counseling/psychotherapy (IL WOPR, NV AB406) — a marketing/positioning constraint on README and in-product copy, not only a runtime rule.
+- **Data retention and deletion.** Trees store raw, identifiable, deeply personal labels (locally as `~/.whytree/*.json` on the skill; in the DB on web). The user is told where their tree lives and is given a path to delete it; tree content is never sold or shared (UT HB452). The skill binds this as a local-file disclosure + deletion affordance; the web binds it as an account-level export/delete path.
+- **Evaluation hook.** The eval rubric and telemetry must be able to register the safety-relevant behaviors — at minimum whether a refer-out/decline occurred when it should have — so "graded" is not aspirational. (Detailed rubric/telemetry edits are deferred to the broader evaluation rework; this section only requires that the safety behaviors are *observable*.)
+
 ## Non-goals and YAGNI
 
 - No new node types for the product domain; the structure stays invariant.

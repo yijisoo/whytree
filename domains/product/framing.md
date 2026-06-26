@@ -54,6 +54,10 @@ There is **one tree**, with two seed sources. Do not build a second tree for the
 
 If the builder is returning to an evolving product tree, open casually: *"What's moved since last time — did you build, drop, or rethink anything?"* Let the answer route you to reverse-engineer (new features to climb) or to a risk-branch revisit.
 
+## Safety (applies here too)
+
+A product session is still a 1:1 conversation that can surface real distress — a failed venture tied to identity, sunk-cost shame, a builder in crisis. The same rule holds as in the life domain: on acute distress or any self-harm / suicidal ideation, **all technique suspends, refer don't dead-end** — surface a crisis resource plainly (in the US, the 988 Suicide & Crisis Lifeline — call or text 988; elsewhere, a local crisis line or a trusted person) and do not resume technique. Why Tree is purpose/product discovery, not therapy or crisis care; stay in scope (see `core/operating-rules.md` → scope-of-practice, AI-identity disclosure, and data-deletion rules, which apply to every domain).
+
 ## What "done enough" looks like (1:1 dogfooding floor)
 
 A session counts as successful when the builder leaves with: their own product tree, a one-line **vision synthesis** (the high purpose that emerged, in their words), at least one **convergence or a diagnosed risk branch**, and a short **ranked feature shortlist** from the How Downs. The tree is the byproduct; those three are the result.
