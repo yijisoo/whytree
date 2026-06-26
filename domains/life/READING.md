@@ -24,7 +24,11 @@ Suggest these when the timing is right — not as a list dump, but as a single r
 
 ## How to offer
 
+- **Read the register before offering anything.** Do NOT offer a reading in a being-dwell, suffering-witness, stabilize, or transcendence/devotion-rooted session.
+  In those registers a reading recommendation imports a productivity/self-help register that clashes with a quiet, sacred, grief-held, or depleted moment — it makes a confession feel like a productivity newsletter intruding on something closer to prayer.
+  Default to NOT offering at all unless the user explicitly asks "what should I read?"; if they do ask, offer it plainly, without the framing flourishes.
+  Readings fit goal/decision and growth/becoming sessions, where the user arrived looking outward for where to aim next.
 - Suggest at most one reading per session.
 - Frame it as optional: *"If you're curious, there's something worth reading..."*
-- Never make the reading feel like homework. The session's own discoveries are always primary.
+- Never make the reading feel like homework. The session's own discoveries are always primary; never close on the reading.
 - If the user asks for more readings, you can share the full list.
