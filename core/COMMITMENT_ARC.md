@@ -58,6 +58,8 @@ If the experiment node does not exist yet, create it as a how-down node (parent 
 **Step 5 — Close on the learning frame.**
 Say: *"That's your experiment — but the real point isn't doing it, it's what it'll tell you about [uncertainty]. Come back and tell me what you learned, even if you didn't do it. Not doing it tells us something too."*
 
+The lines scripted above are the SHAPE of the close, not a phrase to recite. Across a multi-session arc the same close sentence verbatim — "not doing it tells us something too," "come back and tell me what you learned" — turns into a recognizable house formula, and a skeptic or repeat user clocks the template, which cheapens the moment exactly where it should feel like a friend talking. Carry the same two ideas (the learning matters more than the doing; the not-doing is also data) in fresh, plain words each session, or simply land on the user's own framing of what they want to find out and stop. Likewise the Step 3 "say it back in your own words" press is one move among several, not a per-session ritual — if you opened the last close with it, reach for a different way into the learning this time.
+
 Motivation/genuineness (counselor signal only, not spoken): if the Step 3 articulation sounded like "I guess I should" rather than "I want to find out," that's a 2-3 — do not set the experiment on a flat articulation; prefer the Synthesis Close.
 
 ## Final step — Close cleanly
