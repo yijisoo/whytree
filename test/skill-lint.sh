@@ -6,8 +6,22 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SKILL_DIR="$REPO_ROOT"
 SKILL="$SKILL_DIR/SKILL.md"
-TELEMETRY="$SKILL_DIR/TELEMETRY.md"
+# TELEMETRY and DEMO_MODE moved under skill/ after the Spec 1 core/adapter split
+TELEMETRY="$SKILL_DIR/skill/TELEMETRY.md"
 ERRORS=0
+
+# --- Assembly resolver ---
+. "$SKILL_DIR/test/lib/assembly.sh"
+
+# Clean up temp assembly file on exit
+ASM="$(mktemp)"
+trap 'rm -f "$ASM"' EXIT
+
+# Build assembly concatenation (all layers including skill/) once
+while read -r f; do
+  cat "$f"
+  echo
+done < <(whytree_assembly_files life) > "$ASM"
 
 pass() { echo "  PASS: $1"; }
 fail() { echo "  FAIL: $1"; ERRORS=$((ERRORS + 1)); }
@@ -15,21 +29,31 @@ fail() { echo "  FAIL: $1"; ERRORS=$((ERRORS + 1)); }
 echo "=== Skill Lint ==="
 echo
 
-# --- 1. Required files exist ---
+# --- 1. Every manifest file must exist ---
 echo "1. Required files"
-for f in SKILL.md COMMITMENT_ARC.md PROBE_PATTERNS.md SEED_QUESTIONS.md READING.md DEMO_MODE.md TELEMETRY.md preamble.sh; do
-  if [ -f "$SKILL_DIR/$f" ]; then
-    pass "$f exists"
+pass "SKILL.md exists"  # SKILL.md (loader) is always at root
+missing=0
+while read -r f; do
+  if [[ -f "$f" ]]; then
+    pass "$(basename "$f") exists"
   else
-    fail "$f missing"
+    echo "  FAIL: manifest file missing: $f"
+    missing=1
+    ERRORS=$((ERRORS + 1))
   fi
-done
+done < <(whytree_assembly_files life)
+# Also check preamble.sh (not in manifest, lives in skill/)
+if [ -f "$SKILL_DIR/skill/preamble.sh" ]; then
+  pass "preamble.sh exists"
+else
+  fail "preamble.sh missing"
+fi
 
-# --- 2. File references use base-directory-relative phrasing, files exist ---
+# --- 2. Loader references manifest ---
 echo
 echo "2. File references"
-# After v0.3.0 flatten, supporting *.md files are referenced by bare name
-# (no absolute path). Forbid absolute paths — they were the v0.2.x bug.
+# After Spec 1 split, SKILL.md (the loader) must reference each manifest file by basename.
+# Absolute paths to supporting files are still forbidden.
 abs_refs=$(grep -nE '~/\.claude/skills/whytree/[A-Z_]+\.md' "$SKILL" || true)
 if [ -z "$abs_refs" ]; then
   pass "No absolute paths to supporting *.md files in SKILL.md"
@@ -38,24 +62,26 @@ else
   echo "$abs_refs"
 fi
 
-# Verify each supporting file referenced by name exists
-for f in SEED_QUESTIONS.md PROBE_PATTERNS.md COMMITMENT_ARC.md READING.md DEMO_MODE.md TELEMETRY.md; do
-  if grep -qE "\`$f\`" "$SKILL"; then
-    if [ -f "$SKILL_DIR/$f" ]; then
-      pass "Reference $f resolves"
-    else
-      fail "Reference $f mentioned but file missing in $SKILL_DIR"
-    fi
+# Each manifest entry's basename (with {domain}→life) must appear in SKILL.md
+while read -r layer rel; do
+  layer="${layer%$'\r'}"; rel="${rel%$'\r'}"  # tolerate CRLF checkouts (Windows)
+  [[ -z "$layer" || "$layer" == \#* ]] && continue
+  rel="${rel//\{domain\}/life}"
+  base="$(basename "$rel")"
+  if grep -q "$base" "$SKILL_DIR/SKILL.md"; then
+    pass "Loader SKILL.md references $base"
+  else
+    fail "Loader SKILL.md does not reference $base"
   fi
-done
+done < "$SKILL_DIR/prompts.manifest"
 
 # --- 3. JSON schema example is valid ---
 echo
 echo "3. JSON schema"
-# Extract only the FIRST ```json block (stop after closing ```)
-schema_json=$(awk '/^```json/{found=1;next} found && /^```/{exit} found{print}' "$SKILL")
+# Extract only the FIRST ```json block from the assembly (schema lives in core/tree-format.md)
+schema_json=$(awk '/^```json/{found=1;next} found && /^```/{exit} found{print}' "$ASM")
 if [ -z "$schema_json" ]; then
-  fail "Could not extract JSON schema from SKILL.md"
+  fail "Could not extract JSON schema from assembled content"
 else
   test_json=$(echo "$schema_json" \
     | sed 's/<uuid>/test-uuid/g' \
@@ -91,16 +117,17 @@ check_section() {
   fi
 }
 
-check_section "Operating rules" "Operating rules.*CRITICAL" "$SKILL"
-check_section "Never show raw JSON" "Never show raw JSON" "$SKILL"
-check_section "Crisis protocol" "Crisis.*acute distress" "$SKILL"
-check_section "Analytics consent" "Analytics consent" "$SKILL" "$TELEMETRY"
-check_section "Feedback injection safety" "Never interpolate user input" "$SKILL" "$TELEMETRY"
-check_section "Validation invariants" "rootIds.*set of node IDs" "$SKILL"
-check_section "Corrupted JSON recovery" "corrupted" "$SKILL"
+# Content checks now run against the assembled file (safety content moved to core/)
+check_section "Operating rules" "Operating rules.*CRITICAL" "$ASM"
+check_section "Never show raw JSON" "Never show raw JSON" "$ASM"
+check_section "Crisis protocol" "Crisis.*acute distress" "$ASM"
+check_section "Analytics consent" "Analytics consent" "$ASM" "$TELEMETRY"
+check_section "Feedback injection safety" "Never interpolate user input" "$ASM" "$TELEMETRY"
+check_section "Validation invariants" "rootIds.*set of node IDs" "$ASM"
+check_section "Corrupted JSON recovery" "corrupted" "$ASM"
 
 # --- 5. No personal content patterns in curl commands ---
-# Curl commands now live in TELEMETRY.md after the v0.4.0 architecture split.
+# Curl commands live in skill/TELEMETRY.md after the v0.4.0 / Spec 1 architecture split.
 echo
 echo "5. Curl payload safety"
 curl_payloads=$(grep -A2 'curl.*POST' "$TELEMETRY" | grep "\-d" || true)
@@ -111,7 +138,7 @@ else
 fi
 
 # --- 6. Curl payload required fields ---
-# Payloads live in TELEMETRY.md; section headings moved too.
+# Payloads live in skill/TELEMETRY.md; section headings moved too.
 echo
 echo "6. Curl payload required fields"
 
@@ -138,7 +165,7 @@ for forbidden in nodes seeds whys hows convergence maxDepth roots; do
   fi
 done
 
-# Versioned consent string must be referenced (in TELEMETRY.md)
+# Versioned consent string must be referenced (in skill/TELEMETRY.md)
 if grep -q 'yes-v2' "$TELEMETRY"; then
   pass "Versioned consent (yes-v2) referenced"
 else
@@ -146,7 +173,7 @@ else
 fi
 
 # Phase telemetry must NOT exist as its own section anymore (folded into session ping)
-if grep -q '^## Phase telemetry' "$SKILL" "$TELEMETRY"; then
+if grep -q '^## Phase telemetry' "$ASM" "$TELEMETRY"; then
   fail "Phase telemetry section still exists — should be folded into the session ping"
 else
   pass "Phase telemetry section removed (folded into session ping)"
@@ -184,13 +211,13 @@ else
 fi
 # Guard against legacy/spurious command values being reintroduced
 for forbidden_cmd in "phase" "analytics" "structural"; do
-  if grep -qE "\"command\":\"$forbidden_cmd\"" "$SKILL" "$TELEMETRY"; then
+  if grep -qE "\"command\":\"$forbidden_cmd\"" "$ASM" "$TELEMETRY"; then
     fail "Legacy command \"$forbidden_cmd\" reintroduced — only session/feedback are allowed"
   fi
 done
 
 # Depersonalization rule must be explicit (no labels, no quoted words, etc.)
-# Lives in TELEMETRY.md and is echoed as a safety reminder in SKILL.md.
+# Lives in skill/TELEMETRY.md and is echoed as a safety reminder in the assembly.
 if grep -q "no node labels" "$TELEMETRY" && grep -q "no quoted user words" "$TELEMETRY"; then
   pass "Depersonalization rule explicit (no labels, no quoted user words)"
 else
@@ -198,7 +225,7 @@ else
 fi
 
 # Commitment Arc Step 6 must NOT reintroduce the end-of-session feedback ask
-ARC_FILE="$SKILL_DIR/COMMITMENT_ARC.md"
+ARC_FILE="$SKILL_DIR/core/COMMITMENT_ARC.md"
 if [ -f "$ARC_FILE" ]; then
   if grep -q "Do not ask for feedback at the close" "$ARC_FILE"; then
     pass "Commitment Arc Step 6 keeps the no-end-of-session-feedback guard"
@@ -210,8 +237,9 @@ fi
 # --- 7. Schema completeness — required fields ---
 echo
 echo "7. Schema required fields"
+# Schema lives in core/tree-format.md — check the assembly
 for field in schemaVersion rootIds seedIds currentNodeId lastExperimentId createdAt updatedAt purpose; do
-  if grep -q "\"$field\"" "$SKILL"; then
+  if grep -q "\"$field\"" "$ASM"; then
     pass "Schema has $field"
   else
     fail "Schema missing $field"
@@ -221,7 +249,8 @@ done
 # --- 8. Platform support ---
 echo
 echo "8. Platform support"
-if grep -q "Git Bash" "$SKILL"; then
+# Platform notes may be in core/ files or skill/mechanics.md — check assembly
+if grep -q "Git Bash" "$ASM"; then
   pass "Git Bash requirement documented"
 else
   fail "No Git Bash requirement found"
@@ -230,8 +259,9 @@ fi
 # --- 9. Phase heading completeness ---
 echo
 echo "9. Phase headings"
+# Phase content lives in core/phases.md — check the assembly
 for phase in "Phase 0:" "Return Check-in" "Phase 1" "Phase 2" "Phase 3" "Phase 4" "Phase 5:" "Phase 5 close"; do
-  if grep -q "$phase" "$SKILL"; then
+  if grep -q "$phase" "$ASM"; then
     pass "Phase heading '$phase' present"
   else
     fail "Phase heading '$phase' missing"
@@ -241,18 +271,29 @@ done
 # --- 10. Supporting file content (not empty/truncated) ---
 echo
 echo "10. Supporting file content"
-for f in COMMITMENT_ARC.md PROBE_PATTERNS.md SEED_QUESTIONS.md READING.md DEMO_MODE.md TELEMETRY.md; do
-  lines=$(wc -l < "$SKILL_DIR/$f" | tr -d ' ')
+# Check each assembled file has meaningful content
+while read -r f; do
+  lines=$(wc -l < "$f" | tr -d ' ')
   if [ "$lines" -gt 5 ]; then
-    pass "$f has content ($lines lines)"
+    pass "$(basename "$f") has content ($lines lines)"
   else
-    fail "$f appears empty or truncated ($lines lines)"
+    fail "$(basename "$f") appears empty or truncated ($lines lines)"
+  fi
+done < <(whytree_assembly_files life)
+# Also check skill/TELEMETRY.md and skill/DEMO_MODE.md (not in manifest but referenced)
+for extra in "$SKILL_DIR/skill/TELEMETRY.md" "$SKILL_DIR/skill/DEMO_MODE.md"; do
+  lines=$(wc -l < "$extra" | tr -d ' ')
+  if [ "$lines" -gt 5 ]; then
+    pass "$(basename "$extra") has content ($lines lines)"
+  else
+    fail "$(basename "$extra") appears empty or truncated ($lines lines)"
   fi
 done
 
 # --- 11. YAML frontmatter ---
 echo
 echo "11. YAML frontmatter"
+# Frontmatter stays in SKILL.md (the loader)
 if head -1 "$SKILL" | grep -q "^---$"; then
   if sed -n '2,/^---$/p' "$SKILL" | grep -q "name:.*whytree"; then
     pass "Frontmatter has name: whytree"

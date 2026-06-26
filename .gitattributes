@@ -11,3 +11,14 @@
 # Read by preamble.sh via `cat .version` / `read`. Must stay LF so the
 # trailing byte isn't a \r that pollutes VERSION=... output.
 .version text eol=lf
+
+# Read line-by-line by the assembly resolver (test/lib/assembly.sh) and the
+# linter to build file paths. A CRLF checkout appends \r to each path, so
+# `cat core/operating-rules.md\r` fails on Windows. Must stay LF.
+prompts.manifest text eol=lf
+
+# Prompt content (core/, domains/, the loader, supporting files) and the
+# frozen equivalence baseline are concatenated and byte-compared by the
+# behavioral-equivalence gate. A CRLF checkout would make the assembly
+# diverge from the LF-frozen baseline on Windows. Keep all markdown LF.
+*.md text eol=lf

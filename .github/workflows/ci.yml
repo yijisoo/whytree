@@ -35,7 +35,7 @@ jobs:
         # CRLF on *.sh. Catch that explicitly with a clear error message
         # rather than letting preamble.sh fail cryptically.
         run: |
-          for f in preamble.sh scripts/release.sh test/skill-lint.sh; do
+          for f in skill/preamble.sh scripts/release.sh test/skill-lint.sh; do
             if file "$f" | grep -q CRLF; then
               echo "FAIL: $f has CRLF line endings — check .gitattributes" >&2
               exit 1
@@ -46,15 +46,32 @@ jobs:
       - name: Run skill linter
         run: ./test/skill-lint.sh
 
+      - name: Assembly resolver test
+        run: bash test/lib/assembly_test.sh
+
+      - name: Behavioral-equivalence gate
+        run: bash test/equivalence/equivalence_test.sh
+
       - name: Smoke-test preamble.sh
-        # Runs preamble.sh in an empty ~/.whytree environment and verifies it
-        # exits 0 and emits the canonical header. Catches platform-specific
-        # breakage (bad stat flags, missing commands) without needing a real
-        # session.
+        # Exercises both preamble paths without a real session, catching
+        # platform-specific breakage (bad stat flags, missing commands).
+        # TREE_JSON is only emitted for a RETURNING user (a current tree
+        # exists), so we test NEW_USER (empty store) and RETURNING (seeded
+        # tree) separately rather than grepping TREE_JSON against an empty
+        # store.
         run: |
-          mkdir -p ~/.whytree
-          bash preamble.sh > /tmp/preamble-output.txt
-          grep -q "=== WHYTREE PREAMBLE ===" /tmp/preamble-output.txt
-          grep -q "=== TREE_JSON ===" /tmp/preamble-output.txt
-          grep -q "=== CONSENT ===" /tmp/preamble-output.txt
-          echo "OK: preamble.sh ran cleanly and emitted all expected sections"
+          # NEW_USER path: empty store → header + consent + clean exit, no TREE_JSON
+          rm -rf ~/.whytree && mkdir -p ~/.whytree
+          bash skill/preamble.sh > /tmp/preamble-new.txt
+          grep -q "=== WHYTREE PREAMBLE ===" /tmp/preamble-new.txt
+          grep -q "USER_STATUS=NEW_USER" /tmp/preamble-new.txt
+          grep -q "=== CONSENT ===" /tmp/preamble-new.txt
+          # RETURNING path: a current tree exists → TREE_JSON section emitted
+          printf '{"schemaVersion":1,"name":"smoke","nodes":{},"rootIds":[],"seedIds":[],"currentNodeId":null,"lastExperimentId":null,"createdAt":"2026-01-01T00:00:00Z","updatedAt":"2026-01-01T00:00:00Z","purpose":null}\n' > ~/.whytree/smoke.json
+          printf 'smoke\n' > ~/.whytree/.current
+          bash skill/preamble.sh > /tmp/preamble-ret.txt
+          grep -q "=== WHYTREE PREAMBLE ===" /tmp/preamble-ret.txt
+          grep -q "USER_STATUS=RETURNING" /tmp/preamble-ret.txt
+          grep -q "=== TREE_JSON ===" /tmp/preamble-ret.txt
+          grep -q "=== CONSENT ===" /tmp/preamble-ret.txt
+          echo "OK: preamble.sh emits canonical sections for both NEW_USER and RETURNING"
