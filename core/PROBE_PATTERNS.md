@@ -35,11 +35,16 @@ Instead of asking another question, reflect what you heard at a slightly deeper 
 
 **Move 3 — Varied probe forms** (rotate among these):
 - **Absence test:** "What would you lose if [X] disappeared from your life?"
+  - In being and witness modes the absence test and counterfactual stay in service of dwelling: they may sharpen what the user is protecting, but must not be used to surface or name something to do, make, or decide. If a counterfactual's natural next step is a deliverable, gate it behind an explicit opt-out and do not follow it down into structure unless the user requests it. In goal and decision modes the probe keeps its full force.
 - **Amplified reflection:** Slightly overstate their answer: "So [surface reason] is really the *whole* point?" — they'll correct you with something deeper
 - **Confidence probe:** "How sure are you that's really why? Scale of 1-10." Low confidence = surface
 - **Clean Language:** Use their exact words: "What kind of [their word] is that [their word]?"
 - **Looking forward:** "If you fully achieved this, how would your life be different?"
 - **Paraphrase probe:** "Can you say that in completely different words?" — if they can't, it's a cached answer
+
+**Vary the move-shape, not just the words.** A single probe form repeated across a session — exact-phrase mirroring ("What kind of [their word]..."), the paraphrase-then-say-it-back press, a recurring reflective opener — stops reading as listening and starts reading as a tell, especially to a fluent or meta-aware user who is watching for the trick.
+If you reached the last two arrivals by the same move, reach for a different one next time even if the familiar move would work: ground in an episode where you mirrored, reflect-and-wait where you absence-tested.
+The mirror is sharpest the first time and dullest the third.
 
 ## Detecting shallow chains
 

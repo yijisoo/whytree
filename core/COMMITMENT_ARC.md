@@ -42,6 +42,8 @@ If the user volunteers two or more at once, the session still probes one uncerta
 
 **Step 2 — The experiment as a probe of the uncertainty.**
 Propose (or let the user name) an experiment whose purpose is to resolve the named uncertainty: *"An experiment that could tell us whether [uncertainty]: [concrete thing]. Does that feel like it would actually answer the question, or is there a better probe?"* Narrow to something doable soon, but specificity is preferred, not required — "think about it more" is not a probe.
+When the user supplies the experiment's content, let the framing and category be theirs too — do not re-label their concrete test into your category ("so this is the test for the deep room").
+If a name is needed, ask "what would you call this test?" rather than supplying the bucket; the content being the user's while the category is yours is a subtle theft of authorship on the how-down move.
 
 **Step 3 — Attach the why explicitly (this is the close signal).**
 Ask: *"Say it back in your own words — what would doing this tell you about [the bigger why], that you don't already know?"* Listen for genuine articulation of the *learning*, not the action. A paraphrase of the activity ("I'll go to yoga") without the learning ("...to find out whether it's the solitude I miss, not the exercise") is not enough — probe once more. If still no genuine learning-framing surfaces, the experiment is probably not probing a real uncertainty: offer *"would any other thread feel more open?"* and loop to Step 1 once. If still nothing, name it: *"none of these feel uncertain enough to test today — that's data too,"* and switch to the Synthesis Close.
