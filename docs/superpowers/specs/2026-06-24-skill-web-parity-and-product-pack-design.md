@@ -262,11 +262,27 @@ Forcing two trees plus a bolted-on alignment step is contrived when the tree's e
 - The convergence test is a probe, not a second tree: "when you climb this one, does it reach anything a user would also want?"
 - Evidence provenance on the customer side: every customer-source seed, and every `why` node on a customer branch, gets an evidence probe — "Is this from a specific person or observation, or your assumption about them?" A customer-need branch elicited entirely from the builder's recollection is still a builder artifact (a *belief* about a struggle, not evidence of one), so a customer-why grounded in an observed or recalled real struggle is treated as stronger than one the builder rationalized. The probe pack adds no node type (the locked decision forbids it), but it requires the facilitator/counselor to verbalize the distinction aloud and to treat an assumption-grounded convergence as a *weaker* signal than an observation-grounded one. Without this, convergence between a builder-desire branch and a builder-*imagined* customer branch can manufacture a confident-feeling false positive — the exact solution-first bias discovery is meant to break.
 
+Convergence floor (added after the expert review — convergence has no grounding without it).
+Means-ends ascent monotonically *increases* generality, so "when you climb this one, does it reach anything a user would also want?" gets **easier** the higher you climb, peaking at the universal apex where every product appears to converge on a shared human value.
+Evidence-provenance (above) distinguishes a real-person observation from an assumption, but it cannot distinguish a *recurring job* from a one-off gripe, nor a coherent *segment* from "everyone".
+So convergence is a valid signal only if the customer-why traces to a recurring **job** in a repeatable **circumstance** for a nameable **segment**.
+Add a circumstance/segment grounding probe to the customer-source seeds ("when someone hits this, what had just happened to them, and who specifically is 'they'?") and a scoring floor: a convergence that resolves only to a universal human value with no recurring-job-for-a-segment underneath it is scored as a *weak/abstract* convergence, not a strong one.
+This lets convergence fail honestly, instead of every product looking validated at the apex.
+
 A data-structural note on `converge`, because the convergence signal is the load-bearing differentiator of the product pack.
 The abstraction hierarchy is properly a *lattice* (many-to-many means-ends), and "two distinct lower branches climbing into one shared upper `why`" is a many-to-one relation that a strict single-parent tree cannot express without either duplicating the upper node (which destroys the convergence signal) or adding multi-parent edges (which is no longer a tree).
 The spec therefore requires `converge` to create a **single shared parent node referenced by both child branches** — a multi-parent (DAG) relation at the converged node — not a duplicated or aliased node, so the converged `why` is one node that both branches point up to.
 Consequence for rendering: a DAG cannot be drawn as a pure tree, so each platform must handle the shared node explicitly — on the skill the ASCII renderer must show the shared `why` once (for example, rendering the second branch's link to it as a reference rather than re-printing the subtree), and on the web the auto-render from `tree_delta` must represent the shared parent rather than assuming one-parent-per-node.
 This is what makes the eval dimension "did a builder-source and a customer-source branch converge" measurable at all: the converged node has to be holdable as one node.
+
+A second data-structural note, on the *risk branch* (added after the expert review).
+The convergence-quality rubric scores a *diagnosed* risk branch (tested and named as not converging) differently from an *undiagnosed stall*, and the telemetry enumerates `risk-branch-named` vs `stalled` — but the model as specified stores both identically (only affirmative why-up/how-down edges; no diagnosed-mismatch marker).
+A grader reading the captured tree JSON cannot then recover the outcome class the pre-registered rubric depends on.
+So the model must carry a **branch-level marker for a diagnosed mismatch** — a risk branch that was tested and named as not converging — distinct from an untested stall, so the convergence-quality score and the `risk-branch-named` telemetry class are recoverable from the tree artifact alone.
+This adds no node *type* (it is a flag on an existing branch, honoring the locked decision), but it is a real schema addition both platforms must bind.
+
+Relatedly: when the "surface the gap between what's said and what's done" move is ported from a product probe into a life-domain move (`core/PROBE_PATTERNS.md`), it must ship **with** the product pack's "information, not indictment" containment.
+Said-vs-done, landed bluntly on a low-capacity user, is a shame / finger-pointing path the safety layer forbids; the de-shaming framing is part of the move, not optional polish.
 
 ### Stage gate and entry modes
 
@@ -341,6 +357,16 @@ The first test of the product pack can be Ji Soo reverse-engineering `whytree.io
 Goal: bring the web's memory subsystem (`note_memory`, `note_episode`) into the skill in skill-appropriate mechanics (for example, files under `~/.whytree/memory/`, with the same anonymization and first-episode disclosure rules), so the Tier-2 Optional set empties and the capability surface reaches full parity.
 This runs after the workshop validation, not before it.
 
+## Longer-arc commitments (added after the expert review)
+
+The only commitment construct today is `lastExperimentId` — a single node, a next-step experiment.
+Session-1 surfaced a richer need (engagement finding #4): a prolonged, deadline-bound commitment with anticipated hurdles, *encouragement along the way*, and an end-of-arc reflection to glean lessons and re-adjust.
+A single `lastExperimentId` slot cannot hold that arc, so the schema must be able to represent a **multi-checkpoint, deadline-bound commitment** (deadline, anticipated hurdles, mid-arc encouragement checkpoints, end-reflection).
+"Encouragement along the way" is the load-bearing and the hard part: it implies **proactive, between-session contact**, which the product is not built for — the skill acts only when the user runs `/whytree`, the return check-in is reactive, and the consent state machine (`skill/TELEMETRY.md`) is inbound-only.
+So this requires an outbound channel and a *separate* consent regime distinct from analytics consent (cf. CA SB243's rules on proactive break-reminders).
+The spec must either specify whether/how a platform may proactively reach a user between sessions and the consent that requires, or state explicitly that proactivity is **out of scope** until that consent model exists — it must not be assumed silently.
+The schema part (the multi-checkpoint commitment) is core; the outbound channel is a platform-mechanics binding (the web can email/notify; the skill cannot reach a user who is not running it).
+
 ## Compliance and safety (core invariant, both platforms)
 
 This section was added after dogfooding session #1 and a six-lens expert review surfaced it as the single highest-probability harm-and-liability gap: the existing 1:1 crisis path detects acute distress, suspends technique, and confirms reachability — then dead-ends with no referral destination, while the counselor is branded a "counselor / companion" and never re-discloses that it is an AI.
@@ -368,6 +394,7 @@ This is design input, not legal advice; confirm public-positioning copy and the 
 - Memory timing now has a stated default (memory last) and an observable trigger that pulls it forward (returning-builder cohort cannot evolve a tree across sessions); the residual open question is only how *much* of the within-session memory floor (in-session callbacks + session-summary artifact) is built for the first workshop.
 - The `set_focus` contract must be resolved before Spec 1 ships its core (or `set_focus` is split into its own step): its final name, parameters, and `focus_area` seeding rule, AND — per the "Initial context vs emergent purpose" section — its **mode/motion dimension** (goal / being / stabilize / refer), its **detection model** (how mode is inferred or asked, misclassification handling, user override), and its **continuous-monitoring** behavior (mid-session mode transitions). The detection model and mode taxonomy are the safety-bearing parts and were previously absent from this list; they must not remain open while `set_focus` is listed as a Spec 1 deliverable.
 - Whether the product pack's opening "stage gate" is a distinct phase or a routing move inside the existing Phase 0.
+- Rasmussen reconciliation for the product/work domain (a contradiction in the design's own theory, surfaced by the expert review): the label-free, open-rung decision is justified *because* "self-authored purpose domains do not have a stable level structure; engineered work domains do" — yet the product/work domain **is** the engineered case that rationale exempts, and the design applies label-free to it anyway while inoculating against re-importing the five fixed levels. Resolve this explicitly: either state that the product pack reclaims some abstraction-hierarchy level guidance that genuinely exists for built products (functional purpose / abstract function / generalized function / physical form), or argue why a built product's tree should still be treated as label-free despite the rationale that distinguishes it. Leaving it silent is a stated-theory contradiction.
 - The product-domain probe patterns (the analog of `PROBE_PATTERNS.md`) are not yet drafted; only the seeds are.
 - The product-pack success rubric dimensions still need hardening before the first workshop (anchored scales and a pre-registered workshop measurement plan are now drafted above; the remaining work is fixing the exact anchor wording and the agreement target).
 - How the workshop's shareable artifact is produced and exported.
