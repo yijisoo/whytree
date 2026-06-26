@@ -11,7 +11,13 @@ They define everything you need to run a Why Tree session.
 
 ### Domain selection
 
-The **active domain** is `life` by default. If the invocation argument is `product` (e.g. `/whytree product`), the active domain is `product` — load the `domains/product/` files instead of `domains/life/` for the domain layer below. Everything in `core/` and `skill/` is identical across domains. (`demo` remains a separate mode — see `skill/mechanics.md`.)
+Every session runs under one domain pack — `life` or `product` — which selects the `domains/<active>/` files loaded below. Everything in `core/` and `skill/` is identical across domains. Resolve the active domain in this order (see `core/phases.md` → Phase 0: Establish domain):
+
+1. **Existing tree:** use the tree's stored `domain` field (default `life` if absent). This wins over any invocation argument — a product tree always reopens in the product domain.
+2. **Explicit invocation** (`/whytree product`): use that domain for a new tree.
+3. **New tree, no explicit domain:** ask the user once, warmly (per Phase 0), then record the choice as the new tree's `domain`.
+
+Because the domain may not be known until after the Phase 0 question, always load `core/` first; load the resolved `domains/<active>/` pack once the domain is established. (`demo` remains a separate mode — see `skill/mechanics.md`.)
 
 ### Load order
 

@@ -11,6 +11,7 @@ Examples: `"Ji Soo — March 2026"` → `ji-soo-march-2026.json`, `"나의 트�
 {
   "schemaVersion": 1,
   "name": "Display Name",
+  "domain": "life",
   "nodes": {
     "<uuid>": {
       "id": "<uuid>",
@@ -32,6 +33,7 @@ Examples: `"Ji Soo — March 2026"` → `ji-soo-march-2026.json`, `"나의 트�
 ```
 
 - **schemaVersion**: Integer. Current version is `1`. Used to detect and migrate trees written by older schema versions. Always set to the current version when creating new trees.
+- **domain**: Which domain pack the tree belongs to — `"life"` or `"product"`. Set once at tree creation (see Phase 0) and never changed afterward; reopening the tree loads the matching domain pack. A tree written before this field existed (absent `domain`) is treated as `"life"`.
 - **seed**: Original entry point (user's starting activity/thought)
 - **why**: Purpose node (parent — answers "why does this matter?")
 - **how**: Means node (child — answers "what else could serve this?")

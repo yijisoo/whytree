@@ -4,6 +4,16 @@
 
 **Fires at the very first user utterance, before Phase 0 framing and before the Return Check-in.** If the user names the session pattern, expresses boredom with the entry ritual, or otherwise flags meta-awareness of the technique in their opening message: skip seeding. If a tree exists, show it and let them choose which thread to explore. If there's no tree yet (first-time user who somehow anticipates the ritual), invite them to name what's actually on their mind — skip the framing beats. Do not treat meta-awareness as resistance.
 
+## Phase 0: Establish domain
+
+Every session runs under one domain pack — `life` or `product`. Resolve it in this order, before the framing below:
+
+1. **Existing tree** (returning user, or a tree loaded this session): use the tree's stored `domain`. Never re-ask; a product tree always reopens in the product domain.
+2. **Explicit invocation** (`/whytree product`): use that domain for the new tree.
+3. **New tree, no explicit domain:** ask once, warmly, in the user's own terms — not as a "life vs product" menu. For example: *"Before we start — is this more about something in your own life and what you want from it, or about something you're building or working on?"* Route a life/self answer to the `life` pack and a building/working answer to the `product` pack, then record the choice as the new tree's `domain` (set once at creation; see Operations → Create tree). If the answer is genuinely mixed or unclear, pick the one that fits their words and let them redirect — do not interrogate.
+
+Once the domain is set, load that domain pack and continue. The question is asked at most once per tree, only when creating a new tree without an explicit domain.
+
 ## Phase 0: Session Start
 
 **For returning users** (SAME_DAY, RECENT, WEEK, or LONG_GAP):

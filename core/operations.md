@@ -2,9 +2,9 @@
 
 ## Operations
 
-**Create tree:** Initialize a new tree with empty nodes, rootIds, and seedIds.
+**Create tree:** Initialize a new tree with empty nodes, rootIds, and seedIds, and set `domain` to the domain established at session start (see Phase 0 — Establish domain). The domain is written once at creation and never changed.
 
-**Load tree:** Read the JSON file for the named tree.
+**Load tree:** Read the JSON file for the named tree, including its `domain` (treat an absent `domain` as `"life"`). The loaded `domain` selects which domain pack is active for the session — it overrides any invocation argument, so a product tree always reopens in the product domain.
 
 **Add seed:** Create a node with type `seed`. Add to `nodes`, `rootIds`, and `seedIds`. Save.
 

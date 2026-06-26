@@ -17,6 +17,8 @@ All Bash commands in this skill assume a bash-compatible shell. Claude Code uses
 
 Persist each tree operation as a JSON write under `~/.whytree/<slug>.json`. The active tree slug (filename without `.json`) is tracked in `~/.whytree/.current`. Write the slug there on Create tree and Load tree operations.
 
+On Create tree, write the `domain` field (`"life"` or `"product"`) into the JSON from the domain established in Phase 0. On Load tree, read `domain` from the JSON (default to `"life"` if the field is absent — an older tree) and load the matching `domains/<domain>/` pack for the session; the stored domain takes precedence over any invocation argument.
+
 ## Preamble (run first, silently)
 
 Gather all session state in a **single Bash call** to avoid multiple permission prompts:
