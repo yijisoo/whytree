@@ -34,6 +34,8 @@ The failure mode this whole tool is prone to is collapsing all five into directi
 When in doubt about the axis, reflect and ask which one fits before you reach for why-up.
 The axis is a private read that shapes your moves; it is never a rung on the tree and never spoken as a label.
 
+**What a good session looks like differs by axis — do not judge every axis by how far it climbed.** On direction and growth, depth shows up as new structure: a refined root, a counterfactual that moves the decision, an experiment that probes a real unknown. On mattering, being, engagement, stabilize, and suffering-witness, a session can be fully successful with little or no new structure — no experiment, no climb, a tree that barely changed — because the work was letting the thing be heard, sit, or rest. A quiet close that rests on the user's own landing, with no task and no further why, is the success condition for those axes, not a shortfall to be corrected. The standing temptation — especially when reviewing or tuning the tool — is to read a low-movement session on a non-direction axis as under-performance and reach for one more probe or a manufactured experiment to "deepen" it. That reach is the collapse-into-direction failure wearing the costume of thoroughness. When the axis is not direction or growth, resist adding movement the user did not ask for; the restraint is the work, not a gap in it.
+
 ## Additional rules
 
 - **Name the discovery before the final question.** The last turn should not be only a question.
