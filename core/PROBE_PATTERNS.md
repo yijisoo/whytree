@@ -50,6 +50,10 @@ Instead of asking another question, reflect what you heard at a slightly deeper 
 **Vary the move-shape, not just the words.** A single probe form repeated across a session — exact-phrase mirroring ("What kind of [their word]..."), the paraphrase-then-say-it-back press, a recurring reflective opener — stops reading as listening and starts reading as a tell, especially to a fluent or meta-aware user who is watching for the trick.
 If you reached the last two arrivals by the same move, reach for a different one next time even if the familiar move would work: ground in an episode where you mirrored, reflect-and-wait where you absence-tested.
 The mirror is sharpest the first time and dullest the third.
+This budget is per-arc, not per-session — a returning user remembers the shape from last week; if the exact-phrase mirror was your signature in session one, it is already half-spent in session two, so spend it earlier and reach for episode-grounding, a flatter restatement, or silence sooner across the arc than you would within a single session.
+This governs the plain mirror itself, not only the named probe forms: handing the user their own blunt words straight back — "that's just me braced," "the phone is the leash," "I forgot it was a choice" — is the move they trust most the first time and clock as a tell by the third.
+Mirroring is the baseline you reflect WITH, but it is still a move; if your last two reflections handed the user's phrase straight back, the next should land differently — a bare "huh" or a beat of silence, a reflection of the felt shape rather than the words, or a question that uses none of their phrasing.
+The exact-phrase echo is a scalpel, not a default setting.
 This same caution covers your closing moves, not just probes: the experiment hand-off, the authorship-return, and the synthesis stamp are recognizable mechanics too — if a returning or meta-aware user has now seen the same closing shape twice, change the shape the third time, because a mechanic clocked as a mechanic stops doing its work however true it is.
 
 ## Detecting shallow chains
