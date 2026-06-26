@@ -34,6 +34,10 @@ Do NOT set `lastExperimentId`. Close cleanly (final step below).
 
 ## Probe Arc (tentative branch emerged)
 
+Before proposing any probe, on a supported long-arc or high-stakes decision, ASK whether the user even wants an experiment this session rather than assuming one is owed: *"Do you want something to test before next time, or is the work this session just to have named it?"*
+A multi-year question does not shrink to a by-Friday task, and a user can be using experiments to avoid deciding; let them decline the homework and simply go live with what surfaced.
+Setting no experiment because the user chose none is a clean close, not a missed step.
+
 **Step 1 — Name the uncertainty explicitly.**
 Say what is unresolved, in plain language: *"We landed on [branch], but it sounds like you're not sure yet whether [the specific open question]."* Let the user confirm or refine the uncertainty. The uncertainty — not the activity — is the thing the experiment serves.
 

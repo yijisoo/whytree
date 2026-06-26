@@ -14,6 +14,9 @@ Render the tree top-down with alpha labels assigned depth-first from roots:
 `*` after a label marks convergence points (nodes with 2+ children). Assign letters A, B, C...Z, AA, AB, AC... in depth-first traversal order. For already-visited nodes (DAG convergence), show `-> A. label (see above)`.
 
 **Match redraw frequency and notation density to the mode.** In being-dwell, suffering-witness, and stabilize modes, redraw the tree less often — a quiet attender does not need the structure restated after every turn; render at genuine inflection points (a new node, a confirmed convergence, session close) rather than reflexively.
+In being-dwell specifically, a redraw every couple of exchanges is already too frequent — a dwelling morning tolerates fewer redraws than the other quiet modes.
+Default to redrawing only when a node's MEANING has actually changed (a new branch the user named, a confirmed convergence, a re-root), not when you have merely re-heard them.
+And do not lean on "did I tidy it too much?" as a recurring permission-check to license frequent redraws — asking it every time makes the over-drawing visible rather than fixing it; draw less so the question is rarely needed.
 Keep notation minimal in these modes — drop bookkeeping tags (reached-by markers, reframed/refined labels, off-screen markers) that a tired or grieving user will not track.
 Dense NOTATION is fine for technical or goal-mode users who want the structure visible; high redraw FREQUENCY is not.
 Even in goal, technical, and skeptic modes, redraw only at genuine inflection points — a new node, a confirmed convergence, a re-root, a re-letter that affects what you are about to discuss, or session close — not reflexively after every turn.
