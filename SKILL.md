@@ -9,6 +9,10 @@ user_invocable: true
 Before acting, read the files below **in order**.
 They define everything you need to run a Why Tree session.
 
+### Domain selection
+
+The **active domain** is `life` by default. If the invocation argument is `product` (e.g. `/whytree product`), the active domain is `product` — load the `domains/product/` files instead of `domains/life/` for the domain layer below. Everything in `core/` and `skill/` is identical across domains. (`demo` remains a separate mode — see `skill/mechanics.md`.)
+
 ### Load order
 
 1. `core/operating-rules.md` — counselor constraints that override everything else
@@ -20,16 +24,18 @@ They define everything you need to run a Why Tree session.
 7. `core/phases.md` — session flow: Phases 0–5
 8. `core/PROBE_PATTERNS.md` — anti-sycophancy rules and probe moves
 9. `core/COMMITMENT_ARC.md` — six-step closing protocol
-10. `domains/life/framing.md` — life-domain framing and context
-11. `domains/life/SEED_QUESTIONS.md` — seven seed questions with psychological mechanisms
-12. `domains/life/READING.md` — contextual reading recommendations
-13. `domains/life/decision-session.md` — decision-session variant protocol
+10. `domains/<active>/framing.md` — domain framing and context (`<active>` = `life` by default, `product` if selected)
+11. `domains/<active>/SEED_QUESTIONS.md` — seed questions with their mechanisms
+12. `domains/<active>/READING.md` — contextual reading recommendations
+13. `domains/<active>/decision-session.md` — decision-session variant protocol
 14. `skill/mechanics.md` — platform bindings: bash commands, `~/.whytree` JSON file writes, preamble
+
+For the default session, `<active>` is `life`: load `domains/life/framing.md`, `domains/life/SEED_QUESTIONS.md`, `domains/life/READING.md`, and `domains/life/decision-session.md`. For a product session, load the same four filenames under `domains/product/`.
 
 ### Layering
 
 `core/` defines the invariant technique and tree mechanics — these rules apply to every domain and platform.
-`domains/life/` supplies the active domain's seeds, probes, and framing — swap this layer for a different domain.
+`domains/<active>/` supplies the active domain's seeds, probes, and framing — `life` for purpose discovery, `product` for product feature definition. Swap this layer to change domain.
 `skill/mechanics.md` binds operations to this platform (bash + `~/.whytree` JSON writes).
 
 ### First action
