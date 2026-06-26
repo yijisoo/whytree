@@ -64,6 +64,7 @@ fi
 
 # Each manifest entry's basename (with {domain}→life) must appear in SKILL.md
 while read -r layer rel; do
+  layer="${layer%$'\r'}"; rel="${rel%$'\r'}"  # tolerate CRLF checkouts (Windows)
   [[ -z "$layer" || "$layer" == \#* ]] && continue
   rel="${rel//\{domain\}/life}"
   base="$(basename "$rel")"

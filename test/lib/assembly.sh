@@ -5,6 +5,7 @@
 _whytree_emit() { # $1 = domain, $2 = include-skill (1/0)
   local domain="$1" include_skill="$2" layer rel
   while read -r layer rel; do
+    layer="${layer%$'\r'}"; rel="${rel%$'\r'}"  # tolerate CRLF checkouts (Windows)
     [[ -z "$layer" || "$layer" == \#* ]] && continue
     [[ "$layer" == skill && "$include_skill" != 1 ]] && continue
     rel="${rel//\{domain\}/$domain}"
