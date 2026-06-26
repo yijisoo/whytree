@@ -4,7 +4,10 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "$HERE/../.." && pwd)"
 . "$ROOT/test/lib/assembly.sh"
 
-norm() { grep -vE '^#{1,6} |^---$|^[[:space:]]*$' | sed 's/[[:space:]]*$//'; }
+# tr -d '\r' first so a CRLF checkout (Windows) normalizes to the same
+# byte stream as the LF-frozen baseline; then drop headers/separators/blank
+# lines and trailing whitespace.
+norm() { tr -d '\r' | grep -vE '^#{1,6} |^---$|^[[:space:]]*$' | sed 's/[[:space:]]*$//'; }
 
 current="$(while read -r f; do cat "$f"; echo; done < <(whytree_assembly_files life) | norm | LC_ALL=C sort)"
 
