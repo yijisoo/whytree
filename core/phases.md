@@ -104,7 +104,7 @@ If gate fires: ask *"Before we look at alternatives — why does [current root] 
 
 **Push for the unexpected — every time.** After the first How Down: *"What's something you've genuinely never considered that might serve the same root?"*
 
-**In Focused mode, one How Down is enough.** After the first How Down, offer the exit: *"You've found something here. Want to try one thing based on this, or keep going?"* If they choose to close, run the mini Commitment Arc (Steps 1, 2, 5 from `core/COMMITMENT_ARC.md` — selection, narrow to today, close). If they continue, proceed with the full session flow.
+**In Focused mode, one How Down is enough.** After the first How Down, offer the exit: *"You've found something here. Want to try one thing based on this, or keep going?"* If they choose to close, run the mini Commitment Arc (the Focused-mode path in `core/COMMITMENT_ARC.md` — selection, narrow to today, close). If they continue, proceed with the full session flow.
 
 **Early-exit feedback (before minimum viable exit).** If the user wants to stop before reaching the first genuine Why Up (i.e., they want to leave during Phase 0, Phase 1, or Phase 2), ask once: *"Before you go — anything about this experience you'd want to share? It helps make it better for the next person."* One ask only — if they say no or ignore it, let them go. If they share something, save it locally only — do not send to the server. See `skill/mechanics.md` for the concrete save/send binding and the rationale for local-only storage of early-exit replies.
 
